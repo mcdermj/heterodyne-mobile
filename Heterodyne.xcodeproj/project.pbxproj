@@ -1,0 +1,446 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
+		0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
+		0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC711515E898006C8F0E /* CoreGraphics.framework */; };
+		0948DC781515E898006C8F0E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC761515E898006C8F0E /* InfoPlist.strings */; };
+		0948DC7A1515E898006C8F0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC791515E898006C8F0E /* main.m */; };
+		0948DC7E1515E898006C8F0E /* NNHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */; };
+		0948DC811515E898006C8F0E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */; };
+		0948DC841515E898006C8F0E /* NNHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC831515E898006C8F0E /* NNHViewController.m */; };
+		0948DC8C1515E898006C8F0E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC8B1515E898006C8F0E /* SenTestingKit.framework */; };
+		0948DC8D1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
+		0948DC8E1515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
+		0948DC961515E898006C8F0E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC941515E898006C8F0E /* InfoPlist.strings */; };
+		0948DC991515E898006C8F0E /* HeterodyneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC981515E898006C8F0E /* HeterodyneTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0948DC8F1515E898006C8F0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0948DC601515E898006C8F0E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0948DC681515E898006C8F0E;
+			remoteInfo = Heterodyne;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		0948DC691515E898006C8F0E /* Heterodyne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heterodyne.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0948DC6D1515E898006C8F0E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0948DC6F1515E898006C8F0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0948DC711515E898006C8F0E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0948DC751515E898006C8F0E /* Heterodyne-Info.plist */ = {isa = PBXFileReference; path = "Heterodyne-Info.plist"; sourceTree = "<group>"; };
+		0948DC771515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0948DC791515E898006C8F0E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */ = {isa = PBXFileReference; path = "Heterodyne-Prefix.pch"; sourceTree = "<group>"; };
+		0948DC7C1515E898006C8F0E /* NNHAppDelegate.h */ = {isa = PBXFileReference; path = NNHAppDelegate.h; sourceTree = "<group>"; };
+		0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NNHAppDelegate.m; sourceTree = "<group>"; };
+		0948DC801515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		0948DC821515E898006C8F0E /* NNHViewController.h */ = {isa = PBXFileReference; path = NNHViewController.h; sourceTree = "<group>"; };
+		0948DC831515E898006C8F0E /* NNHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NNHViewController.m; sourceTree = "<group>"; };
+		0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeterodyneTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0948DC8B1515E898006C8F0E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		0948DC931515E898006C8F0E /* HeterodyneTests-Info.plist */ = {isa = PBXFileReference; path = "HeterodyneTests-Info.plist"; sourceTree = "<group>"; };
+		0948DC951515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0948DC971515E898006C8F0E /* HeterodyneTests.h */ = {isa = PBXFileReference; path = HeterodyneTests.h; sourceTree = "<group>"; };
+		0948DC981515E898006C8F0E /* HeterodyneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeterodyneTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0948DC661515E898006C8F0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */,
+				0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */,
+				0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC861515E898006C8F0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC8C1515E898006C8F0E /* SenTestingKit.framework in Frameworks */,
+				0948DC8D1515E898006C8F0E /* UIKit.framework in Frameworks */,
+				0948DC8E1515E898006C8F0E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		0948DC5E1515E898006C8F0E = {
+			isa = PBXGroup;
+			children = (
+				0948DC731515E898006C8F0E /* Heterodyne */,
+				0948DC911515E898006C8F0E /* HeterodyneTests */,
+				0948DC6C1515E898006C8F0E /* Frameworks */,
+				0948DC6A1515E898006C8F0E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0948DC6A1515E898006C8F0E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC691515E898006C8F0E /* Heterodyne.app */,
+				0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0948DC6C1515E898006C8F0E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC6D1515E898006C8F0E /* UIKit.framework */,
+				0948DC6F1515E898006C8F0E /* Foundation.framework */,
+				0948DC711515E898006C8F0E /* CoreGraphics.framework */,
+				0948DC8B1515E898006C8F0E /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0948DC731515E898006C8F0E /* Heterodyne */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC7C1515E898006C8F0E /* NNHAppDelegate.h */,
+				0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */,
+				0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */,
+				0948DC821515E898006C8F0E /* NNHViewController.h */,
+				0948DC831515E898006C8F0E /* NNHViewController.m */,
+				0948DC741515E898006C8F0E /* Supporting Files */,
+			);
+			path = Heterodyne;
+			sourceTree = "<group>";
+		};
+		0948DC741515E898006C8F0E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC751515E898006C8F0E /* Heterodyne-Info.plist */,
+				0948DC761515E898006C8F0E /* InfoPlist.strings */,
+				0948DC791515E898006C8F0E /* main.m */,
+				0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0948DC911515E898006C8F0E /* HeterodyneTests */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC971515E898006C8F0E /* HeterodyneTests.h */,
+				0948DC981515E898006C8F0E /* HeterodyneTests.m */,
+				0948DC921515E898006C8F0E /* Supporting Files */,
+			);
+			path = HeterodyneTests;
+			sourceTree = "<group>";
+		};
+		0948DC921515E898006C8F0E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC931515E898006C8F0E /* HeterodyneTests-Info.plist */,
+				0948DC941515E898006C8F0E /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0948DC681515E898006C8F0E /* Heterodyne */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0948DC9C1515E898006C8F0E /* Build configuration list for PBXNativeTarget "Heterodyne" */;
+			buildPhases = (
+				0948DC651515E898006C8F0E /* Sources */,
+				0948DC661515E898006C8F0E /* Frameworks */,
+				0948DC671515E898006C8F0E /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Heterodyne;
+			productName = Heterodyne;
+			productReference = 0948DC691515E898006C8F0E /* Heterodyne.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0948DC891515E898006C8F0E /* HeterodyneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0948DC9F1515E898006C8F0E /* Build configuration list for PBXNativeTarget "HeterodyneTests" */;
+			buildPhases = (
+				0948DC851515E898006C8F0E /* Sources */,
+				0948DC861515E898006C8F0E /* Frameworks */,
+				0948DC871515E898006C8F0E /* Resources */,
+				0948DC881515E898006C8F0E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0948DC901515E898006C8F0E /* PBXTargetDependency */,
+			);
+			name = HeterodyneTests;
+			productName = HeterodyneTests;
+			productReference = 0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0948DC601515E898006C8F0E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0420;
+			};
+			buildConfigurationList = 0948DC631515E898006C8F0E /* Build configuration list for PBXProject "Heterodyne" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0948DC5E1515E898006C8F0E;
+			productRefGroup = 0948DC6A1515E898006C8F0E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0948DC681515E898006C8F0E /* Heterodyne */,
+				0948DC891515E898006C8F0E /* HeterodyneTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0948DC671515E898006C8F0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC781515E898006C8F0E /* InfoPlist.strings in Resources */,
+				0948DC811515E898006C8F0E /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC871515E898006C8F0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC961515E898006C8F0E /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		0948DC881515E898006C8F0E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0948DC651515E898006C8F0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC7A1515E898006C8F0E /* main.m in Sources */,
+				0948DC7E1515E898006C8F0E /* NNHAppDelegate.m in Sources */,
+				0948DC841515E898006C8F0E /* NNHViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC851515E898006C8F0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC991515E898006C8F0E /* HeterodyneTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0948DC901515E898006C8F0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0948DC681515E898006C8F0E /* Heterodyne */;
+			targetProxy = 0948DC8F1515E898006C8F0E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0948DC761515E898006C8F0E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC771515E898006C8F0E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC801515E898006C8F0E /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		0948DC941515E898006C8F0E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC951515E898006C8F0E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0948DC9A1515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		0948DC9B1515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		0948DC9D1515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "Heterodyne/Heterodyne-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0948DC9E1515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "Heterodyne/Heterodyne-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		0948DCA01515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Heterodyne.app/Heterodyne";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "HeterodyneTests/HeterodyneTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		0948DCA11515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Heterodyne.app/Heterodyne";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "HeterodyneTests/HeterodyneTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0948DC631515E898006C8F0E /* Build configuration list for PBXProject "Heterodyne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DC9A1515E898006C8F0E /* Debug */,
+				0948DC9B1515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0948DC9C1515E898006C8F0E /* Build configuration list for PBXNativeTarget "Heterodyne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DC9D1515E898006C8F0E /* Debug */,
+				0948DC9E1515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		0948DC9F1515E898006C8F0E /* Build configuration list for PBXNativeTarget "HeterodyneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DCA01515E898006C8F0E /* Debug */,
+				0948DCA11515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0948DC601515E898006C8F0E /* Project object */;
+}
