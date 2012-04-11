@@ -17,12 +17,8 @@
 #define WATERFALL_SIZE 4096
 #define SPECTRUM_BUFFER_SIZE 4096
 
-inline static GLushort toRGBA(float r, float g, float b) {
-    return ((int) (b * 15.5) ) + ( (int)(g * 15.5) << 4 ) + ( (int) (r * 15.5) << 8 ) + 0xF000; 
-}
-
-inline static GLushort to565(unsigned short r, unsigned short g, unsigned short b) {
-    return (b & 0x001F) + ((g & 0x003F) << 5) + ((r & 0x001F) << 11);
+inline static GLint toRGBA(float r, float g, float b) {
+    return ( (int)(r*255.5) << 0) + ( (int)(g*255.5) << 8 ) + ( (int)(b*255.5) << 16 ) + 0xFF000000; 
 }
 
 @interface XTUIWaterfallView () {
@@ -35,19 +31,19 @@ inline static GLushort to565(unsigned short r, unsigned short g, unsigned short 
     GLint height;
     CADisplayLink *displayLink;
     
-    GLushort colorGradientArray[20008];
+    GLuint colorGradientArray[20008];
     
     float sortBuffer[SPECTRUM_BUFFER_SIZE];
     float intensityBuffer[SPECTRUM_BUFFER_SIZE];
     
     int currentLine;
-    GLushort line[WATERFALL_SIZE];
+    GLubyte line[WATERFALL_SIZE * 4];
     GLuint texture;
     GLuint forwardVertexBuffer;
     GLuint reverseVertexBuffer;
     GLuint texCoordBuffer;
     
-    //float textureArray[8];
+    float textureArray[8];
     
     float negLow;
     float scale;
@@ -94,10 +90,10 @@ static const float high = 19999.0;
         textureArray[4] = 1.0;
         textureArray[6] = 0.0; */
         
-        /*textureArray[0] = 0.0;
+        textureArray[0] = 0.0;
         textureArray[2] = 1.0;
         textureArray[4] = 0.0;
-        textureArray[6] = 1.0; */
+        textureArray[6] = 1.0;
         
         self.layer.opaque = YES;
         
@@ -157,17 +153,17 @@ static const float high = 19999.0;
     for(i = 0; i < 2858; ++i) {
         g = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
-    }
+    } 
     
     NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-    
+
     NSLog(@"[%@ %s]: %d colors generated\n", [self class], (char *) _cmd, j);
-    
+        
     NSLog(@"Testing code\n");
-    NSLog(@"r = 31, result = %x\n", to565(31, 0, 0)); 
-    NSLog(@"g = 63, result = %x\n", to565(0, 63, 0));
-    NSLog(@"b = 31, result = %x\n", to565(0, 0, 31));
-    NSLog(@"allones = %x\n", to565(31, 63, 31));
+    NSLog(@"r = 1.0, result = %x\n", toRGBA(1.0, 0, 0)); 
+    NSLog(@"g = 1.0, result = %x\n", toRGBA(0, 1.0, 0));
+    NSLog(@"b = 1.0, result = %x\n", toRGBA(0, 0, 1.0));
+    NSLog(@"allones = %x\n", toRGBA(1.0, 1.0, 1.0));
 
 }
 
@@ -188,7 +184,7 @@ static const float high = 19999.0;
         negLow = -sortBuffer[1024];
         
         float denominator = sortBuffer[SPECTRUM_BUFFER_SIZE - 1] - sortBuffer[SPECTRUM_BUFFER_SIZE / 4];
-        scale = denominator == 0 ? 0 : 20000.0f / denominator;
+        scale = denominator == 0 ? 0 : 20008.0f / denominator;
     }
     
     vDSP_vsadd((float *) [data bytes], 1, &negLow, intensityBuffer, 1, SPECTRUM_BUFFER_SIZE);
@@ -196,9 +192,7 @@ static const float high = 19999.0;
     vDSP_vclip(intensityBuffer, 1, (float *) &low, (float *) &high, intensityBuffer, 1, SPECTRUM_BUFFER_SIZE);
     
 	for(int i = 0; i < SPECTRUM_BUFFER_SIZE; i++) 
-		line[i] = colorGradientArray[(int) intensityBuffer[i]];
-    
-    
+        memset_pattern4(&line[i*4], &colorGradientArray[(int) intensityBuffer[i]], 4);
     
     //  Set up the framebuffer for drawing
     [EAGLContext setCurrentContext:glContext];
@@ -212,6 +206,9 @@ static const float high = 19999.0;
     glLoadIdentity();
     glOrthof(0, width, 0, height, 0, 1);
     glPushMatrix();
+    glScalef(width, height, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    glDepthMask(GL_FALSE);
     
     glEnable(GL_TEXTURE_2D);
     glEnable(GL_BLEND);
@@ -221,56 +218,63 @@ static const float high = 19999.0;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		
-		char *blankData = (char *) malloc(WATERFALL_SIZE * 512 * sizeof(GLushort));
-		memset(blankData, 1, WATERFALL_SIZE * 512 * sizeof(GLushort));
+		char *blankData = (char *) malloc(WATERFALL_SIZE * 512 * 4);
+		memset(blankData, 0x88, WATERFALL_SIZE * 512 * 4);
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WATERFALL_SIZE, 512, 0, GL_RGBA, GL_UNSIGNED_SHORT, blankData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WATERFALL_SIZE, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, blankData);
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
+        
+        free(blankData);
+        
+        static const GLfloat verticies [] = {
+            0.0, 0.0,
+            0.0, 1.0,
+            1.0, 0.0,
+            1.0, 1.0
+        };
+        
+        glGenBuffers(1, &forwardVertexBuffer);
+        glBindBuffer(GL_ARRAY_BUFFER, forwardVertexBuffer);
+        glBufferData(GL_ARRAY_BUFFER, sizeof(verticies), verticies, GL_STATIC_DRAW);
+        
+        glGenBuffers(1, &texCoordBuffer);
 	}
     
-    //glBindTexture(GL_TEXTURE_2D, texture);
-    
-    //glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-    
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, currentLine, WATERFALL_SIZE, 1, GL_RGBA, GL_UNSIGNED_SHORT_4_4_4_4, line);
-    currentLine = (currentLine + 1) % 512;
-    
-    glScalef(width, height, 1.0);
-    glMatrixMode(GL_MODELVIEW);
-    glDepthMask(GL_FALSE);
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         
-    static const GLfloat verticies [] = {
-        0.0, 0.0,
-        0.0, 1.0,
-        1.0, 0.0,
-        1.0, 1.0
-    };
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, currentLine, WATERFALL_SIZE, 1, GL_RGBA, GL_UNSIGNED_BYTE, line);
+    currentLine = (currentLine + 1) % 512;
+        
     
     float prop_y = (float) currentLine  / 511.0;
     
-    /*
+    textureArray[0] = 1.0;
     textureArray[1] = prop_y;
-    textureArray[3] = prop_y;
-    textureArray[5] = prop_y + 1 - off;
+
+    textureArray[2] = 1.0;
+    textureArray[3] = prop_y + 1 - off;
+
+    textureArray[4] = 0.0;
+    textureArray[5] = prop_y;
+
+    textureArray[6] = 0.0;
     textureArray[7] = prop_y + 1 - off;
-     */
-        
-    static const GLfloat textureArray[] = {
-        0.0, 0.0,
-        0.0, 1.0,
-        1.0, 0.0,
-        1.0, 1.0
-    };
-        
+    
+    glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(textureArray), textureArray, GL_STREAM_DRAW);
+    
     glEnableClientState(GL_VERTEX_ARRAY);
     glEnableClientState(GL_TEXTURE_COORD_ARRAY);
 
-    glTexCoordPointer(2, GL_FLOAT, 0, textureArray);
-    glVertexPointer(2, GL_FLOAT, 0, verticies);
+    glTexCoordPointer(2, GL_FLOAT, 0, 0);
+    
+    glBindBuffer(GL_ARRAY_BUFFER, forwardVertexBuffer);
+    glVertexPointer(2, GL_FLOAT, 0, 0);
+    
     glDrawArrays(GL_TRIANGLE_STRIP, 0, 4);
     
     glDisableClientState(GL_TEXTURE_COORD_ARRAY);

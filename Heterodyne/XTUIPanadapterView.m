@@ -125,16 +125,19 @@
         _referenceLevel = -100.0;
 
         tickLayer = [XTUIPVTickLayer layer];
-        tickLayer.frame = self.frame;
+        tickLayer.frame = self.bounds;
         tickLayer.view = self;
+        tickLayer.opaque = YES;
         
-        // [[self layer] addSublayer:tickLayer];
-        // [tickLayer setNeedsDisplay];
+        [[self layer] addSublayer:tickLayer];
+        [tickLayer setNeedsDisplay];
         
         //  Set up the OpenGL ES Layer
-        //signalLayer = [CAEAGLLayer layer];
-        //[[self layer] addSublayer:signalLayer];
-        signalLayer = self.layer;
+        signalLayer = [CAEAGLLayer layer];
+        signalLayer.frame = self.bounds;
+        signalLayer.opaque = NO;
+        [[self layer] addSublayer:signalLayer];
+        //signalLayer = self.layer;
         
         //  Create an OpenGL Context
         glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
@@ -142,17 +145,13 @@
             NSLog(@"Couldn't create context\n");
         }
         
-        /* [[NSNotificationCenter defaultCenter] addObserver:self 
-                                                 selector:@selector(dataReady:) 
-                                                     name:@"XTPanAdapterDataReady" 
-                                                   object: nil]; */
-
         glGenFramebuffersOES(1, &framebuffer);
         glGenRenderbuffersOES(1, &renderbuffer);
         
         glBindFramebufferOES(GL_FRAMEBUFFER_OES, framebuffer);
         glBindRenderbuffer(GL_RENDERBUFFER_OES, renderbuffer);
-        [glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer *)self.layer];
+        //[glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer *)self.layer];
+        [glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:signalLayer];
         glFramebufferRenderbuffer(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, renderbuffer);
         glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &width);
         glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &height);
@@ -201,7 +200,7 @@ static const float zero = 0.0f;
         glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
     }
     
-    glClearColor(0, 0, 0, 1.0);
+    glClearColor(0, 0, 0, 0.0);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
         
     glViewport(0, 0, width, height);
