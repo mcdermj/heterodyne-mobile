@@ -8,8 +8,18 @@
 
 #import <UIKit/UIKit.h>
 
-@interface NNHAppDelegate : UIResponder <UIApplicationDelegate>
+@class XTSoftwareDefinedRadio;
+@class NNHMetisDriver;
+@class XTPanadapterDataMUX;
+@class UIPanadapterView;
+
+@interface NNHAppDelegate : UIResponder <UIApplicationDelegate> {
+    IBOutlet UIPanadapterView *pan;
+}
 
 @property (strong, nonatomic) UIWindow *window;
+@property (strong, nonatomic) XTSoftwareDefinedRadio *sdr;
+@property (strong, nonatomic) NNHMetisDriver *driver;
+@property (strong, nonatomic) XTPanadapterDataMUX *mux;
 
 @end

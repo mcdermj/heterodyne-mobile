@@ -8,6 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class XTUIPanadapterView;
+@class XTUIWaterfallView;
+
 @interface NNHViewController : UIViewController
 
+@property (nonatomic) IBOutlet XTUIPanadapterView *panadapter;
+@property (nonatomic) IBOutlet XTUIWaterfallView *waterfall;
 @end

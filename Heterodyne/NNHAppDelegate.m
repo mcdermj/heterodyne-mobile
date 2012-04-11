@@ -7,14 +7,24 @@
 //
 
 #import "NNHAppDelegate.h"
+#import "XTSoftwareDefinedRadio.h"
+#import "NNHMetisDriver.h"
 
 @implementation NNHAppDelegate
 
 @synthesize window = _window;
+@synthesize sdr = _sdr;
+@synthesize driver = _driver;
+@synthesize mux = _mux;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:192000.0f];
+    _driver = [[NNHMetisDriver alloc] initWithSDR:_sdr];
+    [_driver start];
+    
     return YES;
 }
 							
