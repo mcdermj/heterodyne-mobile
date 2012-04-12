@@ -205,6 +205,7 @@ typedef struct _metisProgramReply {
 
 -(id)initWithSDR:(XTSoftwareDefinedRadio *)newSdr;
 -(int)getFrequency: (int)_receiver;
+-(void)setFrequency: (int)_frequency forReceiver: (int)_receiver;
 -(BOOL)start;
 
 @property (readonly) OzyInputBuffers *ep4Buffers;

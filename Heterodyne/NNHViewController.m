@@ -12,6 +12,8 @@
 #import "NNHAppDelegate.h"
 #import "XTRealData.h"
 #import "XTSoftwareDefinedRadio.h"
+#import "NNHMetisDriver.h"
+#import "XTWorkerThread.h"
 
 #import <QuartzCore/CoreAnimation.h>
 #import <Accelerate/Accelerate.h>
@@ -82,6 +84,15 @@
     vDSP_fft_zip(fftSetup, &kernel, 1, 12, kFFTDirection_Forward);      
     
     delegate = [[UIApplication sharedApplication] delegate];
+    
+    UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    panGesture.maximumNumberOfTouches = NSUIntegerMax;
+    panGesture.minimumNumberOfTouches = 1;
+    [self.panadapter addGestureRecognizer:panGesture];
+    
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    tapGesture.numberOfTapsRequired = 2;
+    [self.panadapter addGestureRecognizer:tapGesture];
 }
 
 - (void)viewDidUnload
@@ -95,9 +106,15 @@
 {
     [super viewWillAppear:animated];
     
-    displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
-    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSDefaultRunLoopMode];
+    XTWorkerThread *glThread = [[XTWorkerThread alloc] init];
+    [glThread start];
+    [self performSelector:@selector(setupDisplayLink) onThread:glThread withObject:nil waitUntilDone:NO];
+    
+}
 
+- (void)setupDisplayLink {
+    displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
+    [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
 - (void)viewDidAppear:(BOOL)animated
@@ -160,6 +177,24 @@ static const float scaling = 0.66;
     
     [self.panadapter drawFrameWithData:smoothBufferData];
     [self.waterfall drawFrameWithData:smoothBufferData];
+}
+
+-(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
+    CGPoint translation = [recognizer translationInView:self.panadapter.superview];
+    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
+    [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (translation.x * hzPerUnit) forReceiver:0];
+    [self.panadapter setNeedsDisplay];
+    [recognizer setTranslation:CGPointMake(0, 0) inView:self.panadapter.superview];
+}
+
+-(void)handleTapGesture:(UITapGestureRecognizer *)recognizer {
+    CGPoint position = [recognizer locationInView:self.panadapter.superview];
+    
+    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
+    float frequencySlew = (position.x - CGRectGetMidX(self.panadapter.bounds)) * hzPerUnit;
+    
+    [delegate.driver setFrequency:[[delegate driver] getFrequency:0] + frequencySlew forReceiver:0];
+    [self.panadapter setNeedsDisplay];
 }
 
 @end

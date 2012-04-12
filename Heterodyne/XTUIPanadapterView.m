@@ -168,10 +168,10 @@
 -(void)awakeFromNib {
 }
 
-+(Class) layerClass {
-    return [CAEAGLLayer class];
+-(void)setNeedsDisplay {
+    [super setNeedsDisplay];
+    [tickLayer setNeedsDisplay];
 }
-
 static const float zero = 0.0f;
 
 -(void)drawFrameWithData:(NSData *) inputData {
@@ -181,7 +181,11 @@ static const float zero = 0.0f;
     const float *smoothBuffer = [inputData bytes];
     
     int numSamples = [inputData length] / sizeof(float);
-    verticies = malloc([inputData length] * 2);
+    verticies = malloc(([inputData length] * 2) + 4);
+    verticies[(numSamples * 2)] = 1.0;
+    verticies[(numSamples * 2) + 1] = 0.0;
+    verticies[(numSamples * 2) + 2] = 0.0;
+    verticies[(numSamples * 2) + 3] = 0.0;
     
     negativeReferenceLevel = -self.referenceLevel;
     vDSP_vsadd((float *) smoothBuffer, 1, &negativeReferenceLevel, &verticies[1], 2, numSamples);
@@ -230,6 +234,7 @@ static const float zero = 0.0f;
      glBufferData(GL_ARRAY_BUFFER, [inputData length] * 2, verticies, GL_STREAM_DRAW);
     glVertexPointer(2, GL_FLOAT, 0, 0);
     glDrawArrays(GL_LINE_STRIP, 0, numSamples);
+    //glDrawArrays(GL_TRIANGLE_STRIP, 0, numSamples + 2);
     glDisableClientState(GL_VERTEX_ARRAY);
     
     glDepthMask(GL_TRUE);
