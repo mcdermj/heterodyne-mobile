@@ -47,7 +47,7 @@
     CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
     CGContextScaleCTM(ctx, 1.0, -1.0);
     
-    CTFontRef labelFont = CTFontCreateWithName(CFSTR("Helvetica"), 8.0, NULL);
+    CTFontRef labelFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), 9.0, NULL);
     CFMutableDictionaryRef textAttributes = CFDictionaryCreateMutable(kCFAllocatorDefault, 2, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
     CFDictionarySetValue(textAttributes, kCTFontAttributeName, labelFont);
     CFDictionarySetValue(textAttributes, kCTForegroundColorAttributeName, [[UIColor lightGrayColor] CGColor]);
@@ -88,8 +88,10 @@
         CFRelease(tickMarkLabel);
     }
    
+    CGContextSetShouldAntialias(ctx, false);
     CGContextAddPath(ctx, tickMarks);
     CGContextStrokePath(ctx);    
+    CGContextSetShouldAntialias(ctx, true);
     
     CFRelease(tickMarks);
     CFRelease(labelFont);
@@ -224,7 +226,7 @@ static const float zero = 0.0f;
     glShadeModel(GL_SMOOTH);
     
     GLfloat lineSizes[2];
-    GLfloat lineStep;
+    //GLfloat lineStep;
     glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, lineSizes);
     // glGetFloatv(GL_SMOOTH_LINE_WIDTH_GRANULARITY, linestep);
     glLineWidth(0.5);
