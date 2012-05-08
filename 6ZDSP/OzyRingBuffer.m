@@ -43,7 +43,7 @@
 	self = [super init];
 	if(self) {
 		data = [NSMutableData dataWithLength:size];
-        NSLog(@"[%@ %s]: Creating buffer with size %d\n", [self class], (char *) _cmd, size);
+        NSLog(@"Creating buffer with size %d\n", size);
 		entries = insertIndex = removeIndex = 0;
 		
 		sizeLock = [[NSCondition alloc] init];
@@ -77,7 +77,7 @@
 			return;
 		}
         
-        // NSLog(@"[%@ %s]: Putting data\n", [self class], (char *) _cmd);
+        // NSLog(@"Putting data\n", [self class], (char *) _cmd);
 		
 		if(insertIndex + [_data length] <= [data length]) {  // We can fit the whole thing in one go.
 			[data replaceBytesInRange:NSMakeRange(insertIndex, [_data length]) withBytes:[_data bytes]];
@@ -132,7 +132,7 @@
 	while(entries < requestedSize) 
 		if([sizeLock waitUntilDate:timeout] == NO) {
             [sizeLock unlock];
-            //NSLog(@"[%@ %s]: Timeout expired\n", [self class], (char *) _cmd);
+            //NSLog(@"Timeout expired\n", [self class], (char *) _cmd);
             return NULL;
         }
 		
