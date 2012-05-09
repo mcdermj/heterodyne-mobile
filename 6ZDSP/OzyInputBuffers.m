@@ -22,6 +22,8 @@
 
 #import "OzyInputBuffers.h"
 
+#include <mach/mach_init.h>
+
 @implementation OzyInputBuffers
 
 @synthesize ozyInputBufferSemaphore;

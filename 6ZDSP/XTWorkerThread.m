@@ -22,6 +22,7 @@
 
 #import "XTWorkerThread.h"
 
+#include <mach/mach_init.h>
 #include <mach/mach_time.h>
 #include <mach/thread_policy.h>
 

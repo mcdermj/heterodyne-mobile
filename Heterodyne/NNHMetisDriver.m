@@ -28,6 +28,7 @@
 #import "OzyRingBuffer.h"
 
 #include <arpa/inet.h>
+#include <mach/mach_init.h>
 #include <mach/mach_time.h>
 #include <sys/time.h>
 
