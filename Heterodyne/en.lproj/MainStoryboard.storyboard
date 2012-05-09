@@ -30,7 +30,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
                                 <items>
-                                    <barButtonItem style="plain" systemItem="action" id="mU7-4K-O37">
+                                    <barButtonItem image="sinewave.png" style="plain" id="mU7-4K-O37">
                                         <connections>
                                             <action selector="displayFrequencyControl:" destination="2" id="oLJ-KX-wGK"/>
                                         </connections>
@@ -88,6 +88,9 @@
             <point key="canvasLocation" x="865" y="37"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="sinewave.png" width="26" height="26"/>
+    </resources>
     <classes>
         <class className="NNHFrequencyPopupViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHFrequencyPopupViewController.h"/>
