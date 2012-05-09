@@ -16,6 +16,7 @@
 #import "XTDSPBlock.h"
 #import "XTDSPComplexToRealStereo.h"
 #import "XTDSPAMDemodulator.h"
+#import "XTDSPFixedGain.h"
 
 @implementation XTReceiver
 
@@ -36,8 +37,12 @@
         
         [dspModules addObject:[[XTDSPBandpassFilter alloc] initWithSize:1024
                                                              sampleRate:sampleRate
-                                                              lowCutoff:0.0f
-                                                          andHighCutoff:6000.0f]];
+                                                              lowCutoff:-300.0f
+                                                          andHighCutoff:2700.0f]];
+        
+        //[dspModules addObject:[[XTDSPAMDemodulator alloc] initWithSampleRate:sampleRate]];
+        
+        //[dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
         
         [dspModules addObject:[[XTDSPComplexToRealStereo alloc] initWithSampleRate:sampleRate]];
     }

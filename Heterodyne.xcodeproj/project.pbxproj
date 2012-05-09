@@ -7,6 +7,10 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		090A74B31537E0B7007249C2 /* XTUIKeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */; };
+		090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A74B61537E793007249C2 /* XTUIKeypadView.m */; };
+		090A74B91537F4C4007249C2 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090A74B81537F4C4007249C2 /* delete@2x.png */; };
+		090A74BB1537F4D2007249C2 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 090A74BA1537F4D2007249C2 /* delete.png */; };
 		0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
 		0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
 		0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC711515E898006C8F0E /* CoreGraphics.framework */; };
@@ -48,6 +52,7 @@
 		0948DCF51515EF5D006C8F0E /* OzyInputBuffers.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCF41515EF5D006C8F0E /* OzyInputBuffers.m */; };
 		0948DCF7151626E3006C8F0E /* Heterodyne.png in Resources */ = {isa = PBXBuildFile; fileRef = 0948DCF6151626E3006C8F0E /* Heterodyne.png */; };
 		095540E3152501D500564609 /* XTUIWaterfallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 095540E2152501D500564609 /* XTUIWaterfallView.m */; };
+		095B0C6B154B721A001B97C8 /* NNHFrequencyPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */; };
 		09EC0188151A79750027B783 /* Heterodyne Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 09EC0187151A79750027B783 /* Heterodyne Small.png */; };
 		09FA7327151D5017004BF6CD /* XTUIPanadapterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */; };
 		09FA732A151D730B004BF6CD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA7329151D730B004BF6CD /* QuartzCore.framework */; };
@@ -66,6 +71,12 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		090A74B11537E0B7007249C2 /* XTUIKeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIKeypadButton.h; sourceTree = "<group>"; };
+		090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIKeypadButton.m; sourceTree = "<group>"; };
+		090A74B51537E793007249C2 /* XTUIKeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIKeypadView.h; sourceTree = "<group>"; };
+		090A74B61537E793007249C2 /* XTUIKeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIKeypadView.m; sourceTree = "<group>"; };
+		090A74B81537F4C4007249C2 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
+		090A74BA1537F4D2007249C2 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
 		0948DC691515E898006C8F0E /* Heterodyne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heterodyne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0948DC6D1515E898006C8F0E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0948DC6F1515E898006C8F0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -137,6 +148,9 @@
 		0948DCF6151626E3006C8F0E /* Heterodyne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Heterodyne.png; sourceTree = "<group>"; };
 		095540E1152501D500564609 /* XTUIWaterfallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIWaterfallView.h; sourceTree = "<group>"; };
 		095540E2152501D500564609 /* XTUIWaterfallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIWaterfallView.m; sourceTree = "<group>"; };
+		095B0C67154B487B001B97C8 /* XTGlobals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XTGlobals.h; sourceTree = "<group>"; };
+		095B0C69154B721A001B97C8 /* NNHFrequencyPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHFrequencyPopupViewController.h; sourceTree = "<group>"; };
+		095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHFrequencyPopupViewController.m; sourceTree = "<group>"; };
 		09EC0187151A79750027B783 /* Heterodyne Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Heterodyne Small.png"; sourceTree = "<group>"; };
 		09FA7325151D5017004BF6CD /* XTUIPanadapterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIPanadapterView.h; sourceTree = "<group>"; };
 		09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIPanadapterView.m; sourceTree = "<group>"; };
@@ -174,6 +188,17 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		090A74B41537E5AD007249C2 /* UI Components */ = {
+			isa = PBXGroup;
+			children = (
+				090A74B11537E0B7007249C2 /* XTUIKeypadButton.h */,
+				090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */,
+				090A74B51537E793007249C2 /* XTUIKeypadView.h */,
+				090A74B61537E793007249C2 /* XTUIKeypadView.m */,
+			);
+			name = "UI Components";
+			sourceTree = "<group>";
+		};
 		0948DC5E1515E898006C8F0E = {
 			isa = PBXGroup;
 			children = (
@@ -214,9 +239,11 @@
 		0948DC731515E898006C8F0E /* Heterodyne */ = {
 			isa = PBXGroup;
 			children = (
+				090A74B41537E5AD007249C2 /* UI Components */,
 				0948DCAA1515EB09006C8F0E /* 6ZDSP */,
 				0948DC7C1515E898006C8F0E /* NNHAppDelegate.h */,
 				0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */,
+				095B0C67154B487B001B97C8 /* XTGlobals.h */,
 				09FA7325151D5017004BF6CD /* XTUIPanadapterView.h */,
 				09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */,
 				095540E1152501D500564609 /* XTUIWaterfallView.h */,
@@ -226,6 +253,8 @@
 				0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */,
 				0948DC821515E898006C8F0E /* NNHViewController.h */,
 				0948DC831515E898006C8F0E /* NNHViewController.m */,
+				095B0C69154B721A001B97C8 /* NNHFrequencyPopupViewController.h */,
+				095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */,
 				0948DC741515E898006C8F0E /* Supporting Files */,
 			);
 			path = Heterodyne;
@@ -234,6 +263,8 @@
 		0948DC741515E898006C8F0E /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				090A74BA1537F4D2007249C2 /* delete.png */,
+				090A74B81537F4C4007249C2 /* delete@2x.png */,
 				0948DC751515E898006C8F0E /* Heterodyne-Info.plist */,
 				0948DC761515E898006C8F0E /* InfoPlist.strings */,
 				0948DC791515E898006C8F0E /* main.m */,
@@ -389,6 +420,8 @@
 				0948DCE81515EB77006C8F0E /* AGCPanel.xib in Resources */,
 				0948DCF7151626E3006C8F0E /* Heterodyne.png in Resources */,
 				09EC0188151A79750027B783 /* Heterodyne Small.png in Resources */,
+				090A74B91537F4C4007249C2 /* delete@2x.png in Resources */,
+				090A74BB1537F4D2007249C2 /* delete.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -451,6 +484,9 @@
 				0948DCF51515EF5D006C8F0E /* OzyInputBuffers.m in Sources */,
 				09FA7327151D5017004BF6CD /* XTUIPanadapterView.m in Sources */,
 				095540E3152501D500564609 /* XTUIWaterfallView.m in Sources */,
+				090A74B31537E0B7007249C2 /* XTUIKeypadButton.m in Sources */,
+				090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */,
+				095B0C6B154B721A001B97C8 /* NNHFrequencyPopupViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

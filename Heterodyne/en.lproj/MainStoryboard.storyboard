@@ -3,7 +3,7 @@
     <dependencies>
         <deployment defaultVersion="1296" identifier="iOS"/>
         <development defaultVersion="4200" identifier="xcode"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1179"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="1181"/>
     </dependencies>
     <scenes>
         <!--View Controller-->
@@ -16,15 +16,28 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="82b-YQ-pit" customClass="XTUIPanadapterView">
-                                <rect key="frame" x="0.0" y="0.0" width="1024" height="229"/>
+                                <rect key="frame" x="0.0" y="44" width="1024" height="229"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <view contentMode="scaleToFill" id="0jQ-oG-X0U" customClass="XTUIWaterfallView">
-                                <rect key="frame" x="0.0" y="228" width="1024" height="520"/>
+                                <rect key="frame" x="0.0" y="271" width="1024" height="477"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
+                            <toolbar clearsContextBeforeDrawing="NO" contentMode="scaleToFill" barStyle="blackOpaque" id="1SB-De-cW5">
+                                <rect key="frame" x="0.0" y="0.0" width="1024" height="44"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <items>
+                                    <barButtonItem style="plain" systemItem="action" id="mU7-4K-O37">
+                                        <connections>
+                                            <segue destination="ddl-Es-RBR" kind="popover" popoverAnchorBarButtonItem="mU7-4K-O37" id="AaP-u5-BJT">
+                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                                            </segue>
+                                        </connections>
+                                    </barButtonItem>
+                                </items>
+                            </toolbar>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -35,15 +48,60 @@
                     </connections>
                 </viewController>
             </objects>
+            <point key="canvasLocation" x="-463" y="-3"/>
+        </scene>
+        <!--Frequency Popup View Controller-->
+        <scene sceneID="aGD-ga-BNl">
+            <objects>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="lIl-go-Lkz" userLabel="First Responder" sceneMemberID="firstResponder"/>
+                <viewController id="ddl-Es-RBR" customClass="NNHFrequencyPopupViewController" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Q6Y-WT-0E4">
+                        <rect key="frame" x="0.0" y="0.0" width="250" height="250"/>
+                        <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                        <subviews>
+                            <tabBar contentMode="scaleToFill" id="bda-AW-LS1">
+                                <rect key="frame" x="0.0" y="195" width="250" height="49"/>
+                                <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMinY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
+                                <items>
+                                    <tabBarItem systemItem="favorites" id="Lol-rT-8W9"/>
+                                    <tabBarItem title="Keypad" id="fjh-Ni-eBh"/>
+                                    <tabBarItem title="Band" id="azS-rg-ZoX"/>
+                                </items>
+                            </tabBar>
+                            <view contentMode="scaleToFill" id="BUH-CY-qjo" customClass="XTUIKeypadView">
+                                <rect key="frame" x="0.0" y="0.0" width="250" height="195"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                                <connections>
+                                    <action selector="frequencyEntered:" destination="ddl-Es-RBR" eventType="editingDidEnd" id="7Ej-PX-2ha"/>
+                                </connections>
+                            </view>
+                        </subviews>
+                        <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
+                        <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
+                    </view>
+                </viewController>
+            </objects>
+            <point key="canvasLocation" x="865" y="37"/>
         </scene>
     </scenes>
     <classes>
+        <class className="NNHFrequencyPopupViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHFrequencyPopupViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="frequencyEntered:"/>
+            </relationships>
+        </class>
         <class className="NNHViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHViewController.h"/>
             <relationships>
                 <relationship kind="outlet" name="panadapter" candidateClass="XTUIPanadapterView"/>
                 <relationship kind="outlet" name="waterfall" candidateClass="XTUIWaterfallView"/>
             </relationships>
+        </class>
+        <class className="XTUIKeypadView" superclassName="UIControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIKeypadView.h"/>
         </class>
         <class className="XTUIPanadapterView" superclassName="UIView">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIPanadapterView.h"/>

@@ -18,7 +18,7 @@
     self = [super init];
     if (self) {
         // Initialization code here.
-        buffer = [XTSplitComplexData splitComplexDataWithElements:elements];
+        //buffer = [XTSplitComplexData splitComplexDataWithElements:elements];
         bufferRange = NSMakeRange(0, elements);
         insertRange = NSMakeRange(0, elements);
     }
@@ -29,7 +29,7 @@
 -(void)insert:(XTDSPBlock *)block {
     insertRange.length = [block blockSize];
     
-    NSRange intersectionRange = NSIntersectionRange(bufferRange, insertRange);
+    // NSRange intersectionRange = NSIntersectionRange(bufferRange, insertRange);
     @synchronized(buffer) {
    //     [buffer replaceInRange:intersectionRange with:
     }
