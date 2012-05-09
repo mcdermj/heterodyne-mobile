@@ -76,8 +76,8 @@
 
 -(void)calculateCoefficients {
 	int i;
-    float realSum;
-    float imagSum;
+    float realSum = 0.0f;
+    float imagSum = 0.0f;
 		
 	XTBlackmanHarrisWindow *windowData = 
 		[XTBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
