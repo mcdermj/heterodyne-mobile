@@ -113,43 +113,31 @@ static const float high = 19999.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
     
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-    
     for(i = 0; i < 2858; ++i) {
         g = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
     
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-    
     for(i = 2858; i > -1; --i) {
         b = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
-    
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
     
     for(i = 0; i < 2858; ++i) {
         r = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
     
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-
     for(i = 2858; i > -1; --i) {
         g = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
     
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-
     for(i = 0; i < 2858; ++i) {
         b = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     }
     
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-
     for(i = 0; i < 2858; ++i) {
         g = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
