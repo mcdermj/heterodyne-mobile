@@ -14,6 +14,7 @@
 #import "XTSoftwareDefinedRadio.h"
 #import "NNHMetisDriver.h"
 #import "XTWorkerThread.h"
+#import "NNHFrequencyPopupViewController.h"
 
 #import <QuartzCore/CoreAnimation.h>
 #import <Accelerate/Accelerate.h>
@@ -195,6 +196,14 @@ static const float scaling = 0.66;
     
     [delegate.driver setFrequency:[[delegate driver] getFrequency:0] + frequencySlew forReceiver:0];
     [self.panadapter setNeedsDisplay];
+}
+
+-(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
+    UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+    NNHFrequencyPopupViewController *controller = (NNHFrequencyPopupViewController *) popoverSegue.destinationViewController;
+    
+    controller.popover = popoverSegue.popoverController;
+    controller.masterViewController = popoverSegue.sourceViewController;
 }
 
 @end
