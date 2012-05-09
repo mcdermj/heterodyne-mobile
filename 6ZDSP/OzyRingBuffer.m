@@ -25,13 +25,29 @@
 #import <mach/semaphore.h>
 #import <mach/task.h>
 
+@interface OzyRingBuffer () {
+    unsigned char *buffer;
+    unsigned int insertIndex;
+    unsigned int removeIndex;
+    
+    unsigned int size;
+    unsigned int entries;
+	
+	NSCondition *sizeLock;
+	
+	NSString *name;
+}
+
+@end
+
 @implementation OzyRingBuffer
 
 -(id)initWithEntries: (int)_size {
 	self = [super init];
 	if(self) {
-		data = [NSMutableData dataWithLength:_size];
-		entries = insertIndex = removeIndex = 0;
+        buffer = malloc(_size);
+        entries = insertIndex = removeIndex = 0;
+        size = _size;
 		
 		sizeLock = [[NSCondition alloc] init];
 	}
@@ -39,12 +55,12 @@
 	return self;
 }
 
--(id)initWithEntries: (int)size andName: (NSString *)theName {
+-(id)initWithEntries: (int)_size andName: (NSString *)theName {
 	self = [super init];
 	if(self) {
-		data = [NSMutableData dataWithLength:size];
-        NSLog(@"Creating buffer with size %d\n", size);
-		entries = insertIndex = removeIndex = 0;
+        buffer = malloc(_size);
+        entries = insertIndex = removeIndex = 0;
+        size = _size;
 		
 		sizeLock = [[NSCondition alloc] init];
 		
@@ -54,43 +70,42 @@
 	return self;
 }
 
--(int)space {
-	return [data length] - entries;
+-(void)dealloc {
+    free(buffer);
 }
 
--(int)entries {
-	return entries;
+-(unsigned int)space {
+	return size - entries;
 }
 
 -(void)clear {
-	@synchronized(data) {
-		entries = 0;
+	@synchronized(self) {
 		insertIndex = 0;
 		removeIndex = 0;
 	}
 }
 
 -(void)put: (NSData *) _data {
-	@synchronized(data) {
+	@synchronized(self) {
 		if([self space] < [_data length]) {
-			NSLog(@"%@ [OzyRingBuffer put]: space=%d, wanted=%d, entries=%d, length=%d\n", name, [self space], (int) [_data length], entries, [data length]);
+			NSLog(@"%@ [OzyRingBuffer put]: space=%d, wanted=%d, entries=%d, length=%d\n", name, [self space], (int) [_data length], entries, size);
 			return;
 		}
         
-        // NSLog(@"Putting data\n", [self class], (char *) _cmd);
-		
-		if(insertIndex + [_data length] <= [data length]) {  // We can fit the whole thing in one go.
-			[data replaceBytesInRange:NSMakeRange(insertIndex, [_data length]) withBytes:[_data bytes]];
+        const void *dataBytes = [_data bytes];
+        		
+		if(insertIndex + [_data length] <= size) {  // We can fit the whole thing in one go.
+            memcpy(&(buffer[insertIndex]), [_data bytes], [_data length]);            
 			insertIndex += [_data length];
 		} else {
-			int firstFragmentLength = [data length] - insertIndex;
+			int firstFragmentLength = size - insertIndex;
 			int secondFragmentLength = [_data length] - firstFragmentLength;
 			
-			[data replaceBytesInRange:NSMakeRange(insertIndex, firstFragmentLength) withBytes: [_data bytes]];
-			[data replaceBytesInRange:NSMakeRange(0, secondFragmentLength) withBytes: [[_data subdataWithRange:NSMakeRange(firstFragmentLength, secondFragmentLength)] bytes]];
+            memcpy(&(buffer[insertIndex]), [_data bytes], firstFragmentLength);
+            memcpy(buffer, dataBytes + firstFragmentLength, secondFragmentLength);            
 			insertIndex = secondFragmentLength;
 		}
-		entries += [_data length];
+        entries += [_data length];
 	}
 	
 	[sizeLock lock];
@@ -99,29 +114,28 @@
 }
 
 -(NSData *)get: (int)_size {
-	NSMutableData *outboundData;
+	NSData *outboundData;
 	
-	@synchronized(data) {
+	@synchronized(self) {
 		if(entries < _size) {
 			NSLog(@"[OzyRingBuffer get]: wanted=%d, have=%d\n", _size, entries);
 			return nil;
 		}
         
-        //NSLog(@"Getting data\n");
-		
-		if(removeIndex + _size <= [data length]) {
-			outboundData = (NSMutableData *) [data subdataWithRange:NSMakeRange(removeIndex, _size)];
+		if(removeIndex + _size <= size) {
+            outboundData = [NSData dataWithBytes:&(buffer[removeIndex]) length:_size];
 			removeIndex += _size;
-			entries -= _size;
 		} else {
-			int firstFragmentLength = [data length] - removeIndex;
+			int firstFragmentLength = size - removeIndex;
 			int secondFragmentLength = _size - firstFragmentLength;
+            
+            NSMutableData *newData = [NSMutableData dataWithBytes:&(buffer[removeIndex]) length:firstFragmentLength];
+            [newData appendBytes:buffer length:secondFragmentLength];
+            outboundData = [NSData dataWithData:newData];
 			
-			outboundData = [NSMutableData dataWithData:[data subdataWithRange:NSMakeRange(removeIndex, firstFragmentLength)]];
-			[outboundData appendData:[data subdataWithRange:NSMakeRange(0, secondFragmentLength)]];
 			removeIndex = secondFragmentLength;
-			entries -= _size;
 		}
+        entries -= _size;
 	}
 	
 	return outboundData;
