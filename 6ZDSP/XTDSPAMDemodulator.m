@@ -39,6 +39,10 @@
 	return self;
 }
 
+-(id)initWithSampleRate:(float)newSampleRate {
+    return [self init];
+}
+
 -(void)performWithComplexSignal: (XTDSPBlock *)signal {
 	int i;
     // float averageEnvelope;
