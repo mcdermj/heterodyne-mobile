@@ -100,12 +100,24 @@
     panGesture.minimumNumberOfTouches = 1;
     [self.panadapter addGestureRecognizer:panGesture];
     
+    UIPanGestureRecognizer *waterfallPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
+    panGesture.maximumNumberOfTouches = NSUIntegerMax;
+    panGesture.minimumNumberOfTouches = 1;
+    [self.waterfall addGestureRecognizer:waterfallPanGesture];
+    
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGesture.numberOfTapsRequired = 2;
     [self.panadapter addGestureRecognizer:tapGesture];
     
+    UITapGestureRecognizer *waterfallTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
+    waterfallTapGesture.numberOfTapsRequired = 2;
+    [self.waterfall addGestureRecognizer:waterfallTapGesture];
+    
     UIPinchGestureRecognizer *panadapterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanPinchGesture:)];
     [self.panadapter addGestureRecognizer:panadapterPinchGesture];
+    
+    UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    [self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
 }
 
 - (void)viewDidUnload
@@ -196,9 +208,8 @@ static const float scaling = 0.66;
 #pragma mark - Gesture Handling
 
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
-    CGPoint translation = [recognizer translationInView:self.panadapter.superview];
-    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
-    float dbPerUnit = self.panadapter.dynamicRange / CGRectGetHeight(self.panadapter.bounds);
+    CGPoint translation = [recognizer translationInView:recognizer.view.superview];
+    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(recognizer.view.bounds);
 
     switch(recognizer.numberOfTouches) {
         case 1:
@@ -212,15 +223,18 @@ static const float scaling = 0.66;
     }
     
     [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (translation.x * hzPerUnit) forReceiver:0];
-    self.panadapter.referenceLevel += translation.y * dbPerUnit;
-    [recognizer setTranslation:CGPointMake(0, 0) inView:self.panadapter.superview];
+    if(recognizer.view == self.panadapter) {
+        float dbPerUnit = self.panadapter.dynamicRange / CGRectGetHeight(self.panadapter.bounds);
+        self.panadapter.referenceLevel += translation.y * dbPerUnit;
+    }
+    [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view.superview];
 }
 
 -(void)handleTapGesture:(UITapGestureRecognizer *)recognizer {
-    CGPoint position = [recognizer locationInView:self.panadapter.superview];
+    CGPoint position = [recognizer locationInView:recognizer.view.superview];
     
-    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
-    float frequencySlew = (position.x - CGRectGetMidX(self.panadapter.bounds)) * hzPerUnit;
+    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(recognizer.view.bounds);
+    float frequencySlew = (position.x - CGRectGetMidX(recognizer.view.bounds)) * hzPerUnit;
     
     [delegate.driver setFrequency:[[delegate driver] getFrequency:0] + frequencySlew forReceiver:0];
 }
