@@ -9,6 +9,8 @@
 #import "XTUIPanadapterView.h"
 #import "NNHMetisDriver.h"
 #import "NNHAppDelegate.h"
+#import "XTSoftwareDefinedRadio.h"
+#import "XTReceiver.h"
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <QuartzCore/CoreAnimation.h>
@@ -17,6 +19,50 @@
 #import <OpenGLES/ES1/glext.h>
 #import <Accelerate/Accelerate.h>
 
+@interface XTUIPVFilterLayer : CALayer
+@property (strong, nonatomic) XTUIPanadapterView *view;
+@end
+
+@implementation XTUIPVFilterLayer
+@synthesize view = _view;
+
+-(void)drawInContext:(CGContextRef)ctx {
+    NNHAppDelegate *delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
+    NNHMetisDriver *driver = [delegate driver];
+    CGMutablePathRef centerLine = CGPathCreateMutable();
+
+    float hzPerUnit = (float) [driver sampleRate] / CGRectGetWidth(self.bounds);
+    
+    //  Reverse the coordinate system
+    CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
+    CGContextTranslateCTM(ctx, 0, self.bounds.size.height);
+    CGContextScaleCTM(ctx, 1.0, -1.0);
+    
+    //  Draw the center line
+    CGContextSetStrokeColorWithColor(ctx, [[UIColor redColor] CGColor]);
+    CGContextSetLineWidth(ctx, 0.5);
+
+    CGPathMoveToPoint(centerLine, NULL, CGRectGetMidX(self.bounds), 0);
+    CGPathAddLineToPoint(centerLine, NULL, CGRectGetMidX(self.bounds), CGRectGetHeight(self.bounds));
+    
+    CGContextSetShouldAntialias(ctx, false);
+    CGContextAddPath(ctx, centerLine);
+    CGContextStrokePath(ctx);
+    
+    CFRelease(centerLine);
+    
+    XTReceiver *mainReceiver = [delegate.sdr.receivers objectAtIndex:0];
+    
+    //  Draw the filter rectangle
+    CGContextSetFillColorWithColor(ctx, [[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.25] CGColor]);
+    CGRect filter = CGRectMake(CGRectGetMidX(self.bounds) + (mainReceiver.lowCut / hzPerUnit), 
+                               0, 
+                               (mainReceiver.highCut / hzPerUnit) - (mainReceiver.lowCut / hzPerUnit), 
+                               CGRectGetHeight(self.bounds));
+    CGContextFillRect(ctx, filter);
+    
+}
+@end
 
 @interface XTUIPVTickLayer : CALayer
 @property (strong, nonatomic) XTUIPanadapterView *view;
@@ -103,6 +149,7 @@
 
 @interface XTUIPanadapterView () {
     XTUIPVTickLayer *tickLayer;
+    XTUIPVFilterLayer *filterLayer;
     CAEAGLLayer *signalLayer;
     EAGLContext *glContext;
     GLuint framebuffer;
@@ -140,6 +187,14 @@
         signalLayer.opaque = NO;
         [[self layer] addSublayer:signalLayer];
         //signalLayer = self.layer;
+        
+        //  Set up the overlay for the filter and frequency marks
+        filterLayer = [XTUIPVFilterLayer layer];
+        filterLayer.frame = self.bounds;
+        filterLayer.view = self;
+        filterLayer.opaque = NO;
+        [[self layer] addSublayer:filterLayer];
+        [filterLayer setNeedsDisplay];
         
         //  Create an OpenGL Context
         glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
