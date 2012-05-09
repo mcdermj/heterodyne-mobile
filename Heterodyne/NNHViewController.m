@@ -100,6 +100,9 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGesture.numberOfTapsRequired = 2;
     [self.panadapter addGestureRecognizer:tapGesture];
+    
+    UIPinchGestureRecognizer *panadapterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanPinchGesture:)];
+    [self.panadapter addGestureRecognizer:panadapterPinchGesture];
 }
 
 - (void)viewDidUnload
@@ -192,19 +195,21 @@ static const float scaling = 0.66;
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     CGPoint translation = [recognizer translationInView:self.panadapter.superview];
     float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
+    float dbPerUnit = self.panadapter.dynamicRange / CGRectGetHeight(self.panadapter.bounds);
 
     switch(recognizer.numberOfTouches) {
         case 1:
             break;
         case 2:
             translation.x /= 10;
+            translation.y /= 10;
             break;
         default:
             break;
     }
     
     [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (translation.x * hzPerUnit) forReceiver:0];
-    [self.panadapter setNeedsDisplay];
+    self.panadapter.referenceLevel += translation.y * dbPerUnit;
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.panadapter.superview];
 }
 
@@ -215,8 +220,14 @@ static const float scaling = 0.66;
     float frequencySlew = (position.x - CGRectGetMidX(self.panadapter.bounds)) * hzPerUnit;
     
     [delegate.driver setFrequency:[[delegate driver] getFrequency:0] + frequencySlew forReceiver:0];
-    [self.panadapter setNeedsDisplay];
 }
+
+-(void)handlePanPinchGesture:(UIPinchGestureRecognizer *)recognizer {
+    self.panadapter.dynamicRange *= recognizer.scale;
+    recognizer.scale = 1.0;
+}
+
+#pragma mark - Segues for menu items
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;

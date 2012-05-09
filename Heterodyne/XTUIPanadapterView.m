@@ -159,13 +159,13 @@
     GLint width;
     GLint height;
     CADisplayLink *displayLink;
+    
+    float _dynamicRange;
+    float _referenceLevel;
 }
 @end
 
 @implementation XTUIPanadapterView
-
-@synthesize dynamicRange = _dynamicRange;
-@synthesize referenceLevel = _referenceLevel;
 
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
@@ -225,6 +225,25 @@
 
     }
     return self;
+}
+
+#pragma mark - Accessors
+-(void)setDynamicRange:(float)dynamicRange {
+    _dynamicRange = dynamicRange;
+    [self setNeedsDisplay];
+}
+
+-(float)dynamicRange {
+    return _dynamicRange;
+}
+
+-(void)setReferenceLevel:(float)referenceLevel {
+    _referenceLevel = referenceLevel;
+    [self setNeedsDisplay];
+}
+
+-(float)referenceLevel {
+    return _referenceLevel;
 }
 
 -(void)awakeFromNib {
