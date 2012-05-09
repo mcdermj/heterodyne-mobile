@@ -39,7 +39,6 @@
 		signal.imagp = [imaginary elements];
 		
 		fftSize = (int) ceilf(log2f((float) (2 * blockSize)));
-		// NSLog(@"[%@ %s]: Setting up DSP Block FFT for size %d\n", [self class], (char *) _cmd, fftSize);
 		fftSetup = vDSP_create_fftsetup(fftSize, kFFTRadix2);
 	}
 	return self;

@@ -154,17 +154,6 @@ static const float high = 19999.0;
         g = (float) i / 2858.0;
         colorGradientArray[j++] = toRGBA(r, g, b); 
     } 
-    
-    NSLog(@"r = %f, g = %f, b = %f\n", r, g, b);
-
-    NSLog(@"[%@ %s]: %d colors generated\n", [self class], (char *) _cmd, j);
-        
-    NSLog(@"Testing code\n");
-    NSLog(@"r = 1.0, result = %x\n", toRGBA(1.0, 0, 0)); 
-    NSLog(@"g = 1.0, result = %x\n", toRGBA(0, 1.0, 0));
-    NSLog(@"b = 1.0, result = %x\n", toRGBA(0, 0, 1.0));
-    NSLog(@"allones = %x\n", toRGBA(1.0, 1.0, 1.0));
-
 }
 
 -(void)awakeFromNib {
