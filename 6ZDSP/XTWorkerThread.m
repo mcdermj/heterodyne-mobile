@@ -69,7 +69,7 @@ kern_return_t   thread_policy_set(
         ttcpolicy.preemptible = 0;
         
         if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
-            NSLog(@"[%@ %s]:  Failed to set realtime priority\n", [self class], (char *) _cmd);
+            NSLog(@" Failed to set realtime priority\n");
         } 
     }
 	

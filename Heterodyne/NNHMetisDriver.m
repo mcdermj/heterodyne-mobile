@@ -159,7 +159,7 @@
 		
 		
 		if(bind(metisSocket, (struct sockaddr *) &bindAddress, sizeof(bindAddress)) == -1)
-			NSLog(@"[%@ %s]: Couldn'g bind socket: %s\n", [self class], (char *) _cmd, strerror(errno));
+			NSLog(@"Couldn'g bind socket: %s\n", strerror(errno));
 		
 		metisAddressStruct.sin_len = sizeof(metisAddressStruct);
 		metisAddressStruct.sin_family = AF_INET;
@@ -194,7 +194,7 @@
 		currentOzyPacket = &(packet->packets[i]);
 		
 		if(currentOzyPacket->magic[0] != SYNC || currentOzyPacket->magic[1] != SYNC || currentOzyPacket->magic[2] != SYNC) {
-			NSLog(@"[%@ %s] Invalid Ozy packet received from Metis\n", [self class], (char *) _cmd);
+			NSLog(@"Invalid Ozy packet received from Metis\n");
 			continue;
 		}
 		
@@ -237,7 +237,7 @@
                 //  Don't know what this is yet?!
                 break;
 			default:
-				NSLog(@"[%@ %s] Invalid Ozy packet header: %01x\n", [self class], (char *) _cmd, currentOzyPacket->header[0]);
+				NSLog(@"Invalid Ozy packet header: %01x\n", currentOzyPacket->header[0]);
 				continue;
 		}
 		
@@ -599,12 +599,12 @@
 						  sizeof(broadcastAddressStruct));
 	
 	if(bytesWritten == -1) {
-		NSLog(@"[%@ %s] Network Write Failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Network Write Failed: %s\n", strerror(errno));
 		return;
 	}
 	
 	if(bytesWritten != sizeof(discovery)) {
-		NSLog(@"[%@ %s] Short write to network\n", [self class], (char *) _cmd);
+		NSLog(@"Short write to network\n");
 		return;
 	}
 }
@@ -638,12 +638,12 @@
 							  sizeof(metisAddressStruct));
 		
 		if(bytesWritten == -1) {
-			NSLog(@"[%@ %s] Network Write Failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+			NSLog(@" Network Write Failed: %s\n", strerror(errno));
 			continue;
 		}
 		
 		if(bytesWritten != sizeof(MetisPacket)) {
-			NSLog(@"[%@ %s] Short write to network.\n", [self class], (char *) _cmd);
+			NSLog(@" Short write to network.\n");
 			continue;
 		}		
 	}
@@ -661,7 +661,7 @@
 	timeout.tv_usec = 0;
 	
 	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
-		NSLog(@"[%@ %s] Setting receive timeout failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Setting receive timeout failed: %s\n", strerror(errno));
 		return NO;
 	}
 		
@@ -681,23 +681,23 @@
 		
 		if(bytesReceived == -1) {
 			if(errno == EAGAIN) {
-				NSLog(@"[%@ %s]: Discovery timeout after 1 second, retrying\n", [self class], (char *) _cmd);
+				NSLog(@"Discovery timeout after 1 second, retrying\n");
 			} else {
-				NSLog(@"[%@ %s] Network read failed: %s (%d)\n", [self class], (char *) _cmd, strerror(errno), errno);
+				NSLog(@"Network read failed: %s (%d)\n", strerror(errno), errno);
 			}
 			continue;
 		}
 		
 		if(ntohs(reply.magic) == 0xEFFE && reply.status == 0x02) {
 			if(replyAddress.sin_addr.s_addr == 0) {
-				NSLog(@"[%@ %s] Null IP address received\n", [self class], (char *) _cmd);
+				NSLog(@"Null IP address received\n");
 				sleep(1);
 				continue;
 			}
 			if(inet_ntop(AF_INET, &(replyAddress.sin_addr.s_addr), ipAddr, 32) == NULL) {
-				NSLog(@"[%@ %s] Could not parse IP address: %s\n", [self class], (char *) _cmd, strerror(errno));
+				NSLog(@"Could not parse IP address: %s\n", strerror(errno));
 			} else {
-				NSLog(@"[%@ %s] Discovered Metis at: %s:%d\n", [self class], (char *) _cmd, ipAddr, ntohs(replyAddress.sin_port));
+				NSLog(@"Discovered Metis at: %s:%d\n", ipAddr, ntohs(replyAddress.sin_port));
 				metisAddressStruct.sin_addr.s_addr = replyAddress.sin_addr.s_addr;
 				running = YES;
 				
@@ -705,21 +705,21 @@
 			}
 		} else {
 			if(inet_ntop(AF_INET, &(replyAddress.sin_addr.s_addr), ipAddr, 32) == NULL) {
-				NSLog(@"[%@ %s] Invalid packet from unknown IP: %s\n", [self class], (char *) _cmd, strerror(errno));
+				NSLog(@"Invalid packet from unknown IP: %s\n", strerror(errno));
 			} else {				
-				NSLog(@"[%@ %s] Invalid packet received from %s magic = %#hx status = %#hhx.\n", [self class], (char *) _cmd, ipAddr, reply.magic, reply.status);
+				NSLog(@"Invalid packet received from %s magic = %#hx status = %#hhx.\n", ipAddr, reply.magic, reply.status);
 			}
 		}
 	}
     
     if(reply.version < latestFirmware) {
         [self performSelectorOnMainThread:@selector(doAutoUpgradeFirmware) withObject:nil waitUntilDone:NO];
-        NSLog(@"[%@ %s] Detected old firmware %d\n", [self class], (char *) _cmd, reply.version);
+        NSLog(@"Detected old firmware %d\n", reply.version);
     }
 	
 	timeout.tv_sec = 0;
 	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
-		NSLog(@"[%@ %s] Resetting receive timeout failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Resetting receive timeout failed: %s\n", strerror(errno));
 		return NO;
 	}	
 	
@@ -744,12 +744,12 @@
 						  sizeof(metisAddressStruct));
     
     if(bytesWritten == -1) {
-		NSLog(@"[%@ %s] Network write failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Network write failed: %s\n", strerror(errno));
 		return NO;
 	}
 	
 	if(bytesWritten != sizeof(startPacket)) {
-		NSLog(@"[%@ %s] Short write to network.\n", [self class], (char *) _cmd);
+		NSLog(@"Short write to network.\n");
 		return NO;
 	}
 
@@ -793,12 +793,12 @@
 						  sizeof(metisAddressStruct));
 	
 	if(bytesWritten == -1) {
-		NSLog(@"[%@ %s] Network write failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Network write failed: %s\n", strerror(errno));
 		return NO;
 	}
 	
 	if(bytesWritten != sizeof(stopPacket)) {
-		NSLog(@"[%@ %s] Short write to network.\n", [self class], (char *) _cmd);
+		NSLog(@"Short write to network.\n");
 		return NO;
 	}
 
@@ -824,7 +824,7 @@
 	ttcpolicy.preemptible = 0;
 	
 	if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
-		NSLog(@"[%@ %s]:  Failed to set realtime priority\n", [self class], (char *) _cmd);
+		NSLog(@" Failed to set realtime priority\n");
 	} 
 	
 	struct timeval timeout;
@@ -832,7 +832,7 @@
 	timeout.tv_usec = 0;	
 	
 	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
-		NSLog(@"[%@ %s] Resetting receive timeout failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+		NSLog(@"Resetting receive timeout failed: %s\n", strerror(errno));
 	}
     
     NSMutableData *metisData = [NSMutableData dataWithLength:sizeof(MetisPacket)];
@@ -850,19 +850,19 @@
 		
 		if(bytesRead == -1) {
 			if(errno == EAGAIN) {
-				NSLog(@"[%@ %s]: No data from Metis in 1 second, retrying\n", [self class], (char *) _cmd);
+				NSLog(@"No data from Metis in 1 second, retrying\n");
                 if(running) {
                     [self sendStartPacket];
                     [self kickStart];
                 }
 			} else {
-				NSLog(@"[%@ %s] Network Read Failed: %s\n", [self class], (char *) _cmd, strerror(errno));
+				NSLog(@"Network Read Failed: %s\n", strerror(errno));
 			}
 			continue;
 		}
 		
 		if(bytesRead != sizeof(MetisPacket)) {
-			NSLog(@"[%@ %s] Short read from network.\n", [self class], (char *) _cmd);
+			NSLog(@"Short read from network.\n");
 			continue;
 		}
         
@@ -873,11 +873,11 @@
 					break;
 			}
 		} else {
-			NSLog(@"[%@ %s] Invalid packet received: %@\n", [self class], (char *) _cmd, metisData);
+			NSLog(@"Invalid packet received: %@\n", metisData);
 		}
 	}
     [socketServiceLoopLock unlock];
-    NSLog(@"[%@ %s] Socket service loop ending\n", [self class], (char *) _cmd);
+    NSLog(@"Socket service loop ending\n");
 }
 
 -(void)socketWriteLoop {
@@ -908,9 +908,9 @@
 	packet->packets[1].magic[2] = SYNC;
 	
 	if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
-		NSLog(@"[%@ %s]:  Failed to set realtime priority\n", [self class], (char *) _cmd);
+		NSLog(@" Failed to set realtime priority\n");
 	} 	
-	NSLog(@"[%@ %s]: Beginning write thread\n", [self class], (char *) _cmd);
+	NSLog(@"Beginning write thread\n");
 	
     [writeLoopLock lock];
     [outputBuffer clear];
