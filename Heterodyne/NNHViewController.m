@@ -187,9 +187,22 @@ static const float scaling = 0.66;
     [self.waterfall drawFrameWithData:smoothBufferData];
 }
 
+#pragma mark - Gesture Handling
+
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     CGPoint translation = [recognizer translationInView:self.panadapter.superview];
     float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(self.panadapter.bounds);
+
+    switch(recognizer.numberOfTouches) {
+        case 1:
+            break;
+        case 2:
+            translation.x /= 10;
+            break;
+        default:
+            break;
+    }
+    
     [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (translation.x * hzPerUnit) forReceiver:0];
     [self.panadapter setNeedsDisplay];
     [recognizer setTranslation:CGPointMake(0, 0) inView:self.panadapter.superview];
