@@ -532,6 +532,8 @@
 
 -(void)setFrequency: (int)_frequency forReceiver: (int)_receiver {
 	receiverFrequency[_receiver] = _frequency;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"XTFrequencyChanged" object:self];
 }
 
 -(int)getFrequency: (int)_receiver {

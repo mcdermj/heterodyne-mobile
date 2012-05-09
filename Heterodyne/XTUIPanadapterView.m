@@ -218,6 +218,11 @@
             NSLog(@"Framebuffer creation failed %x", status);
         }
         
+        [[NSNotificationCenter defaultCenter] addObserver:tickLayer selector:@selector(setNeedsDisplay) name:@"XTFrequencyChanged" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:filterLayer selector:@selector(setNeedsDisplay) name:@"XTReceiverFilterDidChange" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:filterLayer selector:@selector(setNeedsDisplay) name:@"XTReceiverFrequencyDidChange" object:nil];
+
+
     }
     return self;
 }

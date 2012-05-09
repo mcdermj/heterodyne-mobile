@@ -70,6 +70,7 @@
 
 -(void)setHighCut: (float)highCutoff {
 	[[self filter] setHighCut:highCutoff];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"XTReceiverFilterDidChange" object:self];
 }
 
 -(float)highCut {
@@ -78,6 +79,7 @@
 
 -(void)setLowCut: (float)lowCutoff {
 	[[self filter] setLowCut:lowCutoff];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"XTReceiverFilterDidChange" object:self];
 }
 
 -(float)lowCut {
