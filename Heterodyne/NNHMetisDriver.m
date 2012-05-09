@@ -915,43 +915,45 @@
     [writeLoopLock lock];
     [outputBuffer clear];
 	while(running == YES) {
-		bufferData = [outputBuffer waitForSize:sizeof(packet->packets[0].samples) * 2 withTimeout:[NSDate dateWithTimeIntervalSinceNow:1.0]];
-        if(bufferData == NULL) {
-            NSLog(@"[%@ %s] Write loop timeout\n", [self class], (char *) _cmd);
-            continue;
+        @autoreleasepool {
+            bufferData = [outputBuffer waitForSize:sizeof(packet->packets[0].samples) * 2 withTimeout:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+            if(bufferData == NULL) {
+                NSLog(@"Write loop timeout\n");
+                continue;
+            }
+            const unsigned char *buffer = [bufferData bytes];
+            
+            mox = NO;
+            for(int i = 5; i < [bufferData length]; i += 8)
+                if(buffer[i] != 0x00) {
+                    mox = YES;
+                    break;
+                }
+            
+            packet->header.sequence = htonl(metisWriteSequence++);	
+            [self fillHeader:packet->packets[0].header];
+            [self fillHeader:packet->packets[1].header];
+            
+            memcpy(packet->packets[0].samples, buffer, sizeof(packet->packets[0].samples));
+            memcpy(packet->packets[1].samples, buffer + sizeof(packet->packets[0].samples), sizeof(packet->packets[0].samples));
+            
+            bytesWritten = sendto(metisSocket, 
+                                  packet, 
+                                  sizeof(MetisPacket), 
+                                  0, 
+                                  (struct sockaddr *) &metisAddressStruct, 
+                                  sizeof(metisAddressStruct));
+            
+            if(bytesWritten == -1) {
+                NSLog(@"Network Write Failed: %s\n", strerror(errno));
+                continue;
+            }
+            
+            if(bytesWritten != sizeof(MetisPacket)) {
+                NSLog(@"Short write to network.\n");
+                continue;
+            }
         }
-		const unsigned char *buffer = [bufferData bytes];
-		
-		mox = NO;
-		for(int i = 5; i < [bufferData length]; i += 8)
-			if(buffer[i] != 0x00) {
-				mox = YES;
-				break;
-			}
-		
-		packet->header.sequence = htonl(metisWriteSequence++);	
-		[self fillHeader:packet->packets[0].header];
-		[self fillHeader:packet->packets[1].header];
-		
-		memcpy(packet->packets[0].samples, buffer, sizeof(packet->packets[0].samples));
-		memcpy(packet->packets[1].samples, buffer + sizeof(packet->packets[0].samples), sizeof(packet->packets[0].samples));
-		
-		bytesWritten = sendto(metisSocket, 
-							  packet, 
-							  sizeof(MetisPacket), 
-							  0, 
-							  (struct sockaddr *) &metisAddressStruct, 
-							  sizeof(metisAddressStruct));
-		
-		if(bytesWritten == -1) {
-			NSLog(@"[%@ %s] Network Write Failed: %s\n", [self class], (char *) _cmd, strerror(errno));
-			continue;
-		}
-		
-		if(bytesWritten != sizeof(MetisPacket)) {
-			NSLog(@"[%@ %s] Short write to network.\n", [self class], (char *) _cmd);
-			continue;
-		}
 	}
     [writeLoopLock unlock];
 	
