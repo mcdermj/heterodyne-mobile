@@ -39,6 +39,9 @@
     
     BOOL initAverage;
     NNHAppDelegate *delegate;
+    
+    XTRealData *dataBuffer;
+    float *spectrumBuffer;
 }
 @end
 
@@ -59,6 +62,9 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    dataBuffer = [XTRealData realDataWithElements:SPECTRUM_BUFFER_SIZE];
+    spectrumBuffer = [dataBuffer elements];
     
     smoothingFactor = 13;
     initAverage = YES;
@@ -139,11 +145,12 @@
     return YES;
 }
 
+#pragma mark - Drawing Subviews
+
 static const float scaling = 0.66;
 
 - (void)drawFrame {
-    XTRealData *dataBuffer = [XTRealData realDataWithElements:SPECTRUM_BUFFER_SIZE];
-    float *spectrumBuffer = [dataBuffer elements];
+    [dataBuffer clearElements];
     
     [[delegate sdr] tapSpectrumWithRealData:dataBuffer];
     
