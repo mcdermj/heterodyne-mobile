@@ -43,12 +43,15 @@
     XTRealData *dataBuffer;
     float *spectrumBuffer;
 }
+
+@property (weak) UIPopoverController *currentPopover;
 @end
 
 @implementation NNHViewController
 
 @synthesize waterfall;
 @synthesize panadapter;
+@synthesize currentPopover;
 
 - (void)didReceiveMemoryWarning
 {
@@ -227,14 +230,36 @@ static const float scaling = 0.66;
     recognizer.scale = 1.0;
 }
 
+-(void)handleLongPressGesture:(UILongPressGestureRecognizer *) recognizer {
+    NSLog(@"Long press on the panadapter\n");
+}
+
+#pragma mark - Button handling
+
+-(void)displayFrequencyControl:(id)sender {
+    if([currentPopover isPopoverVisible]) {
+        [currentPopover dismissPopoverAnimated:YES];
+    } else {
+        [self performSegueWithIdentifier:@"frequencyPopup" sender:sender];
+    }
+}
+
 #pragma mark - Segues for menu items
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
-    NNHFrequencyPopupViewController *controller = (NNHFrequencyPopupViewController *) popoverSegue.destinationViewController;
+    if([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
+        currentPopover = [(UIStoryboardPopoverSegue *)segue popoverController];
+    }
     
-    controller.popover = popoverSegue.popoverController;
-    controller.masterViewController = popoverSegue.sourceViewController;
+    if([sender isKindOfClass:[UIBarButtonItem class]]) {
+        UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
+        NNHFrequencyPopupViewController *controller = (NNHFrequencyPopupViewController *) popoverSegue.destinationViewController;
+        
+        controller.popover = popoverSegue.popoverController;
+        controller.masterViewController = popoverSegue.sourceViewController;
+    } else {
+        
+    }
 }
 
 @end

@@ -15,4 +15,6 @@
 
 @property (nonatomic) IBOutlet XTUIPanadapterView *panadapter;
 @property (nonatomic) IBOutlet XTUIWaterfallView *waterfall;
+
+-(IBAction)displayFrequencyControl:(id)sender;
 @end

@@ -19,6 +19,7 @@
                                 <rect key="frame" x="0.0" y="44" width="1024" height="229"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                                <gestureRecognizers/>
                             </view>
                             <view contentMode="scaleToFill" id="0jQ-oG-X0U" customClass="XTUIWaterfallView">
                                 <rect key="frame" x="0.0" y="271" width="1024" height="477"/>
@@ -31,9 +32,7 @@
                                 <items>
                                     <barButtonItem style="plain" systemItem="action" id="mU7-4K-O37">
                                         <connections>
-                                            <segue destination="ddl-Es-RBR" kind="popover" popoverAnchorBarButtonItem="mU7-4K-O37" id="AaP-u5-BJT">
-                                                <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
-                                            </segue>
+                                            <action selector="displayFrequencyControl:" destination="2" id="oLJ-KX-wGK"/>
                                         </connections>
                                     </barButtonItem>
                                 </items>
@@ -45,10 +44,13 @@
                     <connections>
                         <outlet property="panadapter" destination="82b-YQ-pit" id="3ha-v2-dRz"/>
                         <outlet property="waterfall" destination="0jQ-oG-X0U" id="pMi-np-VJZ"/>
+                        <segue destination="ddl-Es-RBR" kind="popover" identifier="frequencyPopup" popoverAnchorBarButtonItem="mU7-4K-O37" id="kxb-XT-2ja">
+                            <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
+                        </segue>
                     </connections>
                 </viewController>
             </objects>
-            <point key="canvasLocation" x="-463" y="-3"/>
+            <point key="canvasLocation" x="-490" y="-52"/>
         </scene>
         <!--Frequency Popup View Controller-->
         <scene sceneID="aGD-ga-BNl">
@@ -96,6 +98,7 @@
         <class className="NNHViewController" superclassName="UIViewController">
             <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHViewController.h"/>
             <relationships>
+                <relationship kind="action" name="displayFrequencyControl:"/>
                 <relationship kind="outlet" name="panadapter" candidateClass="XTUIPanadapterView"/>
                 <relationship kind="outlet" name="waterfall" candidateClass="XTUIWaterfallView"/>
             </relationships>
