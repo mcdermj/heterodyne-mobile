@@ -158,7 +158,7 @@ static const float scaling = 0.66;
         memcpy(averageBuffer, spectrumBuffer, SPECTRUM_BUFFER_SIZE);
         initAverage = NO;
     } else {
-        vDSP_vavlin(spectrumBuffer, 1, &scaling, averageBuffer, 1, SPECTRUM_BUFFER_SIZE);
+        vDSP_vavlin(spectrumBuffer, 1, (float *) &scaling, averageBuffer, 1, SPECTRUM_BUFFER_SIZE);
     }
     
     vDSP_vclr(fftIn.realp, 1, SPECTRUM_BUFFER_SIZE);
