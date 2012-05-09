@@ -40,12 +40,10 @@
 @synthesize oneTwentyTwoMHzSource;
 @synthesize mercuryPresent;
 @synthesize penelopePresent;
-@synthesize sampleRate;
 @synthesize mercuryVersion;
 @synthesize ozyVersion;
 @synthesize penelopeVersion;
 @synthesize preamp;
-@synthesize openCollectors;
 @synthesize micGain;
 @synthesize txGain;
 @synthesize sdr;
@@ -564,8 +562,16 @@
 	[[NSNotificationCenter defaultCenter] postNotificationName:@"XTSampleRateChanged" object:self];
 }
 
+-(int)sampleRate {
+    return sampleRate;
+}
+
 -(void)setOpenCollectors:(UInt8)collectorSetting {
 	openCollectors = collectorSetting & 0xFE;
+}
+
+-(UInt8)openCollectors {
+    return openCollectors;
 }
 
 -(void)notifyBandscopeWatchers {

@@ -19,7 +19,6 @@
 
 @implementation XTReceiver
 
-@synthesize sampleRate;
 @synthesize results;
 
 - (id)initWithSampleRate: (float)initialSampleRate
@@ -109,6 +108,10 @@
     
 	for(XTDSPModule *module in dspModules) 
 		[module setSampleRate:newSampleRate];
+}
+
+-(float)sampleRate {
+    return sampleRate;
 }
 
 -(void)processComplexSamples: (XTDSPBlock *)complexData withCompletionSelector:(SEL) completion onObject:(id)callbackObject {

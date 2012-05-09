@@ -11,8 +11,6 @@
 
 @implementation XTDSPComplexOscillator
 
-@synthesize frequency;
-
 - (id)initWithSampleRate:(float)initialSampleRate
 {
     self = [super initWithSampleRate:initialSampleRate];
@@ -26,6 +24,10 @@
 -(void)setFrequency:(double)newFrequency {
     frequency = newFrequency;
     phaseAdvance = 2.0 * M_PI * frequency / sampleRate;
+}
+
+-(double)frequency {
+    return frequency;
 }
 
 -(void)performWithComplexSignal:(XTDSPBlock *)signal {

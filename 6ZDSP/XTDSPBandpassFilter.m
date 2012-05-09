@@ -29,9 +29,6 @@
 
 @implementation XTDSPBandpassFilter
 
-@synthesize highCut;
-@synthesize lowCut;
-
 -(id)initWithSize: (int) newSize 
 	   sampleRate: (float) newSampleRate 
 		lowCutoff: (float) lowCutoff 
@@ -52,9 +49,17 @@
 	[self calculateCoefficients];
 }
 
+-(float)highCut {
+    return highCut;
+}
+
 -(void)setLowCut:(float)lowCutoff {
 	lowCut = lowCutoff;
 	[self calculateCoefficients];
+}
+
+-(float)lowCut {
+    return lowCut;
 }
 
 -(void)setHighCut: (float)highCutoff andLowCut: (float)lowCutoff {

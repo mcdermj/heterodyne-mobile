@@ -32,7 +32,6 @@
 
 @implementation XTSoftwareDefinedRadio
 
-@synthesize sampleRate;
 @synthesize receivers;
 
 -(void)loadParams {
@@ -136,6 +135,10 @@
 	for(XTReceiver *receiver in receivers) {
 		[receiver setSampleRate:newSampleRate];
 	}
+}
+
+-(float)sampleRate {
+    return sampleRate;
 }
 
 @end
