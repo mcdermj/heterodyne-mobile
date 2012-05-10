@@ -45,7 +45,7 @@
 		fftSetup = vDSP_create_fftsetup(fftSize, kFFTRadix2);	
 		
 		window = [XTBlackmanHarrisWindow blackmanHarrisWindowWithElements:elements];
-		bufferRange = NSMakeRange(0, elements * 2);
+		bufferRange = NSMakeRange(0, elements);
 		copyRange = NSMakeRange(0, 1024);
 	}
 	return self;
@@ -117,7 +117,7 @@
 				length, 0);
 	
 	//  Clip weird values
-	float highClip = 0.0;
+	float highClip = 100.0;
 	float lowClip = -200.0;
 	vDSP_vclip([destinationData elements], 1, &lowClip, &highClip, [destinationData elements], 1, length);
 	
