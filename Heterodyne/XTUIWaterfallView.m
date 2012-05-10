@@ -208,10 +208,10 @@ static const float high = 19999.0;
         free(blankData);
         
         static const GLfloat verticies [] = {
-            0.0, 0.0,
-            0.0, 1.0,
+            1.0, 1.0,
             1.0, 0.0,
-            1.0, 1.0
+            0.0, 1.0,
+            0.0, 0.0
         };
         
         glGenBuffers(1, &forwardVertexBuffer);
@@ -229,17 +229,17 @@ static const float high = 19999.0;
     
     float prop_y = (float) currentLine  / 511.0;
     
-    textureArray[0] = 1.0;
-    textureArray[1] = prop_y;
-
     textureArray[2] = 1.0;
-    textureArray[3] = prop_y + 1 - off;
+    textureArray[3] = prop_y;
 
-    textureArray[4] = 0.0;
-    textureArray[5] = prop_y;
+    textureArray[0] = 1.0;
+    textureArray[1] = prop_y + 1 - off;
 
     textureArray[6] = 0.0;
-    textureArray[7] = prop_y + 1 - off;
+    textureArray[7] = prop_y;
+
+    textureArray[4] = 0.0;
+    textureArray[5] = prop_y + 1 - off;
     
     glBindBuffer(GL_ARRAY_BUFFER, texCoordBuffer);
     glBufferData(GL_ARRAY_BUFFER, sizeof(textureArray), textureArray, GL_STREAM_DRAW);
