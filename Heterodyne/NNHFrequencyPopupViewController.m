@@ -21,10 +21,6 @@
 @synthesize popover = _popover;
 @synthesize masterViewController = _masterViewController;
 
--(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    NSLog(@"Segue Occuring\n");
-}
-
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
