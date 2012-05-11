@@ -51,7 +51,7 @@
 
 -(XTDSPBandpassFilter *)filter {
     for(XTDSPModule *module in dspModules)
-        if([module class] == [XTDSPBandpassFilter class])
+        if([module isKindOfClass:[XTDSPBandpassFilter class]])
             return (XTDSPBandpassFilter *) module;
     
     return nil;
@@ -59,7 +59,7 @@
 
 -(XTDSPDemodulator *)demodulator {
     for(XTDSPModule *module in dspModules)
-        if([module class] == [XTDSPDemodulator class])
+        if([module isKindOfClass:[XTDSPDemodulator class]])
             return (XTDSPDemodulator *) module;
     
     return nil;
@@ -67,7 +67,7 @@
 
 -(XTDSPComplexMixer *)mixer {
     for(XTDSPModule *module in dspModules)
-        if([module class] == [XTDSPComplexMixer class])
+        if([module isKindOfClass:[XTDSPComplexMixer class]])
             return (XTDSPComplexMixer *) module;
     
     return nil;
