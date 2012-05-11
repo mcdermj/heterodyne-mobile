@@ -18,9 +18,37 @@
 #import "XTDSPAMDemodulator.h"
 #import "XTDSPFixedGain.h"
 
+@interface XTReceiver () {
+    
+    NSMutableArray *dspModules;
+    XTWorkerThread *workerThread;
+    XTDSPBlock *results;
+    
+    float sampleRate;
+    
+    NSString *mode;
+    NSDictionary *modeDict;
+
+}
+
+@end
+
 @implementation XTReceiver
 
 @synthesize results;
+
+#pragma mark - Utility functions
+
++(NSInvocation *)createInvocationOnTarget:(id)target selector:(SEL)selector {
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[target methodSignatureForSelector:selector]];
+    
+    [invocation setTarget:target];
+    [invocation setSelector:selector];
+    
+    return invocation;
+}
+
+#pragma mark - Initialization
 
 - (id)initWithSampleRate: (float)initialSampleRate
 {
@@ -45,9 +73,19 @@
         [dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
         
         [dspModules addObject:[[XTDSPComplexToRealStereo alloc] initWithSampleRate:sampleRate]];
+        
+        
+        modeDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                    [XTReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"USB", 
+                    [XTReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"LSB",
+                    [XTReceiver createInvocationOnTarget:self selector:@selector(amMode:)], @"AM",
+                    nil];
     }
+    
     return self;
 }
+
+#pragma mark - Find modules on the stack
 
 -(XTDSPBandpassFilter *)filter {
     for(XTDSPModule *module in dspModules)
@@ -79,6 +117,8 @@
             return (XTDSPFixedGain *) module;
     return nil;
 }
+
+#pragma mark - Accessors
 
 -(void)setGain:(float)gain {
     self.amplifier.dBGain = gain;
@@ -135,6 +175,59 @@
 -(float)sampleRate {
     return sampleRate;
 }
+
+-(NSString *) mode {
+    return mode;
+}
+
+-(void)setMode:(NSString *)newMode {
+    if([newMode isEqualToString:self.mode]) return;
+    
+    NSInvocation *method = [modeDict objectForKey:newMode];
+    if(method == nil) {
+        NSLog(@"Mode %@ not found\n", newMode);
+        return;
+    }
+    
+    [method setArgument:&newMode atIndex:2];
+    [method invoke];
+}
+
+-(NSArray *) modes {
+    return modeDict.allKeys;
+}
+
+#pragma mark - Mode handling functions
+
+-(void)ssbMode:(NSString *)newMode {
+    NSLog(@"Changing mode to %@\n", newMode);
+    float filterWidth = self.highCut - self.lowCut;
+    
+    [dspModules removeObject:[self demodulator]];
+    
+    if([newMode isEqualToString:@"LSB"]) {
+        self.highCut = 300;
+        self.lowCut = -filterWidth + self.highCut;
+    } else {
+        self.lowCut = -300;
+        self.highCut = filterWidth + self.lowCut;
+    }
+}
+
+-(void)amMode:(NSString *)newMode {
+    NSLog(@"Changing mode to %@\n", newMode);
+    if([self demodulator]) {
+        [dspModules replaceObjectAtIndex:[dspModules indexOfObject:[self demodulator]] withObject:[[XTDSPAMDemodulator alloc] initWithSampleRate:sampleRate]];
+    } else {
+        [dspModules insertObject:[[XTDSPAMDemodulator alloc] initWithSampleRate:sampleRate] atIndex:[dspModules indexOfObject:[self filter]]+ 1];
+    }
+    
+    float filterWidth = self.highCut - self.lowCut;
+    self.lowCut = -filterWidth;
+    self.highCut = filterWidth;
+}
+
+#pragma mark - DSP Processing functions
 
 -(void)processComplexSamples: (XTDSPBlock *)complexData withCompletionSelector:(SEL) completion onObject:(id)callbackObject {
     if([results blockSize] != [complexData blockSize])

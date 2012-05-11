@@ -18,4 +18,5 @@
 
 -(IBAction)displayFrequencyControl:(id)sender;
 -(IBAction)displayVolumeControl:(id)sender;
+-(IBAction)displayModeControl:(id)sender;
 @end

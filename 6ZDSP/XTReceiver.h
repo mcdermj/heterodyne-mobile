@@ -8,19 +8,9 @@
 
 #import <Foundation/Foundation.h>
 
-@class XTWorkerThread;
 @class XTDSPBlock;
 
-@interface XTReceiver : NSObject {
-@private
-    
-    NSMutableArray *dspModules;
-    XTWorkerThread *workerThread;
-    XTDSPBlock *results;
-    
-    float sampleRate;
-    
-}
+@interface XTReceiver : NSObject 
 
 @property float sampleRate;
 @property float frequency;
@@ -28,6 +18,8 @@
 @property float lowCut;
 @property float gain;
 @property (readonly) XTDSPBlock *results;
+@property (readonly) NSArray *modes;
+@property NSString *mode;
 
 -(void)processComplexSamples:(XTDSPBlock *)complexData withCompletionSelector:(SEL)completion onObject:(id)callbackObject;
 -(id)initWithSampleRate:(float)sampleRate;

@@ -266,6 +266,14 @@ static const float scaling = 0.66;
     }
 }
 
+-(void)displayModeControl:(id)sender {
+    if([currentPopover isPopoverVisible]) {
+        [currentPopover dismissPopoverAnimated:YES];
+    } else {
+        [self performSegueWithIdentifier:@"modePopover" sender:sender];
+    }
+}
+
 #pragma mark - Segues for menu items
 
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
