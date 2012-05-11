@@ -17,4 +17,5 @@
 @property (nonatomic) IBOutlet XTUIWaterfallView *waterfall;
 
 -(IBAction)displayFrequencyControl:(id)sender;
+-(IBAction)displayVolumeControl:(id)sender;
 @end

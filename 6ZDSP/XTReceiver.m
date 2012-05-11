@@ -42,7 +42,7 @@
         
         //[dspModules addObject:[[XTDSPAMDemodulator alloc] initWithSampleRate:sampleRate]];
         
-        //[dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
+        [dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
         
         [dspModules addObject:[[XTDSPComplexToRealStereo alloc] initWithSampleRate:sampleRate]];
     }
@@ -71,6 +71,21 @@
             return (XTDSPComplexMixer *) module;
     
     return nil;
+}
+
+-(XTDSPFixedGain *)amplifier {
+    for(XTDSPModule *module in dspModules)
+        if([module isKindOfClass:[XTDSPFixedGain class]])
+            return (XTDSPFixedGain *) module;
+    return nil;
+}
+
+-(void)setGain:(float)gain {
+    self.amplifier.dBGain = gain;
+}
+
+-(float)gain {
+    return self.amplifier.dBGain;
 }
 
 -(void)setHighCut: (float)highCutoff {

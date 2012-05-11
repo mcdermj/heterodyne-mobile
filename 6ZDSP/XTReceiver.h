@@ -26,6 +26,7 @@
 @property float frequency;
 @property float highCut;
 @property float lowCut;
+@property float gain;
 @property (readonly) XTDSPBlock *results;
 
 -(void)processComplexSamples:(XTDSPBlock *)complexData withCompletionSelector:(SEL)completion onObject:(id)callbackObject;
