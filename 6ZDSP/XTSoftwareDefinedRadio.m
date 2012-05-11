@@ -28,7 +28,7 @@
 #import "XTDSPSpectrumTap.h"
 #import "XTDSPBlock.h"
 #import "OzyRingBuffer.h"
-// import "SystemAudio.h"
+#import "XTSystemAudio.h"
 
 @implementation XTSoftwareDefinedRadio
 
@@ -41,7 +41,7 @@
 	
 /*	if(newSystemAudioState == YES) {
 		audioBuffer = [[OzyRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 16 andName: @"audio"];
-		audioThread = [[SystemAudio alloc] initWithBuffer:audioBuffer andSampleRate: sampleRate];
+		audioThread = [[XTSystemAudio alloc] initWithBuffer:audioBuffer andSampleRate: sampleRate];
 		[audioThread start];
 	}
 	
@@ -74,19 +74,13 @@
 }
 
 -(void)start {
-	[self loadParams];
-	
-	[[NSNotificationCenter defaultCenter] addObserver: self 
-											 selector: @selector(loadParams) 
-												 name: NSUserDefaultsDidChangeNotification 
-											   object: nil];	
+    audioBuffer = [[OzyRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 16 andName: @"audio"];
+    audioThread = [[XTSystemAudio alloc] initWithBuffer:audioBuffer andSampleRate: sampleRate];
+    [audioThread start];
 }
 
 -(void)stop {
-	systemAudioState = NO;
-//	[audioThread stop];
-	
-	[[NSNotificationCenter defaultCenter] removeObserver:self forKeyPath: NSUserDefaultsDidChangeNotification];
+	[audioThread stop];
 }
 
 -(void)completionCallback {
@@ -119,11 +113,11 @@
     //[[(XTReceiver *) [receivers objectAtIndex:1] results] copyTo:complexData];
     
     //  Copy signal into the audio buffer
-/*    if(audioThread.running == YES) {
+    if(audioThread.running == YES) {
         //  XXX Check for overflow of sample buffer!
         vDSP_ztoc([complexData signal], 1, sampleBuffer, 2, [complexData blockSize]);
 		[audioBuffer put:sampleBufferData];
-	}  */
+	}
 }
 
 -(void)tapSpectrumWithRealData: (XTRealData *)spectrumData {

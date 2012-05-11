@@ -1,5 +1,5 @@
 //
-//  XTSoftwareDefinedRadio.h
+//  XTSystemAudioThread.h
 //  MacHPSDR
 //
 //  Copyright (c) 2010 - Jeremy C. McDermond (NH6Z)
@@ -18,41 +18,22 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: XTSoftwareDefinedRadio.h 141 2010-03-18 21:19:57Z mcdermj $
+// $Id: XTSystemAudio.h 199 2011-03-04 23:14:14Z mcdermj $
 
-#import <Accelerate/Accelerate.h>
+#import <AudioToolbox/AudioQueue.h>
+#import <AudioToolbox/AudioToolbox.h>
 
-@class XTDSPBlock;
-@class XTDSPSpectrumTap;
-@class XTRealData;
-@class XTSystemAudio;
 @class OzyRingBuffer;
 
-@interface XTSoftwareDefinedRadio : NSObject {
-	
-	NSMutableArray *receivers;
-    NSCondition *receiverCondition;
-    int pendingReceivers;
-	
-	float sampleRate;
-	
-	XTDSPSpectrumTap *spectrumTap;
-    
-    BOOL systemAudioState;
-    XTSystemAudio *audioThread;
-    OzyRingBuffer *audioBuffer;
-    
-    NSMutableData *sampleBufferData;
-	DSPComplex *sampleBuffer;
-}
+@interface XTSystemAudio : NSObject
 
-@property float sampleRate;
-@property (readonly) NSArray *receivers;
+@property BOOL running;
+@property int sampleRate;
 
--(id)initWithSampleRate: (float)initialSampleRate;
--(void)processComplexSamples: (XTDSPBlock *)complexData;
--(void)tapSpectrumWithRealData:(XTRealData *)spectrumData;
+-(id)initWithBuffer:(OzyRingBuffer *)_buffer andSampleRate:(int)sampleRate;
 -(void)start;
 -(void)stop;
+-(void)beginInterruption;
+-(void)endInterruption;
 
 @end

@@ -24,6 +24,7 @@
     _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:192000.0f];
     _driver = [[NNHMetisDriver alloc] initWithSDR:_sdr];
     [_driver start];
+    [_sdr start];
     
     return YES;
 }
