@@ -11,6 +11,18 @@
 		090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A74B61537E793007249C2 /* XTUIKeypadView.m */; };
 		090A74B91537F4C4007249C2 /* delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090A74B81537F4C4007249C2 /* delete@2x.png */; };
 		090A74BB1537F4D2007249C2 /* delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 090A74BA1537F4D2007249C2 /* delete.png */; };
+		090C5BB9155B23B5006CCC65 /* sinewave.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BB7155B23B5006CCC65 /* sinewave.png */; };
+		090C5BBA155B23B5006CCC65 /* sinewave@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BB8155B23B5006CCC65 /* sinewave@2x.png */; };
+		090C5BC1155D6E43006CCC65 /* NNHVolumePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */; };
+		090C5BC6155D7718006CCC65 /* speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BC4155D7718006CCC65 /* speaker.png */; };
+		090C5BC7155D7718006CCC65 /* speaker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BC5155D7718006CCC65 /* speaker@2x.png */; };
+		090C5BD7155D8004006CCC65 /* XTAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD4155D8004006CCC65 /* XTAudioUnit.m */; };
+		090C5BD8155D8004006CCC65 /* XTOutputAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */; };
+		090C5BD9155D800F006CCC65 /* XTSystemAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */; };
+		090C5BDB155D94E1006CCC65 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BDA155D94E1006CCC65 /* CoreAudio.framework */; };
+		090C5BE0155D95EE006CCC65 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */; };
+		090C5BE2155D9855006CCC65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BE1155D9854006CCC65 /* AVFoundation.framework */; };
+		090C5BE5155DC859006CCC65 /* NNHModePopverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BE4155DC859006CCC65 /* NNHModePopverViewController.m */; };
 		0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
 		0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
 		0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC711515E898006C8F0E /* CoreGraphics.framework */; };
@@ -77,6 +89,24 @@
 		090A74B61537E793007249C2 /* XTUIKeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIKeypadView.m; sourceTree = "<group>"; };
 		090A74B81537F4C4007249C2 /* delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "delete@2x.png"; sourceTree = "<group>"; };
 		090A74BA1537F4D2007249C2 /* delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = delete.png; sourceTree = "<group>"; };
+		090C5BB7155B23B5006CCC65 /* sinewave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sinewave.png; sourceTree = "<group>"; };
+		090C5BB8155B23B5006CCC65 /* sinewave@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sinewave@2x.png"; sourceTree = "<group>"; };
+		090C5BBF155D6E43006CCC65 /* NNHVolumePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHVolumePopoverViewController.h; sourceTree = "<group>"; };
+		090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHVolumePopoverViewController.m; sourceTree = "<group>"; };
+		090C5BC4155D7718006CCC65 /* speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speaker.png; sourceTree = "<group>"; };
+		090C5BC5155D7718006CCC65 /* speaker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker@2x.png"; sourceTree = "<group>"; };
+		090C5BD0155D7D8E006CCC65 /* XTSystemAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XTSystemAudio.h; path = ../6ZDSP/XTSystemAudio.h; sourceTree = "<group>"; };
+		090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XTSystemAudio.m; path = ../6ZDSP/XTSystemAudio.m; sourceTree = "<group>"; };
+		090C5BD3155D8003006CCC65 /* XTAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTAudioUnit.h; sourceTree = "<group>"; };
+		090C5BD4155D8004006CCC65 /* XTAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTAudioUnit.m; sourceTree = "<group>"; };
+		090C5BD5155D8004006CCC65 /* XTOutputAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTOutputAudioUnit.h; sourceTree = "<group>"; };
+		090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTOutputAudioUnit.m; sourceTree = "<group>"; };
+		090C5BDA155D94E1006CCC65 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		090C5BDC155D94FE006CCC65 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		090C5BE1155D9854006CCC65 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		090C5BE3155DC859006CCC65 /* NNHModePopverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHModePopverViewController.h; sourceTree = "<group>"; };
+		090C5BE4155DC859006CCC65 /* NNHModePopverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHModePopverViewController.m; sourceTree = "<group>"; };
 		0948DC691515E898006C8F0E /* Heterodyne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heterodyne.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0948DC6D1515E898006C8F0E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		0948DC6F1515E898006C8F0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -164,6 +194,9 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				090C5BE2155D9855006CCC65 /* AVFoundation.framework in Frameworks */,
+				090C5BE0155D95EE006CCC65 /* AudioToolbox.framework in Frameworks */,
+				090C5BDB155D94E1006CCC65 /* CoreAudio.framework in Frameworks */,
 				09FA732E151EAAAB004BF6CD /* CoreText.framework in Frameworks */,
 				09FA732C151EAA7E004BF6CD /* CoreFoundation.framework in Frameworks */,
 				09FA732A151D730B004BF6CD /* QuartzCore.framework in Frameworks */,
@@ -202,6 +235,10 @@
 		0948DC5E1515E898006C8F0E = {
 			isa = PBXGroup;
 			children = (
+				090C5BE1155D9854006CCC65 /* AVFoundation.framework */,
+				090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */,
+				090C5BDC155D94FE006CCC65 /* AudioUnit.framework */,
+				090C5BDA155D94E1006CCC65 /* CoreAudio.framework */,
 				09FA732D151EAAAB004BF6CD /* CoreText.framework */,
 				09FA732B151EAA7E004BF6CD /* CoreFoundation.framework */,
 				09FA7329151D730B004BF6CD /* QuartzCore.framework */,
@@ -255,6 +292,16 @@
 				0948DC831515E898006C8F0E /* NNHViewController.m */,
 				095B0C69154B721A001B97C8 /* NNHFrequencyPopupViewController.h */,
 				095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */,
+				090C5BBF155D6E43006CCC65 /* NNHVolumePopoverViewController.h */,
+				090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */,
+				090C5BE3155DC859006CCC65 /* NNHModePopverViewController.h */,
+				090C5BE4155DC859006CCC65 /* NNHModePopverViewController.m */,
+				090C5BD0155D7D8E006CCC65 /* XTSystemAudio.h */,
+				090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */,
+				090C5BD3155D8003006CCC65 /* XTAudioUnit.h */,
+				090C5BD4155D8004006CCC65 /* XTAudioUnit.m */,
+				090C5BD5155D8004006CCC65 /* XTOutputAudioUnit.h */,
+				090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */,
 				0948DC741515E898006C8F0E /* Supporting Files */,
 			);
 			path = Heterodyne;
@@ -265,7 +312,11 @@
 			children = (
 				090A74BA1537F4D2007249C2 /* delete.png */,
 				090A74B81537F4C4007249C2 /* delete@2x.png */,
+				090C5BB7155B23B5006CCC65 /* sinewave.png */,
+				090C5BB8155B23B5006CCC65 /* sinewave@2x.png */,
 				0948DC751515E898006C8F0E /* Heterodyne-Info.plist */,
+				090C5BC4155D7718006CCC65 /* speaker.png */,
+				090C5BC5155D7718006CCC65 /* speaker@2x.png */,
 				0948DC761515E898006C8F0E /* InfoPlist.strings */,
 				0948DC791515E898006C8F0E /* main.m */,
 				0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */,
@@ -422,6 +473,10 @@
 				09EC0188151A79750027B783 /* Heterodyne Small.png in Resources */,
 				090A74B91537F4C4007249C2 /* delete@2x.png in Resources */,
 				090A74BB1537F4D2007249C2 /* delete.png in Resources */,
+				090C5BB9155B23B5006CCC65 /* sinewave.png in Resources */,
+				090C5BBA155B23B5006CCC65 /* sinewave@2x.png in Resources */,
+				090C5BC6155D7718006CCC65 /* speaker.png in Resources */,
+				090C5BC7155D7718006CCC65 /* speaker@2x.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,6 +542,11 @@
 				090A74B31537E0B7007249C2 /* XTUIKeypadButton.m in Sources */,
 				090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */,
 				095B0C6B154B721A001B97C8 /* NNHFrequencyPopupViewController.m in Sources */,
+				090C5BC1155D6E43006CCC65 /* NNHVolumePopoverViewController.m in Sources */,
+				090C5BD7155D8004006CCC65 /* XTAudioUnit.m in Sources */,
+				090C5BD8155D8004006CCC65 /* XTOutputAudioUnit.m in Sources */,
+				090C5BD9155D800F006CCC65 /* XTSystemAudio.m in Sources */,
+				090C5BE5155DC859006CCC65 /* NNHModePopverViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

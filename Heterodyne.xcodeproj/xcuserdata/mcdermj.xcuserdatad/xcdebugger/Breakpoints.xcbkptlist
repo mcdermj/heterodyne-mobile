@@ -2,36 +2,4 @@
 <Bucket
    type = "1"
    version = "1.0">
-   <FileBreakpoints>
-      <FileBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "0"
-         continueAfterRunningActions = "No"
-         filePath = "6ZDSP/OzyRingBuffer.m"
-         timestampString = "358162009.451216"
-         startingColumnNumber = "9223372036854775807"
-         endingColumnNumber = "9223372036854775807"
-         startingLineNumber = "112"
-         endingLineNumber = "112"
-         landmarkName = "@implementation OzyRingBuffer"
-         landmarkType = "3">
-      </FileBreakpoint>
-   </FileBreakpoints>
-   <SymbolicBreakpoints>
-      <SymbolicBreakpoint
-         shouldBeEnabled = "No"
-         ignoreCount = "500"
-         continueAfterRunningActions = "No"
-         symbolName = "-[NSConcreteData initWithBytes:length:copy:freeWhenDone:bytesAreVM:]"
-         moduleName = "">
-         <Actions>
-            <BreakpointActionProxy
-               ActionType = "Xcode.BreakpointAction.Sound">
-               <ActionContent
-                  soundName = "Tink">
-               </ActionContent>
-            </BreakpointActionProxy>
-         </Actions>
-      </SymbolicBreakpoint>
-   </SymbolicBreakpoints>
 </Bucket>
