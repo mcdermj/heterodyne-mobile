@@ -68,8 +68,6 @@
                                                               lowCutoff:-300.0f
                                                           andHighCutoff:2700.0f]];
         
-        //[dspModules addObject:[[XTDSPAMDemodulator alloc] initWithSampleRate:sampleRate]];
-        
         [dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
         
         [dspModules addObject:[[XTDSPComplexToRealStereo alloc] initWithSampleRate:sampleRate]];
@@ -80,6 +78,8 @@
                     [XTReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"LSB",
                     [XTReceiver createInvocationOnTarget:self selector:@selector(amMode:)], @"AM",
                     nil];
+        
+        mode = @"USB";
     }
     
     return self;
@@ -191,6 +191,8 @@
     
     [method setArgument:&newMode atIndex:2];
     [method invoke];
+    
+    mode = newMode;
 }
 
 -(NSArray *) modes {

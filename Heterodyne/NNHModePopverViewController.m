@@ -38,6 +38,8 @@
 	// Do any additional setup after loading the view.
     NNHAppDelegate *delegate = [[UIApplication sharedApplication] delegate];
     mainReceiver = [[[delegate sdr] receivers] objectAtIndex:0];
+    
+    [picker selectRow:[[mainReceiver modes] indexOfObject:[mainReceiver mode]] inComponent:0 animated:NO];
 }
 
 - (void)viewDidUnload
