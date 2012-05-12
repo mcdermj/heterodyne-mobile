@@ -88,7 +88,7 @@
 -(void)put: (NSData *) _data {
 	@synchronized(self) {
 		if([self space] < [_data length]) {
-			NSLog(@"%@ [OzyRingBuffer put]: space=%d, wanted=%d, entries=%d, length=%d\n", name, [self space], (int) [_data length], entries, size);
+			NSLog(@"buffer: %@ space=%d, wanted=%d, entries=%d, length=%d\n", name, [self space], (int) [_data length], entries, size);
 			return;
 		}
         
@@ -118,7 +118,7 @@
 	
 	@synchronized(self) {
 		if(entries < _size) {
-			NSLog(@"[OzyRingBuffer get]: wanted=%d, have=%d\n", _size, entries);
+			NSLog(@"buffer %@ wanted=%d, have=%d\n", name, _size, entries);
 			return nil;
 		}
         
