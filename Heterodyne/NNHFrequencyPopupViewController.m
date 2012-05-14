@@ -56,7 +56,6 @@
     keypad.frequency = [driver getFrequency:0];
     
     [self updateFilter];
-    
 }
 
 -(void)updateFilter {

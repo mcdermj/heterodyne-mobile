@@ -48,6 +48,7 @@
 @synthesize micGain;
 @synthesize txGain;
 @synthesize sdr;
+@synthesize gotDiscovery;
 
 +(NSString *)name {
 	return @"Metis Driver";
@@ -659,7 +660,7 @@
 }	
 
 -(BOOL)performDiscovery {
-	BOOL gotDiscovery = NO;
+	gotDiscovery = NO;
 	MetisDiscoveryReply reply;
 	struct sockaddr_in replyAddress;
 	socklen_t replyAddressLen;
@@ -668,6 +669,8 @@
 	struct timeval timeout;
 	timeout.tv_sec = 1;
 	timeout.tv_usec = 0;
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NNHMetisDriverWillPerformDiscovery" object:self];
 	
 	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
 		NSLog(@"Setting receive timeout failed: %s\n", strerror(errno));
@@ -732,6 +735,7 @@
 		return NO;
 	}	
 	
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"NNHMetisDriverDidCompleteDiscovery" object:self];
 	return gotDiscovery;
 }
 
@@ -765,19 +769,25 @@
     return YES;
 }
 
--(BOOL) start {
-	
-	stopDiscovery = NO;
-	
-	if([self performDiscovery] == NO) 
-        return NO;
-	
-	if([self sendStartPacket] == NO) 
-        return NO;
+-(void)discoveryComplete {
+    
+    if([self sendStartPacket] == NO) 
+        return;
     
 	[self kickStart];
     [NSThread detachNewThreadSelector:@selector(socketWriteLoop) toTarget:self withObject:nil];	
 	[NSThread detachNewThreadSelector:@selector(socketServiceLoop) toTarget:self withObject:nil];
+    
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NNHMetisDriverDidCompleteDiscovery" object:nil];
+}
+
+-(BOOL) start {
+	
+	stopDiscovery = NO;
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
+    
+    [NSThread detachNewThreadSelector:@selector(performDiscovery) toTarget:self withObject:nil];
 	
 	return YES;
 }

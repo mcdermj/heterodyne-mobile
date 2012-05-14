@@ -42,6 +42,8 @@
     
     XTRealData *dataBuffer;
     float *spectrumBuffer;
+    
+    UIAlertView *discoveryWindow;
 }
 
 @property (weak) UIPopoverController *currentPopover;
@@ -65,6 +67,16 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    
+    delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
+    NNHMetisDriver *driver = [delegate driver];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(beginDiscovery) name: @"NNHMetisDriverWillBeginDiscovery" object: nil];
+    
+    discoveryWindow = nil;
+    if(driver.gotDiscovery == NO) 
+        [self beginDiscovery];
     
     dataBuffer = [XTRealData realDataWithElements:SPECTRUM_BUFFER_SIZE];
     spectrumBuffer = [dataBuffer elements];
@@ -92,8 +104,6 @@
     
     fftSetup = vDSP_create_fftsetup(12, kFFTRadix2);
     vDSP_fft_zip(fftSetup, &kernel, 1, 12, kFFTDirection_Forward);      
-    
-    delegate = [[UIApplication sharedApplication] delegate];
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGesture.maximumNumberOfTouches = NSUIntegerMax;
@@ -279,8 +289,8 @@ static const float scaling = 0.66;
 -(void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
     if([segue isKindOfClass:[UIStoryboardPopoverSegue class]]) {
         currentPopover = [(UIStoryboardPopoverSegue *)segue popoverController];
-    }
-    
+    } 
+        
     if([sender isKindOfClass:[UIBarButtonItem class]]) {
         UIStoryboardPopoverSegue *popoverSegue = (UIStoryboardPopoverSegue *)segue;
         NNHFrequencyPopupViewController *controller = (NNHFrequencyPopupViewController *) popoverSegue.destinationViewController;
@@ -290,6 +300,19 @@ static const float scaling = 0.66;
     } else {
         
     }
+}
+
+#pragma mark - Discovery handling
+
+-(void)discoveryComplete {
+    [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
+}
+
+-(void)beginDiscovery {
+    discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    
+    [discoveryWindow show];
+
 }
 
 @end

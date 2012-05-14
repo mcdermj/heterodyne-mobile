@@ -229,4 +229,6 @@ typedef struct _metisProgramReply {
 @property float micGain;
 @property float txGain;
 
+@property BOOL gotDiscovery;
+
 @end
