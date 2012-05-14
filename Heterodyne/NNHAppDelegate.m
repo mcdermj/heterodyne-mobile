@@ -9,6 +9,7 @@
 #import "NNHAppDelegate.h"
 #import "XTSoftwareDefinedRadio.h"
 #import "NNHMetisDriver.h"
+#import "XTReceiver.h"
 
 @implementation NNHAppDelegate
 
@@ -21,8 +22,21 @@
 {
     // Override point for customization after application launch.
     
+    NSString *defaultsFilename = [[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"];
+    NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsFilename];
+    [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
+    
     _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:192000.0f];
     _driver = [[NNHMetisDriver alloc] initWithSDR:_sdr];
+    XTReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
+    
+    [_driver setFrequency:[[NSUserDefaults standardUserDefaults] floatForKey:@"frequency"] forReceiver:0];
+    _driver.preamp = [[NSUserDefaults standardUserDefaults] boolForKey:@"preamp"];
+    
+    mainReceiver.highCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"highCut"];
+    mainReceiver.lowCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"LowCut"];
+    mainReceiver.mode = [[NSUserDefaults standardUserDefaults] stringForKey:@"mode"];
+    
     [_driver start];
     [_sdr start];
     
@@ -66,6 +80,18 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    
+    XTReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
+    
+    [[NSUserDefaults standardUserDefaults] setFloat:[self.driver getFrequency:0] forKey:@"frequency"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.driver.preamp forKey:@"preamp"];
+    
+    [[NSUserDefaults standardUserDefaults] setFloat:mainReceiver.highCut forKey:@"highCut"];
+    [[NSUserDefaults standardUserDefaults] setFloat:mainReceiver.lowCut forKey:@"lowCut"];
+    [[NSUserDefaults standardUserDefaults] setObject:mainReceiver.mode forKey:@"mode"];
+    
+    [self.driver stop];
+    [self.sdr stop];
 }
 
 @end
