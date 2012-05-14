@@ -112,8 +112,8 @@
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                                         <items>
                                             <tabBarItem systemItem="favorites" id="Lol-rT-8W9"/>
-                                            <tabBarItem title="Keypad" id="fjh-Ni-eBh"/>
-                                            <tabBarItem title="Band" id="azS-rg-ZoX"/>
+                                            <tabBarItem title="Keypad" image="Keypad.png" id="fjh-Ni-eBh"/>
+                                            <tabBarItem title="Band" image="Band.png" id="azS-rg-ZoX"/>
                                         </items>
                                     </tabBar>
                                 </subviews>
@@ -186,6 +186,8 @@
         </scene>
     </scenes>
     <resources>
+        <image name="Band.png" width="26" height="26"/>
+        <image name="Keypad.png" width="26" height="26"/>
         <image name="sinewave.png" width="26" height="26"/>
         <image name="speaker.png" width="26" height="20"/>
     </resources>
