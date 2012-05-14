@@ -22,6 +22,9 @@
 {
     // Override point for customization after application launch.
     
+    [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
+    [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+    
     NSString *defaultsFilename = [[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsFilename];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
