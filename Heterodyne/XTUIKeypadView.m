@@ -9,7 +9,10 @@
 #import "XTUIKeypadView.h"
 #import "XTUIKeypadButton.h"
 
-@interface XTUIKeypadView ()
+@interface XTUIKeypadView () {
+    BOOL editing;
+    float frequency;
+}
 
 @property (nonatomic) UILabel *display;
 
@@ -22,7 +25,6 @@
 
 #pragma mark - Property Synthesizers
 @synthesize display = _display;
-@synthesize frequency = _frequency;
 
 #pragma mark - Initialization
 
@@ -50,7 +52,9 @@
     CGRect frame;
     int i = 10;
     
-    _frequency = 0;
+    frequency = 0;
+    
+    editing = NO;
     
     width = CGRectGetWidth(self.bounds) / 3;
     height = CGRectGetHeight(self.bounds) / 6;
@@ -61,7 +65,7 @@
     _display.textAlignment = UITextAlignmentCenter;
     _display.backgroundColor = [UIColor blackColor];
     _display.textColor = [UIColor whiteColor];
-    _display.text = @"";
+    _display.text = [self formattedFrequency];;
     [self addSubview:_display];
     
     y += height;
@@ -105,12 +109,28 @@
     [self addSubview:khzButton];
 }
 
+#pragma mark - Accessors
+
+-(float) frequency {
+    return frequency;
+}
+
+-(void)setFrequency:(float)_frequency {
+    frequency = _frequency;
+    
+    self.display.text = [self formattedFrequency];
+}
+
 -(void)buttonPressed:(id)sender {
     XTUIKeypadButton *button = (XTUIKeypadButton *) sender;
     
     NSLog(@"Button with tag %d pressed\n", button.tag);
     if(button.tag < 10) {
+        if(editing == NO)
+            self.display.text = @"";
+        
         self.display.text = [self.display.text stringByAppendingString:[button titleForState:UIControlStateNormal]];
+        editing = YES;
         return;
     }
     
@@ -119,7 +139,12 @@
         case 10:
             if(self.display.text.length < 1) return;
             
-            self.display.text = [self.display.text substringToIndex:self.display.text.length - 1];
+            if(editing == NO) 
+                self.display.text = @"";
+            else
+                self.display.text = [self.display.text substringToIndex:self.display.text.length - 1];
+            
+            editing = YES;
             break;
             
         // Enter Keys
@@ -128,10 +153,21 @@
             self.frequency = [self.display.text floatValue] * (float) button.tag;
             NSLog("Keypad returns %f\n", self.frequency);
             [self sendActionsForControlEvents:UIControlEventEditingDidEnd];
+            self.display.text = [self formattedFrequency];
+            editing = NO;
             break;
         default:
             break;
     }
+}
+
+-(NSString *)formattedFrequency {    
+    int MHz = (int) (frequency / 1000000.0f);
+    int kHz = (int) ((frequency - ((float) MHz * 1000000.0f)) / 1000.0f);
+    int Hz = (int) (frequency - ((float) MHz * 1000000.0f) - ((float) kHz * 1000.0f));
+    
+    NSLog(@"Freq: %02d.%03d.%03d\n", MHz, kHz, Hz);
+    return [NSString stringWithFormat:@"%02d.%03d.%03d\n", MHz, kHz, Hz];
 }
 
 @end

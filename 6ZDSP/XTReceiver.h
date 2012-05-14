@@ -20,6 +20,7 @@
 @property (readonly) XTDSPBlock *results;
 @property (readonly) NSArray *modes;
 @property NSString *mode;
+@property float filterWidth;
 
 -(void)processComplexSamples:(XTDSPBlock *)complexData withCompletionSelector:(SEL)completion onObject:(id)callbackObject;
 -(id)initWithSampleRate:(float)sampleRate;

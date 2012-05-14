@@ -146,6 +146,28 @@
     return [[self filter] lowCut];
 }
 
+-(float)filterWidth {
+    return self.filter.highCut - self.filter.lowCut;
+}
+
+-(void)setFilterWidth:(float)width {
+    if([mode isEqualToString:@"USB"]) {
+        self.filter.lowCut = -300;
+        self.filter.highCut = width + self.filter.lowCut;
+    } else if([mode isEqualToString:@"LSB"]) {
+        self.filter.highCut = 300;
+        self.filter.lowCut = width - self.filter.highCut;
+    } else if([mode isEqualToString:@"AM"]) {
+        self.filter.highCut = width / 2.0f;
+        self.filter.lowCut = -self.filter.highCut;
+    } else {
+    }
+    
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"XTReceiverFilterDidChange" object:self];
+
+    return;
+}
+
 -(void)setFrequency:(float)frequency {
     if(frequency == 0.0) {
         [dspModules removeObject:[self mixer]];
