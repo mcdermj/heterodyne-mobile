@@ -82,6 +82,7 @@
 	@synchronized(self) {
 		insertIndex = 0;
 		removeIndex = 0;
+        entries = 0;
 	}
 }
 
