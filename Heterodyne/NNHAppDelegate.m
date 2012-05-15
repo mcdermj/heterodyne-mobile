@@ -17,7 +17,6 @@
 @synthesize window = _window;
 @synthesize sdr = _sdr;
 @synthesize driver = _driver;
-@synthesize mux = _mux;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
