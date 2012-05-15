@@ -70,7 +70,7 @@
     
     y += height;
     
-    NSArray *standardButtons = [NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @".", @"0", [UIImage imageNamed:@"delete"], nil];
+    NSArray *standardButtons = [NSArray arrayWithObjects:@"1", @"2", @"3", @"4", @"5", @"6", @"7", @"8", @"9", @".", @"0", [UIImage imageNamed:@"Delete"], nil];
     
     for(id button in standardButtons) {
         frame = CGRectMake(x, y, width, height);
