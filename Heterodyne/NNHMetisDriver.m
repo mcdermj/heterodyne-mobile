@@ -725,7 +725,6 @@
 	}
     
     if(reply.version < latestFirmware) {
-        [self performSelectorOnMainThread:@selector(doAutoUpgradeFirmware) withObject:nil waitUntilDone:NO];
         NSLog(@"Detected old firmware %d\n", reply.version);
     }
 	
