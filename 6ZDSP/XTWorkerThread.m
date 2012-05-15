@@ -78,7 +78,9 @@ kern_return_t   thread_policy_set(
 	[[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
 	
 	while(running == TRUE) {
-		[[NSRunLoop	currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        @autoreleasepool {
+            [[NSRunLoop	currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate distantFuture]];
+        }
 	}
 }
 
