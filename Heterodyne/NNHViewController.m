@@ -44,6 +44,8 @@
     float *spectrumBuffer;
     
     UIAlertView *discoveryWindow;
+    
+    XTWorkerThread *glThread;
 }
 
 @property (weak) UIPopoverController *currentPopover;
@@ -141,10 +143,18 @@
 {
     [super viewWillAppear:animated];
     
-    XTWorkerThread *glThread = [[XTWorkerThread alloc] init];
+    glThread = [[XTWorkerThread alloc] init];
     [glThread start];
     [self performSelector:@selector(setupDisplayLink) onThread:glThread withObject:nil waitUntilDone:NO];
     
+}
+
+-(void)pauseDisplayLink {
+    displayLink.paused = YES;
+}
+
+-(void)resumeDisplayLink {
+    displayLink.paused = NO;
 }
 
 - (void)setupDisplayLink {

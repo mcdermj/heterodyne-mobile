@@ -10,6 +10,7 @@
 #import "XTSoftwareDefinedRadio.h"
 #import "NNHMetisDriver.h"
 #import "XTReceiver.h"
+#import "NNHViewController.h"
 
 @implementation NNHAppDelegate
 
@@ -24,6 +25,8 @@
     
     [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+    
+    [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
     NSString *defaultsFilename = [[NSBundle mainBundle] pathForResource:@"Defaults" ofType:@"plist"];
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsFilename];
@@ -60,6 +63,23 @@
      Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later. 
      If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
      */
+    
+    NSLog(@"Entered background\n");
+    
+    XTReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
+    
+    [[NSUserDefaults standardUserDefaults] setFloat:[self.driver getFrequency:0] forKey:@"frequency"];
+    [[NSUserDefaults standardUserDefaults] setBool:self.driver.preamp forKey:@"preamp"];
+    
+    [[NSUserDefaults standardUserDefaults] setFloat:mainReceiver.highCut forKey:@"highCut"];
+    [[NSUserDefaults standardUserDefaults] setFloat:mainReceiver.lowCut forKey:@"lowCut"];
+    [[NSUserDefaults standardUserDefaults] setObject:mainReceiver.mode forKey:@"mode"];
+    
+    NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
+    [rootController pauseDisplayLink];
+    
+    [self.driver stop];
+    [self.sdr stop];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -67,6 +87,23 @@
     /*
      Called as part of the transition from the background to the inactive state; here you can undo many of the changes made on entering the background.
      */
+    
+    NSLog(@"Entering Foreground\n");
+    
+    XTReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
+    
+    [_driver setFrequency:[[NSUserDefaults standardUserDefaults] floatForKey:@"frequency"] forReceiver:0];
+    _driver.preamp = [[NSUserDefaults standardUserDefaults] boolForKey:@"preamp"];
+    
+    mainReceiver.highCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"highCut"];
+    mainReceiver.lowCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"LowCut"];
+    mainReceiver.mode = [[NSUserDefaults standardUserDefaults] stringForKey:@"mode"];
+    
+    NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
+    [rootController resumeDisplayLink];
+    
+    [_driver start];
+    [_sdr start];
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -83,6 +120,8 @@
      Save data if appropriate.
      See also applicationDidEnterBackground:.
      */
+    
+    NSLog(@"App Terminated\n");
     
     XTReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
     

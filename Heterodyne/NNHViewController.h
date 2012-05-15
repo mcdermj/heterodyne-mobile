@@ -19,4 +19,8 @@
 -(IBAction)displayFrequencyControl:(id)sender;
 -(IBAction)displayVolumeControl:(id)sender;
 -(IBAction)displayModeControl:(id)sender;
+
+-(void)pauseDisplayLink;
+-(void)resumeDisplayLink;
+
 @end
