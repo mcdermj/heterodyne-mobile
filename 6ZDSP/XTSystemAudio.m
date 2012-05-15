@@ -76,9 +76,20 @@ OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFl
     NSError *audioSessionError = nil;
     
     audioSession = [AVAudioSession sharedInstance];
-    [audioSession setPreferredHardwareSampleRate:(float)sampleRate error:&audioSessionError];
-    [audioSession setCategory:AVAudioSessionCategorySoloAmbient error:&audioSessionError];
-    [audioSession setActive:YES error:&audioSessionError];
+    
+    if([audioSession setPreferredHardwareSampleRate:(float)sampleRate error:&audioSessionError] == NO) {
+        NSLog(@"Error setting preferred sample rate: %@\n", [audioSessionError localizedDescription]);
+    }
+    
+    audioSessionError = nil;
+    if([audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError] == NO) {
+        NSLog(@"Error setting audio category: %@\n", [audioSessionError localizedDescription]);
+    }
+    
+    audioSessionError = nil;
+    if([audioSession setActive:YES error:&audioSessionError] == NO) {
+        NSLog(@"Error activating audio session: %@\n", [audioSessionError localizedDescription]);
+    }
 	
 	NSLog(@"Creating Audio Units\n");
 	defaultOutputUnit = [XTOutputAudioUnit remoteIOAudioUnit];
