@@ -135,4 +135,12 @@
     return sampleRate;
 }
 
+-(void)setTapSize:(int)elements {
+    spectrumTap = [[XTDSPSpectrumTap alloc] initWithSampleRate: sampleRate andSize: elements];
+}
+
+-(int)tapSize {
+    return [spectrumTap elements];
+}
+
 @end

@@ -167,6 +167,8 @@
 
 @implementation XTUIPanadapterView
 
+@synthesize textureWidth;
+
 -(id)initWithCoder:(NSCoder *)aDecoder {
     self = [super initWithCoder:aDecoder];
     if(self) {
@@ -217,6 +219,10 @@
         if(status != GL_FRAMEBUFFER_COMPLETE_OES) {
             NSLog(@"Framebuffer creation failed %x", status);
         }
+        
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureWidth);
+        
+        NSLog(@"Maximum Texture Size for this platform is %d\n", [self textureWidth]);
         
         [[NSNotificationCenter defaultCenter] addObserver:tickLayer selector:@selector(setNeedsDisplay) name:@"XTFrequencyChanged" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:filterLayer selector:@selector(setNeedsDisplay) name:@"XTReceiverFilterDidChange" object:nil];

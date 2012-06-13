@@ -49,6 +49,8 @@
 	NSRange copyRange;
 }
 
+@property (nonatomic) int elements;
+
 -(id)initWithSampleRate:(float)newSampleRate andSize: (int)elements;
 -(void)tapBufferWithRealData:(XTRealData *)destinationData;
 

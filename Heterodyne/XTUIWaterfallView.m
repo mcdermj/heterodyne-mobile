@@ -14,9 +14,6 @@
 #import <QuartzCore/CoreAnimation.h>
 #import <Accelerate/Accelerate.h>
 
-#define WATERFALL_SIZE 4096
-#define SPECTRUM_BUFFER_SIZE 4096
-
 inline static GLint toRGBA(float r, float g, float b) {
     return ( (int)(r*255.5) << 0) + ( (int)(g*255.5) << 8 ) + ( (int)(b*255.5) << 16 ) + 0xFF000000; 
 }
@@ -33,11 +30,11 @@ inline static GLint toRGBA(float r, float g, float b) {
     
     GLuint colorGradientArray[20008];
     
-    float sortBuffer[SPECTRUM_BUFFER_SIZE];
-    float intensityBuffer[SPECTRUM_BUFFER_SIZE];
+    float *sortBuffer;
+    float *intensityBuffer;
     
     int currentLine;
-    GLubyte line[WATERFALL_SIZE * 4];
+    GLubyte *line;
     GLuint texture;
     GLuint forwardVertexBuffer;
     GLuint reverseVertexBuffer;
@@ -58,10 +55,14 @@ static const float high = 19999.0;
 @implementation XTUIWaterfallView
 
 @synthesize referenceLevel = _referenceLevel;
+@synthesize textureWidth;
 
 -(id)initWithCoder:(NSCoder *)aDecoder  {
     self = [super initWithCoder:aDecoder];
     if(self) {
+
+        
+        
         //  Create an OpenGL Context
         glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
         if(!glContext || ![EAGLContext setCurrentContext:glContext]) {
@@ -83,6 +84,12 @@ static const float high = 19999.0;
             NSLog(@"Framebuffer creation failed %x", status);
         }
         
+        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureWidth);
+        
+        sortBuffer = malloc(textureWidth * sizeof(float));
+        intensityBuffer = malloc(textureWidth * sizeof(float));
+        line = malloc(textureWidth * 4 * sizeof(GLubyte));
+        
         [self loadColorGradient];
         
         /* textureArray[0] = 0.0;
@@ -102,7 +109,6 @@ static const float high = 19999.0;
     }
     return self;
 }
-
 
 -(void)loadColorGradient {
     int i = 0, j = 0;
@@ -154,21 +160,21 @@ static const float high = 19999.0;
 -(void)drawFrameWithData:(NSData *)data {
     
     if(currentLine % 32 == 0) {
-        memcpy(sortBuffer, [data bytes], sizeof(sortBuffer));
+        memcpy(sortBuffer, [data bytes], textureWidth * sizeof(float));
         
         // XXX This function is a hog.
-        vDSP_vsort(sortBuffer, SPECTRUM_BUFFER_SIZE, 1);
+        vDSP_vsort(sortBuffer, textureWidth, 1);
         negLow = -sortBuffer[1024];
         
-        float denominator = sortBuffer[SPECTRUM_BUFFER_SIZE - 1] - sortBuffer[SPECTRUM_BUFFER_SIZE / 4];
+        float denominator = sortBuffer[textureWidth - 1] - sortBuffer[textureWidth / 4];
         scale = denominator == 0 ? 0 : 20008.0f / denominator;
     }
     
-    vDSP_vsadd((float *) [data bytes], 1, &negLow, intensityBuffer, 1, SPECTRUM_BUFFER_SIZE);
-    vDSP_vsmul(intensityBuffer, 1, &scale, intensityBuffer, 1, SPECTRUM_BUFFER_SIZE);
-    vDSP_vclip(intensityBuffer, 1, (float *) &low, (float *) &high, intensityBuffer, 1, SPECTRUM_BUFFER_SIZE);
+    vDSP_vsadd((float *) [data bytes], 1, &negLow, intensityBuffer, 1, textureWidth);
+    vDSP_vsmul(intensityBuffer, 1, &scale, intensityBuffer, 1, textureWidth);
+    vDSP_vclip(intensityBuffer, 1, (float *) &low, (float *) &high, intensityBuffer, 1, textureWidth);
     
-	for(int i = 0; i < SPECTRUM_BUFFER_SIZE; i++) 
+	for(int i = 0; i < textureWidth; i++) 
         memset_pattern4(&line[i*4], &colorGradientArray[(int) intensityBuffer[i]], 4);
     
     //  Set up the framebuffer for drawing
@@ -195,14 +201,14 @@ static const float high = 19999.0;
 		glGenTextures(1, &texture);
 		glBindTexture(GL_TEXTURE_2D, texture);
 		
-		char *blankData = (char *) malloc(WATERFALL_SIZE * 512 * 4);
-		memset(blankData, 0x88, WATERFALL_SIZE * 512 * 4);
+		char *blankData = (char *) malloc(textureWidth * 512 * 4);
+		memset(blankData, 0x88, textureWidth * 512 * 4);
         
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
         
-		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, WATERFALL_SIZE, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, blankData);
+		glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureWidth, 512, 0, GL_RGBA, GL_UNSIGNED_BYTE, blankData);
         glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_REPLACE);
         
         free(blankData);
@@ -223,7 +229,7 @@ static const float high = 19999.0;
     
     glPixelStorei(GL_UNPACK_ALIGNMENT, 4);
         
-    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, currentLine, WATERFALL_SIZE, 1, GL_RGBA, GL_UNSIGNED_BYTE, line);
+    glTexSubImage2D(GL_TEXTURE_2D, 0, 0, currentLine, textureWidth, 1, GL_RGBA, GL_UNSIGNED_BYTE, line);
     currentLine = (currentLine + 1) % 512;
         
     

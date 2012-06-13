@@ -13,6 +13,8 @@
 @property (assign, nonatomic) float dynamicRange;
 @property (assign, nonatomic) float referenceLevel;
 
+@property (readonly) int textureWidth;
+
 -(void)drawFrameWithData:(NSData *)data;
 
 @end

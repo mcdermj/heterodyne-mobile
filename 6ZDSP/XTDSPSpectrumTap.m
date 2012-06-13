@@ -51,6 +51,26 @@
 	return self;
 }
 
+-(void)setElements:(int)elements {
+    @synchronized(realTapBuffer) {
+        realTapBuffer = [XTRealData realDataWithElements:elements];
+        imaginaryTapBuffer = [XTRealData realDataWithElements:elements];
+        
+        realWorkBuffer = [XTRealData realDataWithElements: elements];
+        imaginaryWorkBuffer = [XTRealData realDataWithElements:elements];
+        
+        fftOut.realp = [realWorkBuffer elements];
+        fftOut.imagp = [imaginaryWorkBuffer elements];
+        
+        bufferRange = NSMakeRange(0, elements);
+        copyRange = NSMakeRange(0, 1024);
+    }
+}
+
+-(int)elements {
+    return bufferRange.length;
+}
+
 -(void)performWithComplexSignal:(XTDSPBlock *)signal {
 	float *realTap = [realTapBuffer elements];
 	float *imaginaryTap = [imaginaryTapBuffer elements];
@@ -92,12 +112,15 @@
 	vDSP_fft_zip(fftSetup, &fftOut, 1,
 				 fftSize, kFFTDirection_Forward);
 	
+    //NSLog(@"Buffer length = %d, Tap Length = %d\n", [destinationData elementLength], [realTapBuffer elementLength]);
     int bufferDataLength = [realTapBuffer elementLength];
-	int length = [destinationData elementLength] > bufferDataLength ? 
-	bufferDataLength : [destinationData elementLength];
-	
+	//int length = [destinationData elementLength] > bufferDataLength ? 
+	//bufferDataLength : [destinationData elementLength];
+	int length = [destinationData elementLength];
+    
 	[destinationData clearElements];
-	vDSP_zvmags(&fftOut, 1,
+	
+    vDSP_zvmags(&fftOut, 1,
 				[destinationData elements], 1,
 				length);
 	

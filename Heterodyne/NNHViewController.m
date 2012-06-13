@@ -19,9 +19,9 @@
 #import <QuartzCore/CoreAnimation.h>
 #import <Accelerate/Accelerate.h>
 
-
-// XXX Bleh
-#define SPECTRUM_BUFFER_SIZE 4096
+inline static int toPow(float elements) {
+    return (int) ceilf(log2f((float) (elements)));
+}
 
 @interface NNHViewController () {
     CADisplayLink *displayLink;
@@ -46,6 +46,8 @@
     UIAlertView *discoveryWindow;
     
     XTWorkerThread *glThread;
+    
+    int textureSize;
 }
 
 @property (weak) UIPopoverController *currentPopover;
@@ -80,32 +82,32 @@
     if(driver.gotDiscovery == NO) 
         [self beginDiscovery];
     
-    dataBuffer = [XTRealData realDataWithElements:SPECTRUM_BUFFER_SIZE];
+    dataBuffer = [XTRealData realDataWithElements:waterfall.textureWidth];
     spectrumBuffer = [dataBuffer elements];
     
     smoothingFactor = 13;
     initAverage = YES;
     
-    averageBuffer = malloc(SPECTRUM_BUFFER_SIZE * sizeof(float));
+    averageBuffer = malloc(waterfall.textureWidth * sizeof(float));
     
-    smoothBufferData = [NSMutableData dataWithLength:SPECTRUM_BUFFER_SIZE * sizeof(float)];
+    smoothBufferData = [NSMutableData dataWithLength:waterfall.textureWidth * sizeof(float)];
     smoothBuffer = [smoothBufferData mutableBytes];
     
-    kernel.realp = malloc(SPECTRUM_BUFFER_SIZE * sizeof(float));
-    kernel.imagp = malloc(SPECTRUM_BUFFER_SIZE * sizeof(float));
-    vDSP_vclr(kernel.realp, 1, SPECTRUM_BUFFER_SIZE);
-    vDSP_vclr(kernel.imagp, 1, SPECTRUM_BUFFER_SIZE);
+    kernel.realp = malloc(waterfall.textureWidth * sizeof(float));
+    kernel.imagp = malloc(waterfall.textureWidth * sizeof(float));
+    vDSP_vclr(kernel.realp, 1, waterfall.textureWidth);
+    vDSP_vclr(kernel.imagp, 1, waterfall.textureWidth);
     
-    fftIn.realp = malloc(SPECTRUM_BUFFER_SIZE * sizeof(float));
-    fftIn.imagp = malloc(SPECTRUM_BUFFER_SIZE * sizeof(float));
-    vDSP_vclr(fftIn.realp, 1, SPECTRUM_BUFFER_SIZE);
-    vDSP_vclr(fftIn.imagp, 1, SPECTRUM_BUFFER_SIZE);
+    fftIn.realp = malloc(waterfall.textureWidth * sizeof(float));
+    fftIn.imagp = malloc(waterfall.textureWidth * sizeof(float));
+    vDSP_vclr(fftIn.realp, 1, waterfall.textureWidth);
+    vDSP_vclr(fftIn.imagp, 1, waterfall.textureWidth);
 
     float filterValue = 1.0f / (float) smoothingFactor;
-    vDSP_vfill(&filterValue, kernel.realp + ((SPECTRUM_BUFFER_SIZE / 2) - ((smoothingFactor - 1) / 2)), 1, smoothingFactor);
+    vDSP_vfill(&filterValue, kernel.realp + ((waterfall.textureWidth / 2) - ((smoothingFactor - 1) / 2)), 1, smoothingFactor);
     
-    fftSetup = vDSP_create_fftsetup(12, kFFTRadix2);
-    vDSP_fft_zip(fftSetup, &kernel, 1, 12, kFFTDirection_Forward);      
+    fftSetup = vDSP_create_fftsetup(toPow(waterfall.textureWidth), kFFTRadix2);
+    vDSP_fft_zip(fftSetup, &kernel, 1, toPow(waterfall.textureWidth), kFFTDirection_Forward);      
     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGesture.maximumNumberOfTouches = NSUIntegerMax;
@@ -130,6 +132,10 @@
     
     UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
     [self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
+    
+    delegate.sdr.tapSize = waterfall.textureWidth;
+    
+    NSLog(@"Finished viewDidLoad\n");
 }
 
 - (void)viewDidUnload
@@ -193,30 +199,30 @@ static const float scaling = 0.66;
     [[delegate sdr] tapSpectrumWithRealData:dataBuffer];
     
     if(initAverage == YES) {
-        memcpy(averageBuffer, spectrumBuffer, SPECTRUM_BUFFER_SIZE);
+        memcpy(averageBuffer, spectrumBuffer, waterfall.textureWidth * sizeof(float));
         initAverage = NO;
     } else {
-        vDSP_vavlin(spectrumBuffer, 1, (float *) &scaling, averageBuffer, 1, SPECTRUM_BUFFER_SIZE);
+        vDSP_vavlin(spectrumBuffer, 1, (float *) &scaling, averageBuffer, 1, waterfall.textureWidth);
     }
     
-    vDSP_vclr(fftIn.realp, 1, SPECTRUM_BUFFER_SIZE);
-    vDSP_vclr(fftIn.imagp, 1, SPECTRUM_BUFFER_SIZE);
-    memcpy(fftIn.realp, averageBuffer, SPECTRUM_BUFFER_SIZE * sizeof(float));
+    vDSP_vclr(fftIn.realp, 1, waterfall.textureWidth);
+    vDSP_vclr(fftIn.imagp, 1, waterfall.textureWidth);
+    memcpy(fftIn.realp, averageBuffer, waterfall.textureWidth * sizeof(float));
     
     //  Perform a convolution by doing an FFT and multiplying.
-    vDSP_fft_zip(fftSetup, &fftIn, 1, 12, kFFTDirection_Forward);
-    vDSP_zvmul(&fftIn, 1, &kernel, 1, &fftIn, 1, SPECTRUM_BUFFER_SIZE, 1);
-    vDSP_fft_zip(fftSetup, &fftIn, 1, 12, kFFTDirection_Inverse);
+    vDSP_fft_zip(fftSetup, &fftIn, 1, toPow(waterfall.textureWidth), kFFTDirection_Forward);
+    vDSP_zvmul(&fftIn, 1, &kernel, 1, &fftIn, 1, waterfall.textureWidth, 1);
+    vDSP_fft_zip(fftSetup, &fftIn, 1, toPow(waterfall.textureWidth), kFFTDirection_Inverse);
     
     //  We have to divide by the scaling factor to account for the offset
     //  in the inverse FFT.
-    float scale = (float) SPECTRUM_BUFFER_SIZE;
-    vDSP_vsdiv(fftIn.realp, 1, &scale, fftIn.realp, 1, SPECTRUM_BUFFER_SIZE);
+    float scale = (float) waterfall.textureWidth;
+    vDSP_vsdiv(fftIn.realp, 1, &scale, fftIn.realp, 1, waterfall.textureWidth);
     
     //  Flip the sides since the center frequency is at the edges because
     //  our filter kernel is centered.
-    memcpy(smoothBuffer, fftIn.realp + (SPECTRUM_BUFFER_SIZE / 2), (SPECTRUM_BUFFER_SIZE / 2) * sizeof(float));
-    memcpy(smoothBuffer + (SPECTRUM_BUFFER_SIZE / 2), fftIn.realp, (SPECTRUM_BUFFER_SIZE / 2) * sizeof(float));
+    memcpy(smoothBuffer, fftIn.realp + (waterfall.textureWidth / 2), (waterfall.textureWidth / 2) * sizeof(float));
+    memcpy(smoothBuffer + (waterfall.textureWidth / 2), fftIn.realp, (waterfall.textureWidth / 2) * sizeof(float));
     
     //  Apply any user calibration
     //vDSP_vsadd(smoothBuffer, 1, &receiveCalibrationOffset, smoothBuffer, 1, SPECTRUM_BUFFER_SIZE);

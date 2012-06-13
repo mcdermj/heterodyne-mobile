@@ -48,6 +48,7 @@
 
 @property float sampleRate;
 @property (readonly) NSArray *receivers;
+@property (nonatomic) int tapSize;
 
 -(id)initWithSampleRate: (float)initialSampleRate;
 -(void)processComplexSamples: (XTDSPBlock *)complexData;
