@@ -124,7 +124,6 @@
 -(void)buttonPressed:(id)sender {
     XTUIKeypadButton *button = (XTUIKeypadButton *) sender;
     
-    NSLog(@"Button with tag %d pressed\n", button.tag);
     if(button.tag < 10) {
         if(editing == NO)
             self.display.text = @"";
@@ -151,7 +150,6 @@
         case 1000:
         case 1000000:
             self.frequency = [self.display.text floatValue] * (float) button.tag;
-            NSLog("Keypad returns %f\n", self.frequency);
             [self sendActionsForControlEvents:UIControlEventEditingDidEnd];
             self.display.text = [self formattedFrequency];
             editing = NO;
@@ -166,7 +164,6 @@
     int kHz = (int) ((frequency - ((float) MHz * 1000000.0f)) / 1000.0f);
     int Hz = (int) (frequency - ((float) MHz * 1000000.0f) - ((float) kHz * 1000.0f));
     
-    NSLog(@"Freq: %02d.%03d.%03d\n", MHz, kHz, Hz);
     return [NSString stringWithFormat:@"%02d.%03d.%03d\n", MHz, kHz, Hz];
 }
 
