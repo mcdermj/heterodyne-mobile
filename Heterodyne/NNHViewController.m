@@ -162,10 +162,18 @@ inline static int toPow(float elements) {
 
 -(void)resumeDisplayLink {
     displayLink.paused = NO;
+    displayLink.frameInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"];
 }
 
 - (void)setupDisplayLink {
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
+    
+    NSLog(@"Refresh Rate is %d\n", [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"]); 
+/*    if([[NNHAppDelegate getHardwareVersion] isEqualToString:@"iPad1,1"]) {
+        NSLog(@"iPad 1 detected, cranking down framerate\n");
+        displayLink.frameInterval = 1;
+    } */
+    displayLink.frameInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
 
