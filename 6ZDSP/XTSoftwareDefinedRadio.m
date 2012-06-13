@@ -90,6 +90,9 @@
     [receiverCondition unlock];
 }
 
+static const float lowThreshold = -1.0f;
+static const float highThreshold = 1.0f;
+
 -(void)processComplexSamples: (XTDSPBlock *)complexData {
     [spectrumTap performWithComplexSignal:complexData];
     
@@ -116,6 +119,7 @@
     if(audioThread.running == YES) {
         //  XXX Check for overflow of sample buffer!
         vDSP_ztoc([complexData signal], 1, sampleBuffer, 2, [complexData blockSize]);
+        vDSP_vclip(sampleBuffer, 1, &lowThreshold, &highThreshold, sampleBuffer, 1, [sampleBufferData length] / sizeof(float));
 		[audioBuffer put:sampleBufferData];
 	}
 }
