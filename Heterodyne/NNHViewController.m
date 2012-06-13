@@ -150,6 +150,7 @@ inline static int toPow(float elements) {
     [super viewWillAppear:animated];
     
     glThread = [[XTWorkerThread alloc] init];
+    glThread.name = @"OpenGL Processing";
     [glThread start];
     [self performSelector:@selector(setupDisplayLink) onThread:glThread withObject:nil waitUntilDone:NO];
     

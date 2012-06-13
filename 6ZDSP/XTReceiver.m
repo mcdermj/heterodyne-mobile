@@ -57,6 +57,7 @@
         sampleRate = initialSampleRate;
         
         workerThread = [[XTWorkerThread alloc] initWithRealtime:YES];
+        workerThread.name = @"Receiver";
         [workerThread start];
         
         results = [XTDSPBlock dspBlockWithBlockSize:1024];
