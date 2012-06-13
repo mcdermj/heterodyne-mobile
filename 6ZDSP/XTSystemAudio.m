@@ -27,11 +27,10 @@
 
 #import <AVFoundation/AVAudioSession.h>
 
-#define SYSTEM_AUDIO_BUFFERS 4
-
 #include <mach/semaphore.h>
 
 OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
+void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void *propertyValue);
 
 @interface XTSystemAudio () {
     OzyRingBuffer *buffer;
@@ -85,16 +84,9 @@ OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFl
     if([audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError] == NO) {
         NSLog(@"Error setting audio category: %@\n", [audioSessionError localizedDescription]);
     }
-    
-    audioSessionError = nil;
-    if([audioSession setActive:YES error:&audioSessionError] == NO) {
-        NSLog(@"Error activating audio session: %@\n", [audioSessionError localizedDescription]);
-    }
-	
-	NSLog(@"Creating Audio Units\n");
+
 	defaultOutputUnit = [XTOutputAudioUnit remoteIOAudioUnit];
 	
-	NSLog(@"Setting the render callback\n");
 	AURenderCallbackStruct renderCallback;
 	renderCallback.inputProc = audioUnitCallback;
 	renderCallback.inputProcRefCon = (__bridge_retained void *) self;
@@ -115,19 +107,22 @@ OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFl
 	format.mChannelsPerFrame = 2;
 	format.mBitsPerChannel = 32;
 	
-	NSLog(@"Setting input format\n");
 	errNo = [defaultOutputUnit setInputFormat:&format];
 	if(errNo != noErr) {
         NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
 		NSLog(@"Error setting callback: %@\n", [error localizedDescription]);
-	}	
+	}
+    
+    static const UInt32 doChangeDefaultRoute = 1;
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+    
+    static const AudioSessionPropertyID routeChangeID = kAudioSessionProperty_AudioRouteChange;
+    
+    AudioSessionAddPropertyListener(routeChangeID, audioRouteChangeCallback, (__bridge void *) self);
 	
-	NSLog(@"Setting up slice size\n");
 	[defaultOutputUnit setMaxFramesPerSlice:8192];
 	
-	NSLog(@"Initializing the audio unit\n");
 	[defaultOutputUnit initialize];
-	NSLog(@"Starting the audio unit\n");
 	[defaultOutputUnit start];	
 	[buffer clear];	
 
@@ -135,22 +130,30 @@ OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFl
 		
 	//  You need a dummy port added to the run loop so that the thread doesn't freak out
 	[[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
+    
+    audioSessionError = nil;
+    if([audioSession setActive:YES error:&audioSessionError] == NO) {
+        NSLog(@"Error activating audio session: %@\n", [audioSessionError localizedDescription]);
+    }
 	
 	running = YES;
-	while(running == YES) 
-		[[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
-	
+	while(running)
+        @autoreleasepool {
+            [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+        }
+    
+    
 	NSLog(@"Run Loop Ends\n");
 }
 
 -(void)stop {
 	NSLog(@"Stopping audio thread\n");
-	[defaultOutputUnit stop];
+    [defaultOutputUnit stop];
 	[defaultOutputUnit uninitialize];
 	[defaultOutputUnit dispose];
     
     [audioSession setActive:NO error:NULL];
-	
+    
 	running = NO;
 }
 
@@ -218,10 +221,22 @@ OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFl
 OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
 	XTSystemAudio *self = (__bridge XTSystemAudio *) userData;
 		
-	int i;
-	for(i = 0; i < ioData->mNumberBuffers; ++i) {
+	for(int i = 0; i < ioData->mNumberBuffers; ++i) {
 		[self fillAUBuffer: &(ioData->mBuffers[i])];
 	}
 	
 	return kCVReturnSuccess;
+}
+
+void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void *propertyValue) {
+    if(propertyID != kAudioSessionProperty_AudioRouteChange) return;
+    
+    NSLog(@"Audio Routing Chaged\n");
+    
+    XTSystemAudio *systemAudio = (__bridge_transfer XTSystemAudio *) userData;
+    
+    if(systemAudio.running) {
+        [systemAudio stop];
+        [systemAudio start];
+    }
 }
