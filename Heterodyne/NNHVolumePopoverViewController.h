@@ -13,6 +13,8 @@
 @property (nonatomic) UIPopoverController *popover;
 @property (nonatomic) UIViewController *masterViewController;
 
+@property (nonatomic) IBOutlet UISlider *volumeSlider;
+
 -(IBAction)sliderValueChanged:(id)sender;
 
 @end

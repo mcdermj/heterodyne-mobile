@@ -19,6 +19,7 @@
 
 @synthesize popover;
 @synthesize masterViewController;
+@synthesize volumeSlider;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -33,6 +34,10 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
+    NNHAppDelegate *delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
+    XTReceiver *mainReceiver = (XTReceiver *) [[[delegate sdr] receivers] objectAtIndex:0];
+
+    volumeSlider.value = mainReceiver.gain;
 }
 
 - (void)viewDidUnload

@@ -55,7 +55,7 @@
 }
 
 -(float)dBGain {
-    return 20.0f * logf(gain);
+    return 20.0f * log10f(gain);
 }
 
 @end
