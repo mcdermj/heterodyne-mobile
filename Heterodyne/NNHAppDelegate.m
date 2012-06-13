@@ -12,11 +12,21 @@
 #import "XTReceiver.h"
 #import "NNHViewController.h"
 
+
+#include <sys/utsname.h>
+
 @implementation NNHAppDelegate
 
 @synthesize window = _window;
 @synthesize sdr = _sdr;
 @synthesize driver = _driver;
+
++(NSString *)getHardwareVersion {
+    struct utsname u;
+    uname(&u);
+    
+    return [NSString stringWithCString:u.machine encoding:NSASCIIStringEncoding];
+}
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -24,6 +34,10 @@
     
     [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
+    
+    NSLog(@"Device is: %@\n", [[UIDevice currentDevice] model]);
+    
+    NSLog(@"Machine is: %@\n", [NNHAppDelegate getHardwareVersion]);
     
     [[UIApplication sharedApplication] setIdleTimerDisabled:YES];
     
