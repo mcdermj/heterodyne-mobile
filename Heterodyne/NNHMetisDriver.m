@@ -89,7 +89,7 @@
     txGain = 0;
     lineIn = NO;
     micBoost = NO;
-    [self setSampleRate:192000];
+
     receiverFrequency[0] = 550000;
 	
 	
@@ -168,6 +168,8 @@
 		metisWriteSequence = 0;
 		
 		sdr = newSdr;
+        
+        [self setSampleRate:sdr.sampleRate];
         
         processingBlock = [XTDSPBlock dspBlockWithBlockSize:1024]; 
         

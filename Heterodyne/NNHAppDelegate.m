@@ -45,7 +45,8 @@
     NSDictionary *defaults = [NSDictionary dictionaryWithContentsOfFile:defaultsFilename];
     [[NSUserDefaults standardUserDefaults] registerDefaults:defaults];
     
-    _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:192000.0f];
+    float sampleRate = [[NNHAppDelegate getHardwareVersion] isEqualToString:@"iPad1,1"] ? 96000.0f : 192000.0f;
+    _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:sampleRate];
     _driver = [[NNHMetisDriver alloc] initWithSDR:_sdr];
     XTReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
     
