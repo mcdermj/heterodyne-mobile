@@ -24,7 +24,7 @@
 #import <mach/task.h>
 
 
-@interface OzyInputBuffers : NSObject {
+@interface XTBlockBuffer : NSObject {
 	NSMutableArray *bufferList;
 	NSMutableArray *freeList;
 	

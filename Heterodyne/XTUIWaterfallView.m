@@ -56,6 +56,7 @@ static const float high = 19999.0;
 
 @synthesize referenceLevel = _referenceLevel;
 @synthesize textureWidth;
+@synthesize dynamicRange;
 
 -(id)initWithCoder:(NSCoder *)aDecoder  {
     self = [super initWithCoder:aDecoder];
@@ -105,6 +106,7 @@ static const float high = 19999.0;
         self.layer.opaque = YES;
         
         _referenceLevel = -60.0;
+        dynamicRange = 30.0;
         
     }
     return self;
@@ -166,8 +168,10 @@ static const float high = 19999.0;
         vDSP_vsort(sortBuffer, textureWidth, 1);
         negLow = -sortBuffer[1024];
         
-        float denominator = sortBuffer[textureWidth - 1] - sortBuffer[textureWidth / 4];
-        scale = denominator == 0 ? 0 : 20008.0f / denominator;
+        scale = 20008.0f / dynamicRange; 
+        
+        //float denominator = sortBuffer[textureWidth - 1] - sortBuffer[textureWidth / 4];
+        //scale = denominator == 0 ? 0 : 20008.0f / denominator;
     }
     
     vDSP_vsadd((float *) [data bytes], 1, &negLow, intensityBuffer, 1, textureWidth);

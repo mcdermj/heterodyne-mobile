@@ -22,7 +22,7 @@
 
 #import "XTDSPBandpassFilter.h"
 
-#import "XTBlackmanHarrisWindow.h"
+#import "XTDSPBlackmanHarrisWindow.h"
 #import "XTRealData.h"
 
 #import <Accelerate/Accelerate.h>
@@ -79,8 +79,8 @@
     float realSum = 0.0f;
     float imagSum = 0.0f;
 		
-	XTBlackmanHarrisWindow *windowData = 
-		[XTBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
+	XTDSPBlackmanHarrisWindow *windowData = 
+		[XTDSPBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
 	const float *window = [windowData bytes];
 	
 	@synchronized(realKernel) {

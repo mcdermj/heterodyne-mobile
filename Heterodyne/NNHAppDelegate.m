@@ -9,9 +9,10 @@
 #import "NNHAppDelegate.h"
 #import "XTSoftwareDefinedRadio.h"
 #import "NNHMetisDriver.h"
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 #import "NNHViewController.h"
 
+#import <AVFoundation/AVFoundation.h>
 
 #include <sys/utsname.h>
 
@@ -48,7 +49,7 @@
     float sampleRate = [[NNHAppDelegate getHardwareVersion] isEqualToString:@"iPad1,1"] ? 96000.0f : 192000.0f;
     _sdr = [[XTSoftwareDefinedRadio alloc] initWithSampleRate:sampleRate];
     _driver = [[NNHMetisDriver alloc] initWithSDR:_sdr];
-    XTReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
     
     [_driver setFrequency:[[NSUserDefaults standardUserDefaults] floatForKey:@"frequency"] forReceiver:0];
     _driver.preamp = [[NSUserDefaults standardUserDefaults] boolForKey:@"preamp"];
@@ -80,7 +81,7 @@
     
     NSLog(@"Entered background\n");
     
-    XTReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
     
     [[NSUserDefaults standardUserDefaults] setFloat:[self.driver getFrequency:0] forKey:@"frequency"];
     [[NSUserDefaults standardUserDefaults] setBool:self.driver.preamp forKey:@"preamp"];
@@ -104,7 +105,7 @@
     
     NSLog(@"Entering Foreground\n");
     
-    XTReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = [_sdr.receivers objectAtIndex:0];
     
     [_driver setFrequency:[[NSUserDefaults standardUserDefaults] floatForKey:@"frequency"] forReceiver:0];
     _driver.preamp = [[NSUserDefaults standardUserDefaults] boolForKey:@"preamp"];
@@ -115,6 +116,8 @@
     
     NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
     [rootController resumeDisplayLink];
+    
+    [[AVAudioSession sharedInstance] setActive:YES error:nil];
     
     [_driver start];
     [_sdr start];
@@ -137,7 +140,7 @@
     
     NSLog(@"App Terminated\n");
     
-    XTReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = [self.sdr.receivers objectAtIndex:0];
     
     [[NSUserDefaults standardUserDefaults] setFloat:[self.driver getFrequency:0] forKey:@"frequency"];
     [[NSUserDefaults standardUserDefaults] setBool:self.driver.preamp forKey:@"preamp"];

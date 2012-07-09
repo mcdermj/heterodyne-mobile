@@ -24,8 +24,8 @@
 
 #import "XTSoftwareDefinedRadio.h"
 #import "XTDSPBlock.h"
-#import "OzyInputBuffers.h"
-#import "OzyRingBuffer.h"
+#import "XTBlockBuffer.h"
+#import "XTRingBuffer.h"
 
 #include <arpa/inet.h>
 #include <mach/mach_init.h>
@@ -137,8 +137,8 @@
 		
 		operationQueue = [[NSOperationQueue alloc] init];
 		
-		ep4Buffers = [[OzyInputBuffers alloc] initWithSize:BANDSCOPE_BUFFER_SIZE quantity: 16];
-		outputBuffer = [[OzyRingBuffer alloc] initWithEntries:(8 * sizeof(MetisPacket)) andName:@"Metis Output Buffer"];
+		ep4Buffers = [[XTBlockBuffer alloc] initWithSize:BANDSCOPE_BUFFER_SIZE quantity: 16];
+		outputBuffer = [[XTRingBuffer alloc] initWithEntries:(16 * sizeof(MetisPacket)) andName:@"Metis Output Buffer"];
 				
 		[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(loadParams) name: NSUserDefaultsDidChangeNotification object: nil];
 

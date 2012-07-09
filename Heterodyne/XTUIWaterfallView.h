@@ -11,6 +11,7 @@
 @interface XTUIWaterfallView : UIView
 
 @property (nonatomic) float referenceLevel;
+@property (nonatomic) float dynamicRange;
 @property (nonatomic) int textureWidth;
 
 -(void)drawFrameWithData:(NSData *)data;

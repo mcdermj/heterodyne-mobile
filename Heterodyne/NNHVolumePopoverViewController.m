@@ -7,7 +7,7 @@
 //
 
 #import "NNHVolumePopoverViewController.h"
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 #import "NNHAppDelegate.h"
 #import "XTSoftwareDefinedRadio.h"
 
@@ -35,7 +35,7 @@
     [super viewDidLoad];
 	// Do any additional setup after loading the view.
     NNHAppDelegate *delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
-    XTReceiver *mainReceiver = (XTReceiver *) [[[delegate sdr] receivers] objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = (XTDSPReceiver *) [[[delegate sdr] receivers] objectAtIndex:0];
 
     volumeSlider.value = mainReceiver.gain;
 }
@@ -55,7 +55,7 @@
     UISlider *slider = (UISlider *) sender;
     NNHAppDelegate *delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
                                                    
-    XTReceiver *mainReceiver = (XTReceiver *) [[[delegate sdr] receivers] objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = (XTDSPReceiver *) [[[delegate sdr] receivers] objectAtIndex:0];
     mainReceiver.gain = slider.value;
 }
 

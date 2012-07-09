@@ -20,7 +20,7 @@
 
 // $Id: OzyRingBuffer.h 169 2010-11-06 00:36:49Z mcdermj $
 
-@interface OzyRingBuffer : NSObject
+@interface XTRingBuffer : NSObject
 
 @property (readonly) unsigned int space;
 

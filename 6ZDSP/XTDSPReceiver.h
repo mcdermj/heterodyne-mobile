@@ -10,7 +10,7 @@
 
 @class XTDSPBlock;
 
-@interface XTReceiver : NSObject 
+@interface XTDSPReceiver : NSObject 
 
 @property float sampleRate;
 @property float frequency;

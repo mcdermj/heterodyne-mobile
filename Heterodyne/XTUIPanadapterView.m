@@ -10,7 +10,7 @@
 #import "NNHMetisDriver.h"
 #import "NNHAppDelegate.h"
 #import "XTSoftwareDefinedRadio.h"
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 
 #import <CoreFoundation/CoreFoundation.h>
 #import <QuartzCore/CoreAnimation.h>
@@ -51,7 +51,7 @@
     
     CFRelease(centerLine);
     
-    XTReceiver *mainReceiver = [delegate.sdr.receivers objectAtIndex:0];
+    XTDSPReceiver *mainReceiver = [delegate.sdr.receivers objectAtIndex:0];
     
     //  Draw the filter rectangle
     CGContextSetFillColorWithColor(ctx, [[UIColor colorWithRed:1.0 green:0.0 blue:0.0 alpha:0.25] CGColor]);

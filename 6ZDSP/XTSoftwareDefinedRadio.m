@@ -24,10 +24,10 @@
 
 #import <Accelerate/Accelerate.h>
 
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 #import "XTDSPSpectrumTap.h"
 #import "XTDSPBlock.h"
-#import "OzyRingBuffer.h"
+#import "XTRingBuffer.h"
 #import "XTSystemAudio.h"
 
 @implementation XTSoftwareDefinedRadio
@@ -63,7 +63,7 @@
 		sampleBuffer = (DSPComplex *) [sampleBufferData mutableBytes];
 				
 		receivers = [NSMutableArray arrayWithCapacity:1];
-        [receivers addObject:[[XTReceiver alloc] initWithSampleRate:sampleRate]];
+        [receivers addObject:[[XTDSPReceiver alloc] initWithSampleRate:sampleRate]];
         // [receivers addObject:[[XTReceiver alloc] initWithSampleRate:sampleRate]];
 		
 		spectrumTap = [[XTDSPSpectrumTap alloc] initWithSampleRate: sampleRate andSize: 4096];
@@ -74,7 +74,7 @@
 }
 
 -(void)start {
-    audioBuffer = [[OzyRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 16 andName: @"audio"];
+    audioBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 32 andName: @"audio"];
     audioThread = [[XTSystemAudio alloc] initWithBuffer:audioBuffer andSampleRate: sampleRate];
     [audioThread start];
 }
@@ -100,7 +100,7 @@ static const float highThreshold = 1.0f;
     
     pendingReceivers = [receivers count];
     
-    for(XTReceiver *receiver in receivers) 
+    for(XTDSPReceiver *receiver in receivers) 
         [receiver processComplexSamples:complexData withCompletionSelector:@selector(completionCallback) onObject:self];
 
     while(pendingReceivers > 0)
@@ -111,12 +111,12 @@ static const float highThreshold = 1.0f;
     [complexData clearBlock];
     
     //  Mix the receiver signals together for audio out.
-    for(XTReceiver *receiver in receivers)
+    for(XTDSPReceiver *receiver in receivers)
         vDSP_zvadd([[receiver results] signal], 1, [complexData signal], 1, [complexData signal], 1, [complexData blockSize]);
     //[[(XTReceiver *) [receivers objectAtIndex:1] results] copyTo:complexData];
     
     //  Copy signal into the audio buffer
-    if(audioThread.running == YES) {
+    if(audioThread.ready == YES) {
         //  XXX Check for overflow of sample buffer!
         vDSP_ztoc([complexData signal], 1, sampleBuffer, 2, [complexData blockSize]);
         vDSP_vclip(sampleBuffer, 1, &lowThreshold, &highThreshold, sampleBuffer, 1, [sampleBufferData length] / sizeof(float));
@@ -130,7 +130,7 @@ static const float highThreshold = 1.0f;
 
 -(void)setSampleRate:(float)newSampleRate {
 	sampleRate = newSampleRate;
-	for(XTReceiver *receiver in receivers) {
+	for(XTDSPReceiver *receiver in receivers) {
 		[receiver setSampleRate:newSampleRate];
 	}
 }

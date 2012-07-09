@@ -12,11 +12,11 @@
 #import "NNHAppDelegate.h"
 #import "NNHMetisDriver.h"
 #import "XTSoftwareDefinedRadio.h"
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
-    XTReceiver *mainReceiver;
+    XTDSPReceiver *mainReceiver;
 }
 
 @end

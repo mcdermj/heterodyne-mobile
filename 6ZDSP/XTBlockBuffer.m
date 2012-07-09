@@ -20,11 +20,11 @@
 
 // $Id: OzyInputBuffers.m 169 2010-11-06 00:36:49Z mcdermj $
 
-#import "OzyInputBuffers.h"
+#import "XTBlockBuffer.h"
 
 #include <mach/mach_init.h>
 
-@implementation OzyInputBuffers
+@implementation XTBlockBuffer
 
 @synthesize ozyInputBufferSemaphore;
 

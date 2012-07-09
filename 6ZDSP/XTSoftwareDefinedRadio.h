@@ -26,7 +26,7 @@
 @class XTDSPSpectrumTap;
 @class XTRealData;
 @class XTSystemAudio;
-@class OzyRingBuffer;
+@class XTRingBuffer;
 
 @interface XTSoftwareDefinedRadio : NSObject {
 	
@@ -40,7 +40,7 @@
     
     BOOL systemAudioState;
     XTSystemAudio *audioThread;
-    OzyRingBuffer *audioBuffer;
+    XTRingBuffer *audioBuffer;
     
     NSMutableData *sampleBufferData;
 	DSPComplex *sampleBuffer;

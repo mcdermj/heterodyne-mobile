@@ -20,9 +20,9 @@
 
 // $Id: XTBlackmanHarrisWindow.m 141 2010-03-18 21:19:57Z mcdermj $
 
-#import "XTBlackmanHarrisWindow.h"
+#import "XTDSPBlackmanHarrisWindow.h"
 
-@implementation XTBlackmanHarrisWindow
+@implementation XTDSPBlackmanHarrisWindow
 
 -(id)initWithElements:(int) size {
 	self = [super init];
@@ -51,8 +51,8 @@
 	return self;
 }
 
-+(XTBlackmanHarrisWindow *)blackmanHarrisWindowWithElements:(int) size {
-    return [[XTBlackmanHarrisWindow alloc] initWithElements: size];	
++(XTDSPBlackmanHarrisWindow *)blackmanHarrisWindowWithElements:(int) size {
+    return [[XTDSPBlackmanHarrisWindow alloc] initWithElements: size];	
 }
 
 

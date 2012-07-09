@@ -20,12 +20,12 @@
 
 // $Id: OzyRingBuffer.m 169 2010-11-06 00:36:49Z mcdermj $
 
-#import "OzyRingBuffer.h"
+#import "XTRingBuffer.h"
 
 #import <mach/semaphore.h>
 #import <mach/task.h>
 
-@interface OzyRingBuffer () {
+@interface XTRingBuffer () {
     unsigned char *buffer;
     unsigned int insertIndex;
     unsigned int removeIndex;
@@ -40,7 +40,7 @@
 
 @end
 
-@implementation OzyRingBuffer
+@implementation XTRingBuffer
 
 -(id)initWithEntries: (int)_size {
 	self = [super init];

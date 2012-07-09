@@ -23,17 +23,28 @@
 #import "XTSystemAudio.h"
 #import "XTOutputAudioUnit.h"
 #import "NNHMetisDriver.h"
-#import "OzyRingBuffer.h"
+#import "XTRingBuffer.h"
 
 #import <AVFoundation/AVAudioSession.h>
 
 #include <mach/semaphore.h>
 
+#include <mach/mach_init.h>
+#include <mach/mach_time.h>
+#include <mach/thread_policy.h>
+
+kern_return_t   thread_policy_set(
+                                  thread_t                                        thread,
+                                  thread_policy_flavor_t          flavor,
+                                  thread_policy_t                         policy_info,
+                                  mach_msg_type_number_t          count);
+
+
 OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
 void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void *propertyValue);
 
 @interface XTSystemAudio () {
-    OzyRingBuffer *buffer;
+    XTRingBuffer *buffer;
     
 	XTAudioUnit *equalizerAudioUnit;
 	XTOutputAudioUnit *defaultOutputUnit;
@@ -43,6 +54,8 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	BOOL running;
 	
 	int sampleRate;
+    
+    NSThread *audioThread;
 }
 
 @end
@@ -50,8 +63,9 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 @implementation XTSystemAudio
 
 @synthesize running;
+@synthesize ready;
 
--(id)initWithBuffer:(OzyRingBuffer *) _buffer andSampleRate:(int)theSampleRate {
+-(id)initWithBuffer:(XTRingBuffer *) _buffer andSampleRate:(int)theSampleRate {
 	self = [super init];
 	if(self) {
 		buffer = _buffer;
@@ -73,6 +87,22 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 -(void)audioProcessingLoop {	
 	OSStatus errNo;
     NSError *audioSessionError = nil;
+    
+    struct thread_time_constraint_policy ttcpolicy;
+	mach_timebase_info_data_t tTBI;
+	double mult;
+    
+    mach_timebase_info(&tTBI);
+    mult = ((double)tTBI.denom / (double)tTBI.numer) * 1000000;
+    
+    ttcpolicy.period = 12 * mult;
+    ttcpolicy.computation = 2 * mult;
+    ttcpolicy.constraint = 24 * mult;
+    ttcpolicy.preemptible = 0;
+    
+    if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
+        NSLog(@" Failed to set realtime priority\n");
+    } 
     
     audioSession = [AVAudioSession sharedInstance];
     
@@ -142,31 +172,41 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
             [[NSRunLoop currentRunLoop] runMode:NSDefaultRunLoopMode beforeDate:[NSDate dateWithTimeIntervalSinceNow:0.5]];
         }
     
-    
+    ready = NO;
+    [buffer clear];
 	NSLog(@"Run Loop Ends\n");
 }
 
 -(void)stop {
 	NSLog(@"Stopping audio thread\n");
+    ready = NO;
+    
     [defaultOutputUnit stop];
 	[defaultOutputUnit uninitialize];
 	[defaultOutputUnit dispose];
+	running = NO;
     
     [audioSession setActive:NO error:NULL];
     
-	running = NO;
+    while([audioThread isExecuting])
+        usleep(1000);
+    NSLog(@"Stop completed");
 }
 
 -(void)start {
-	[NSThread detachNewThreadSelector:@selector(audioProcessingLoop) toTarget:self withObject:nil];
+    audioThread = [[NSThread alloc] initWithTarget:self selector:@selector(audioProcessingLoop) object:nil];
+    [audioThread start];
+	// [NSThread detachNewThreadSelector:@selector(audioProcessingLoop) toTarget:self withObject:nil];
 }
 
 
 -(void)fillAUBuffer: (AudioBuffer *) auBuffer {
+    ready = YES;
+    
 	@autoreleasepool {
         NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:0.5]];
         if(audioBuffer == NULL) {
-            // NSLog(@"[%@ %s]: Couldn't get a fresh buffer.\n", [self class], (char *) _cmd);
+            NSLog(@"Couldn't get a fresh buffer.\n");
             return;
         }
 	

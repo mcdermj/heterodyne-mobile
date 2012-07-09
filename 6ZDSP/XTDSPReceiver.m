@@ -6,7 +6,7 @@
 //  Copyright 2011 net.nh6z. All rights reserved.
 //
 
-#import "XTReceiver.h"
+#import "XTDSPReceiver.h"
 
 #import "XTWorkerThread.h"
 #import "XTDSPBandpassFilter.h"
@@ -18,7 +18,7 @@
 #import "XTDSPAMDemodulator.h"
 #import "XTDSPFixedGain.h"
 
-@interface XTReceiver () {
+@interface XTDSPReceiver () {
     
     NSMutableArray *dspModules;
     XTWorkerThread *workerThread;
@@ -33,7 +33,7 @@
 
 @end
 
-@implementation XTReceiver
+@implementation XTDSPReceiver
 
 @synthesize results;
 
@@ -75,9 +75,9 @@
         
         
         modeDict = [NSDictionary dictionaryWithObjectsAndKeys:
-                    [XTReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"USB", 
-                    [XTReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"LSB",
-                    [XTReceiver createInvocationOnTarget:self selector:@selector(amMode:)], @"AM",
+                    [XTDSPReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"USB", 
+                    [XTDSPReceiver createInvocationOnTarget:self selector:@selector(ssbMode:)], @"LSB",
+                    [XTDSPReceiver createInvocationOnTarget:self selector:@selector(amMode:)], @"AM",
                     nil];
         
         mode = @"USB";
@@ -157,7 +157,7 @@
         self.filter.highCut = width + self.filter.lowCut;
     } else if([mode isEqualToString:@"LSB"]) {
         self.filter.highCut = 300;
-        self.filter.lowCut = width - self.filter.highCut;
+        self.filter.lowCut = -(width - self.filter.highCut);
     } else if([mode isEqualToString:@"AM"]) {
         self.filter.highCut = width / 2.0f;
         self.filter.lowCut = -self.filter.highCut;

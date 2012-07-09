@@ -22,7 +22,7 @@
 
 #import "XTDSPLowpassFilter.h"
 
-#import "XTBlackmanHarrisWindow.h"
+#import "XTDSPBlackmanHarrisWindow.h"
 #import "XTRealData.h"
 
 @implementation XTDSPLowpassFilter
@@ -40,7 +40,7 @@
 		int i;
 		// float runningSum = 0.0f;
 		
-		XTBlackmanHarrisWindow *windowData = [XTBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
+		XTDSPBlackmanHarrisWindow *windowData = [XTDSPBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
 		const float *window = [windowData bytes];
 		float *realCoefficients = [realKernel elements];
 		float *imaginaryCoefficients = [imaginaryKernel	elements];

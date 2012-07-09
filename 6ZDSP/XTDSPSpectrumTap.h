@@ -22,7 +22,7 @@
 
 #import "XTDSPModule.h"
 
-@class XTBlackmanHarrisWindow;
+@class XTDSPBlackmanHarrisWindow;
 @class XTRealData;
 
 @interface XTDSPSpectrumTap : XTDSPModule {
@@ -43,7 +43,7 @@
 	FFTSetup fftSetup;
 	int fftSize;
 	
-	XTBlackmanHarrisWindow *window;
+	XTDSPBlackmanHarrisWindow *window;
 	
 	NSRange bufferRange;
 	NSRange copyRange;

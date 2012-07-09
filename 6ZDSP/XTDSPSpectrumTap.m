@@ -25,7 +25,7 @@
 #import "XTDSPSpectrumTap.h"
 #import "XTDSPBlock.h"
 #import "XTRealData.h"
-#import "XTBlackmanHarrisWindow.h"
+#import "XTDSPBlackmanHarrisWindow.h"
 
 @implementation XTDSPSpectrumTap
 
@@ -44,7 +44,7 @@
 		fftSize = (int) ceilf(log2f((float) (elements)));
 		fftSetup = vDSP_create_fftsetup(fftSize, kFFTRadix2);	
 		
-		window = [XTBlackmanHarrisWindow blackmanHarrisWindowWithElements:elements];
+		window = [XTDSPBlackmanHarrisWindow blackmanHarrisWindowWithElements:elements];
 		bufferRange = NSMakeRange(0, elements);
 		copyRange = NSMakeRange(0, 1024);
 	}

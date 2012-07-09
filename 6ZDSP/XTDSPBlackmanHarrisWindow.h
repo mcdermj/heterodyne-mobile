@@ -20,7 +20,7 @@
 
 // $Id: XTBlackmanHarrisWindow.h 141 2010-03-18 21:19:57Z mcdermj $
 
-@interface XTBlackmanHarrisWindow : NSObject {
+@interface XTDSPBlackmanHarrisWindow : NSObject {
 	
 	NSMutableData *filterData;
 	
@@ -28,7 +28,7 @@
 
 -(id)initWithElements:(int)size;
 
-+(XTBlackmanHarrisWindow *)blackmanHarrisWindowWithElements:(int) size;
++(XTDSPBlackmanHarrisWindow *)blackmanHarrisWindowWithElements:(int) size;
 
 -(const void *)bytes;
 -(int)elementLength;

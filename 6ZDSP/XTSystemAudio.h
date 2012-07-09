@@ -23,14 +23,15 @@
 #import <AudioToolbox/AudioQueue.h>
 #import <AudioToolbox/AudioToolbox.h>
 
-@class OzyRingBuffer;
+@class XTRingBuffer;
 
 @interface XTSystemAudio : NSObject
 
 @property BOOL running;
+@property BOOL ready;
 @property int sampleRate;
 
--(id)initWithBuffer:(OzyRingBuffer *)_buffer andSampleRate:(int)sampleRate;
+-(id)initWithBuffer:(XTRingBuffer *)_buffer andSampleRate:(int)sampleRate;
 -(void)start;
 -(void)stop;
 -(void)beginInterruption;

@@ -120,8 +120,8 @@ typedef struct _metisProgramReply {
 
 @class XTSoftwareDefinedRadio;
 @class XTDSPBlock;
-@class OzyInputBuffers;
-@class OzyRingBuffer;
+@class XTBlockBuffer;
+@class XTRingBuffer;
 
 @interface NNHMetisDriver : NSObject {
 	NSMutableData *sampleData;
@@ -130,8 +130,8 @@ typedef struct _metisProgramReply {
 	int transmitterFrequency;
 	int receiverFrequency[8];	
 	
-	OzyInputBuffers *ep4Buffers;
-	OzyRingBuffer *outputBuffer;
+	XTBlockBuffer *ep4Buffers;
+	XTRingBuffer *outputBuffer;
 	
 	NSOperationQueue *operationQueue;
 		
@@ -209,7 +209,7 @@ typedef struct _metisProgramReply {
 -(BOOL)start;
 -(BOOL)stop;
 
-@property (readonly) OzyInputBuffers *ep4Buffers;
+@property (readonly) XTBlockBuffer *ep4Buffers;
 @property (readonly) int mercuryVersion;
 @property (readonly) int ozyVersion;
 @property (readonly) int penelopeVersion;
