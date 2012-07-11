@@ -826,6 +826,8 @@
 }	
 
 -(void)socketServiceLoop {
+    unsigned int sequenceNumber = 0;
+    
 	struct thread_time_constraint_policy ttcpolicy;
 	mach_timebase_info_data_t tTBI;
 	double mult;
@@ -884,9 +886,20 @@
 		if(bytesRead != sizeof(MetisPacket)) {
 			NSLog(@"Short read from network.\n");
 			continue;
-		}
+        }
         
 		if(ntohs(buffer->header.magic) == 0xEFFE) {
+            buffer->header.sequence = CFSwapInt32BigToHost(buffer->header.sequence);
+            if(sequenceNumber == 0)
+                sequenceNumber = buffer->header.sequence - 1;
+            
+            if(buffer->header.sequence < ++sequenceNumber) {
+                NSLog(@"Out of order packet.  Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+            } else if(buffer->header.sequence > sequenceNumber) {
+                NSLog(@"Skipped packet. Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+                sequenceNumber = buffer->header.sequence;
+            }
+            
 			switch(buffer->header.endpoint) {
 				case 6:
 					[self processInputBuffer:metisData];
@@ -929,7 +942,7 @@
 	
 	if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
 		NSLog(@" Failed to set realtime priority\n");
-	} 	
+	} 
 	NSLog(@"Beginning write thread\n");
 	
     [writeLoopLock lock];
