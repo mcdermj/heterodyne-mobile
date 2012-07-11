@@ -64,8 +64,13 @@
     _display = [[UILabel alloc] initWithFrame:frame];
     _display.textAlignment = UITextAlignmentCenter;
     _display.backgroundColor = [UIColor blackColor];
-    _display.textColor = [UIColor whiteColor];
-    _display.text = [self formattedFrequency];;
+    _display.textColor = [UIColor redColor];
+    _display.text = [self formattedFrequency];
+    _display.minimumFontSize = 18.0;
+    _display.adjustsFontSizeToFitWidth = YES;
+    _display.numberOfLines = 1;
+    _display.baselineAdjustment = UIBaselineAdjustmentAlignCenters;
+    _display.font = [UIFont fontWithName:@"DBLCDTempBlack" size:28.0];
     [self addSubview:_display];
     
     y += height;
