@@ -121,10 +121,10 @@
         imagSum = imagSum == 0.0f ? 1.0f : imagSum;
         
          //  Make the filter have unity gain.
-        for(i = 0; i < size; ++i) {
+        /* for(i = 0; i < size; ++i) {
             realCoefficients[i] /= realSum;
             imaginaryCoefficients[i] /= imagSum;
-        }
+        } */
         
  		vDSP_fft_zip(fftSetup, &kernel, 1, fftSize, kFFTDirection_Forward);	
  	}
