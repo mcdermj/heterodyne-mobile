@@ -130,8 +130,8 @@ inline static int toPow(float elements) {
     UIPinchGestureRecognizer *panadapterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanPinchGesture:)];
     [self.panadapter addGestureRecognizer:panadapterPinchGesture];
     
-    UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    [self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
+    //UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    //[self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
     
     delegate.sdr.tapSize = waterfall.textureWidth;
     
