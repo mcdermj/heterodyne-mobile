@@ -10,4 +10,13 @@
 
 @interface XTDSPAutomaticGainControl : XTDSPModule
 
+@property float attack;
+@property float decay;
+@property float slope;
+@property float target;
+@property float hangTime;
+@property float maxGain;
+@property float minGain;
+@property float currentGain;
+
 @end

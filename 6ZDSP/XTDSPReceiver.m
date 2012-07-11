@@ -17,6 +17,7 @@
 #import "XTDSPComplexToRealStereo.h"
 #import "XTDSPAMDemodulator.h"
 #import "XTDSPFixedGain.h"
+#import "XTDSPAutomaticGainControl.h"
 
 @interface XTDSPReceiver () {
     
@@ -69,7 +70,9 @@
                                                               lowCutoff:-300.0f
                                                           andHighCutoff:2700.0f]];
         
-        [dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:4.0f]];
+        [dspModules addObject:[[XTDSPAutomaticGainControl alloc] initWithSampleRate:sampleRate]];
+        
+        [dspModules addObject:[[XTDSPFixedGain alloc] initWithGain:0.5f]];
         
         [dspModules addObject:[[XTDSPComplexToRealStereo alloc] initWithSampleRate:sampleRate]];
         
