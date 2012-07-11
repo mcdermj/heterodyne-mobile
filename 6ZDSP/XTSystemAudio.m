@@ -106,7 +106,9 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     
     audioSession = [AVAudioSession sharedInstance];
     
-    if([audioSession setPreferredHardwareSampleRate:(float)sampleRate error:&audioSessionError] == NO) {
+    //if([audioSession setPreferredHardwareSampleRate:(float)sampleRate error:&audioSessionError] == NO) {
+    if([audioSession setPreferredHardwareSampleRate:48000.0f error:&audioSessionError] == NO) {
+            
         NSLog(@"Error setting preferred sample rate: %@\n", [audioSessionError localizedDescription]);
     }
     
@@ -128,7 +130,8 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	}	
 	
 	AudioStreamBasicDescription format;
-	format.mSampleRate = (float) sampleRate;
+	//format.mSampleRate = (float) sampleRate;
+    format.mSampleRate = 48000.0f;
 	format.mFormatID = kAudioFormatLinearPCM;
 	format.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
 	format.mBytesPerPacket = 8;
