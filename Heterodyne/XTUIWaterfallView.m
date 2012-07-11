@@ -268,7 +268,7 @@ static const float high = 19999.0;
     glDisableClientState(GL_VERTEX_ARRAY);
     glDepthMask(GL_TRUE);
     
-    glFlush();    
+    //glFlush();    
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, renderbuffer);
     [glContext presentRenderbuffer:GL_RENDERBUFFER_OES];
 }

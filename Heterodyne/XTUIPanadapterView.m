@@ -329,7 +329,6 @@ static const float zero = 0.0f;
     glDisable(GL_BLEND);
     
     glPopMatrix();
-    glFlush();
     free(verticies);
     
     glBindRenderbufferOES(GL_RENDERBUFFER_OES, renderbuffer);
