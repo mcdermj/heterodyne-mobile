@@ -30,6 +30,26 @@
 #import "XTRingBuffer.h"
 #import "XTSystemAudio.h"
 
+@interface XTSoftwareDefinedRadio () {
+	NSMutableArray *receivers;
+    NSCondition *receiverCondition;
+    int pendingReceivers;
+	
+	float sampleRate;
+    int audioDecimationFactor;
+	
+	XTDSPSpectrumTap *spectrumTap;
+    
+    BOOL systemAudioState;
+    XTSystemAudio *audioThread;
+    XTRingBuffer *audioBuffer;
+    
+    NSMutableData *sampleBufferData;
+	DSPComplex *sampleBuffer;
+}
+
+@end
+
 @implementation XTSoftwareDefinedRadio
 
 @synthesize receivers;

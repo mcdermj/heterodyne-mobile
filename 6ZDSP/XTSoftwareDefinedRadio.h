@@ -23,28 +23,9 @@
 #import <Accelerate/Accelerate.h>
 
 @class XTDSPBlock;
-@class XTDSPSpectrumTap;
 @class XTRealData;
-@class XTSystemAudio;
-@class XTRingBuffer;
 
-@interface XTSoftwareDefinedRadio : NSObject {
-	
-	NSMutableArray *receivers;
-    NSCondition *receiverCondition;
-    int pendingReceivers;
-	
-	float sampleRate;
-	
-	XTDSPSpectrumTap *spectrumTap;
-    
-    BOOL systemAudioState;
-    XTSystemAudio *audioThread;
-    XTRingBuffer *audioBuffer;
-    
-    NSMutableData *sampleBufferData;
-	DSPComplex *sampleBuffer;
-}
+@interface XTSoftwareDefinedRadio : NSObject
 
 @property float sampleRate;
 @property (readonly) NSArray *receivers;
