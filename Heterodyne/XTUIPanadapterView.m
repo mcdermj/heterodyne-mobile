@@ -68,6 +68,7 @@
 @property (strong, nonatomic) XTUIPanadapterView *view;
 @end
 
+
 @implementation XTUIPVTickLayer
 
 @synthesize view = _view;
@@ -85,8 +86,13 @@
     CGContextSetFillColorWithColor(ctx, [[UIColor blackColor] CGColor]);
     CGContextFillRect(ctx, self.bounds);
     
-    CGContextSetStrokeColorWithColor(ctx, [[UIColor whiteColor] CGColor]);
+    CGContextSetStrokeColorWithColor(ctx, [[UIColor grayColor] CGColor]);
     CGContextSetLineWidth(ctx, 0.5);
+    
+    static const CGFloat lineDashes[] = {
+        1, 2
+    };
+    CGContextSetLineDash(ctx, 0, lineDashes, 2);
     
     //  Reverse the coordinate system
     CGContextSetTextMatrix(ctx, CGAffineTransformIdentity);
@@ -268,19 +274,18 @@ static const float zero = 0.0f;
     const float *smoothBuffer = [inputData bytes];
     
     int numSamples = [inputData length] / sizeof(float);
-    verticies = malloc(([inputData length] * 2) + 4);
-    verticies[(numSamples * 2)] = 1.0;
-    verticies[(numSamples * 2) + 1] = 0.0;
-    verticies[(numSamples * 2) + 2] = 0.0;
-    verticies[(numSamples * 2) + 3] = 0.0;
     
+    verticies = malloc([inputData length] * 4);
+        
     negativeReferenceLevel = -self.referenceLevel;
-    vDSP_vsadd((float *) smoothBuffer, 1, &negativeReferenceLevel, &verticies[1], 2, numSamples);
+    vDSP_vsadd((float *) smoothBuffer, 1, &negativeReferenceLevel, &verticies[3], 4, numSamples);
     
-    vDSP_vsdiv(&verticies[1], 2, &_dynamicRange, &verticies[1], 2, numSamples);
+    vDSP_vsdiv(&verticies[3], 4, &_dynamicRange, &verticies[3], 4, numSamples);
     
-    float increment = 1.0f / numSamples;
-    vDSP_vramp((float *) &zero, &increment, verticies, 2, numSamples);
+    float increment = 1.0f / numSamples;    
+    vDSP_vfill((float *) &zero, &verticies[1], 4, numSamples);
+    vDSP_vramp((float *) &zero, &increment, verticies, 4, numSamples);
+    vDSP_vramp((float *) &zero, &increment, &verticies[2], 4, numSamples);
     
     //  Set up the framebuffer for drawing
     [EAGLContext setCurrentContext:glContext];
@@ -311,17 +316,20 @@ static const float zero = 0.0f;
     glShadeModel(GL_SMOOTH);
     
     GLfloat lineSizes[2];
-    //GLfloat lineStep;
     glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, lineSizes);
-    // glGetFloatv(GL_SMOOTH_LINE_WIDTH_GRANULARITY, linestep);
     glLineWidth(0.5);
     glColor4f(1.0, 1.0, 1.0, 1.0);
     
     glEnableClientState(GL_VERTEX_ARRAY);
-     glBufferData(GL_ARRAY_BUFFER, [inputData length] * 2, verticies, GL_STREAM_DRAW);
-    glVertexPointer(2, GL_FLOAT, 0, 0);
+    
+    glBufferData(GL_ARRAY_BUFFER, [inputData length] * 4, verticies, GL_STREAM_DRAW);
+    glVertexPointer(2, GL_FLOAT, 4 * sizeof(float), (const GLvoid *) (2 * sizeof(float)));
     glDrawArrays(GL_LINE_STRIP, 0, numSamples);
-    //glDrawArrays(GL_TRIANGLE_STRIP, 0, numSamples + 2);
+    
+    glColor4f(1.0, 1.0, 1.0, 0.25);
+    glVertexPointer(2, GL_FLOAT, 0, 0);
+    glDrawArrays(GL_TRIANGLE_STRIP, 0, numSamples * 2);
+    
     glDisableClientState(GL_VERTEX_ARRAY);
     
     glDepthMask(GL_TRUE);
