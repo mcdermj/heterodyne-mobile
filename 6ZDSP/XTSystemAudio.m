@@ -58,6 +58,7 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     NSThread *audioThread;
 }
 
+
 @end
 
 @implementation XTSystemAudio
@@ -207,9 +208,13 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     ready = YES;
     
 	@autoreleasepool {
-        NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:0.5]];
+        //  Figure out the duration of time the current sample represents so that we can figure out how much time to wait for data before we give up and just send back an empty buffer.
+        //  Give it a 20% fudge factor to account for miscellaneous delays.
+        double duration = ((auBuffer->mDataByteSize / (2 * sizeof(float))) / 48000.0) * 1.25;
+        NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:duration]];
         if(audioBuffer == NULL) {
             NSLog(@"Couldn't get a fresh buffer.\n");
+            memset(auBuffer->mData, 0, auBuffer->mDataByteSize);
             return;
         }
 	
@@ -263,7 +268,7 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 
 OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
 	XTSystemAudio *self = (__bridge XTSystemAudio *) userData;
-		
+        
 	for(int i = 0; i < ioData->mNumberBuffers; ++i) {
 		[self fillAUBuffer: &(ioData->mBuffers[i])];
 	}
