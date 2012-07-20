@@ -275,7 +275,9 @@ static const float scaling = 0.66;
 }
 
 -(void)handlePanPinchGesture:(UIPinchGestureRecognizer *)recognizer {
-    self.panadapter.dynamicRange *= recognizer.scale;
+    self.panadapter.dynamicRange /= recognizer.scale;
+    recognizer.scale = 1.0;
+}
     recognizer.scale = 1.0;
 }
 
