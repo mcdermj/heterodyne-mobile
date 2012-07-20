@@ -232,4 +232,11 @@ typedef struct _metisProgramReply {
 
 @property BOOL gotDiscovery;
 
+@property unsigned long packetsIn;
+@property unsigned long droppedPacketsIn;
+@property unsigned long outOfOrderPacketsIn;
+@property unsigned long packetsOut;
+@property unsigned long bytesIn;
+@property unsigned long bytesOut;
+
 @end

@@ -49,6 +49,12 @@
 @synthesize txGain;
 @synthesize sdr;
 @synthesize gotDiscovery;
+@synthesize packetsIn;
+@synthesize droppedPacketsIn;
+@synthesize outOfOrderPacketsIn;
+@synthesize packetsOut;
+@synthesize bytesIn;
+@synthesize bytesOut;
 
 +(NSString *)name {
 	return @"Metis Driver";
@@ -882,11 +888,15 @@
 			}
 			continue;
 		}
+        
+        bytesIn += bytesRead;
 		
 		if(bytesRead != sizeof(MetisPacket)) {
 			NSLog(@"Short read from network.\n");
 			continue;
         }
+        
+        ++packetsIn;
         
 		if(ntohs(buffer->header.magic) == 0xEFFE) {
             buffer->header.sequence = CFSwapInt32BigToHost(buffer->header.sequence);
@@ -894,9 +904,12 @@
                 sequenceNumber = buffer->header.sequence - 1;
             
             if(buffer->header.sequence < ++sequenceNumber) {
-                NSLog(@"Out of order packet.  Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+                //NSLog(@"Out of order packet.  Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+                ++outOfOrderPacketsIn;
+                continue;
             } else if(buffer->header.sequence > sequenceNumber) {
-                NSLog(@"Skipped packet. Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+                //NSLog(@"Skipped packet. Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
+                droppedPacketsIn += buffer->header.sequence - sequenceNumber;
                 sequenceNumber = buffer->header.sequence;
             }
             
@@ -904,6 +917,8 @@
 				case 6:
 					[self processInputBuffer:metisData];
 					break;
+                default:
+                    NSLog(@"Received packet for invalid endpoint %d\n", buffer->header.endpoint);
 			}
 		} else {
 			NSLog(@"Invalid packet received: %@\n", metisData);
@@ -986,6 +1001,9 @@
                 NSLog(@"Short write to network.\n");
                 continue;
             }
+            
+            bytesOut += bytesWritten;
+            ++packetsOut;
         }
 	}
     [writeLoopLock unlock];

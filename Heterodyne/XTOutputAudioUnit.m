@@ -37,6 +37,11 @@
 
 -(void)stop {
 	OSStatus errNo;
+    
+    if(theUnit == NULL) {
+        NSLog(@"Output Audio Unit is NULL\n");
+        return;
+    }
 	
 	errNo = AudioOutputUnitStop(theUnit);
 	if(errNo != noErr) {
