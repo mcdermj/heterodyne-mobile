@@ -130,6 +130,9 @@ inline static int toPow(float elements) {
     UIPinchGestureRecognizer *panadapterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanPinchGesture:)];
     [self.panadapter addGestureRecognizer:panadapterPinchGesture];
     
+    UIPinchGestureRecognizer *waterfallPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleWaterfallPinchGesture:)];
+    [self.waterfall addGestureRecognizer:waterfallPinchGesture];
+    
     //UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
     //[self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
     
@@ -278,6 +281,9 @@ static const float scaling = 0.66;
     self.panadapter.dynamicRange /= recognizer.scale;
     recognizer.scale = 1.0;
 }
+
+-(void)handleWaterfallPinchGesture:(UIPinchGestureRecognizer *)recognizer {
+    self.waterfall.dynamicRange /= recognizer.scale;
     recognizer.scale = 1.0;
 }
 
