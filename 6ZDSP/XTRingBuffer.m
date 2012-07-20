@@ -30,8 +30,8 @@
     unsigned int insertIndex;
     unsigned int removeIndex;
     
-    unsigned int size;
-    unsigned int entries;
+    // unsigned int size;
+    // unsigned int entries;
 	
 	NSCondition *sizeLock;
 	
@@ -41,6 +41,9 @@
 @end
 
 @implementation XTRingBuffer
+
+@synthesize size;
+@synthesize entries;
 
 -(id)initWithEntries: (int)_size {
 	self = [super init];

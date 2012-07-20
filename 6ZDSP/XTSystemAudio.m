@@ -210,8 +210,16 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	@autoreleasepool {
         //  Figure out the duration of time the current sample represents so that we can figure out how much time to wait for data before we give up and just send back an empty buffer.
         //  Give it a 20% fudge factor to account for miscellaneous delays.
-        double duration = ((auBuffer->mDataByteSize / (2 * sizeof(float))) / 48000.0) * 1.25;
-        NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:duration]];
+        //double duration = ((auBuffer->mDataByteSize / (2 * sizeof(float))) / 48000.0) * 1.25;
+        //NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:duration]];
+        
+        if(buffer.entries < auBuffer->mDataByteSize) {
+            memset(auBuffer->mData, 0, auBuffer->mDataByteSize);
+            return;
+        }
+        
+        NSData *audioBuffer = [buffer get:auBuffer->mDataByteSize];
+        
         if(audioBuffer == NULL) {
             NSLog(@"Couldn't get a fresh buffer.\n");
             memset(auBuffer->mData, 0, auBuffer->mDataByteSize);
@@ -220,8 +228,6 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	
         memcpy(auBuffer->mData, [audioBuffer bytes], [audioBuffer length]);
     }
-	
-	return;
 }
 
 #pragma mark - Interruption handling

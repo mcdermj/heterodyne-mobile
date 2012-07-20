@@ -23,6 +23,8 @@
 @interface XTRingBuffer : NSObject
 
 @property (readonly) unsigned int space;
+@property (readonly) unsigned int size;
+@property (readonly) unsigned int entries;
 
 -(id)initWithEntries: (int)_size;
 -(id)initWithEntries: (int)size andName:(NSString *)theName;
