@@ -48,6 +48,11 @@ inline static int toPow(float elements) {
     XTWorkerThread *glThread;
     
     int textureSize;
+    
+    float panVelocity;
+    NSTimer *momentumTimer;
+    
+    BOOL horizontalScrolling;
 }
 
 @property (weak) UIPopoverController *currentPopover;
@@ -137,6 +142,8 @@ inline static int toPow(float elements) {
     //[self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
     
     delegate.sdr.tapSize = waterfall.textureWidth;
+    
+    panVelocity = 0;
     
     NSLog(@"Finished viewDidLoad\n");
 }
@@ -247,7 +254,27 @@ static const float scaling = 0.66;
 
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     CGPoint translation = [recognizer translationInView:recognizer.view.superview];
+    
+    // Figure out whether the touch was primarily in the horizontal or vertical direction
+    if(recognizer.state == UIGestureRecognizerStateBegan) {
+        if(abs(translation.x) >= abs(translation.y))
+            horizontalScrolling = YES;
+         else 
+            horizontalScrolling = NO;
+    }
+    
+    if(horizontalScrolling == YES) 
+        [self handleHorizontalScroll:recognizer];
+    else 
+        [self handleVerticalScroll:recognizer];
+    
+    [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view.superview];
+}
+
+-(void)handleHorizontalScroll:(UIPanGestureRecognizer *)recognizer {
+    CGPoint translation = [recognizer translationInView:recognizer.view.superview];
     float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(recognizer.view.bounds);
+    CGPoint velocity = [recognizer velocityInView:self.panadapter];
 
     switch(recognizer.numberOfTouches) {
         case 1:
@@ -261,11 +288,35 @@ static const float scaling = 0.66;
     }
     
     [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (translation.x * hzPerUnit) forReceiver:0];
+    
+    //  Code to handle momentum scrolling.  Does not activate if the velocity is too low, or you're doing fine tuning.
+    if(recognizer.state == UIGestureRecognizerStateEnded && abs(velocity.x) > 50) {
+        panVelocity = velocity.x;
+        momentumTimer = [NSTimer scheduledTimerWithTimeInterval:0.1 target:self selector:@selector(panMomentumScroll) userInfo:nil repeats:YES];
+    }
+}
+
+-(void)handleVerticalScroll:(UIPanGestureRecognizer *)recognizer {
+    CGPoint translation = [recognizer translationInView:recognizer.view.superview];
+
     if(recognizer.view == self.panadapter) {
         float dbPerUnit = self.panadapter.dynamicRange / CGRectGetHeight(self.panadapter.bounds);
         self.panadapter.referenceLevel += translation.y * dbPerUnit;
     }
-    [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view.superview];
+}
+
+-(void)panMomentumScroll {
+    float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(panadapter.bounds);
+    float distance = panVelocity * 0.1;
+    
+    if(abs(panVelocity) < .0001) {
+        [momentumTimer invalidate];
+        return;
+    }
+    
+    [delegate.driver setFrequency:[delegate.driver getFrequency:0] - (distance * hzPerUnit) forReceiver:0];
+    
+    panVelocity /= 4;
 }
 
 -(void)handleTapGesture:(UITapGestureRecognizer *)recognizer {
