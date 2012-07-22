@@ -70,6 +70,12 @@
         filterWidth.minimumValue = 10.0f;
     }
     
+    if(mainReceiver.filterWidth > filterWidth.maximumValue)
+        mainReceiver.filterWidth = filterWidth.maximumValue;
+    
+    if(mainReceiver.filterWidth < filterWidth.minimumValue)
+        mainReceiver.filterWidth = filterWidth.minimumValue;
+    
     [filterWidth setValue:mainReceiver.filterWidth animated:YES];
     
     filterLabel.text = [NSString stringWithFormat:@"%d Hz", (int) filterWidth.value];
