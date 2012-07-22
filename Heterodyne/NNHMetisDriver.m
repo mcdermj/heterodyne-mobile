@@ -31,6 +31,7 @@
 #include <mach/mach_init.h>
 #include <mach/mach_time.h>
 #include <sys/time.h>
+#include <fcntl.h>
 
 @implementation NNHMetisDriver
 
@@ -680,9 +681,9 @@
     
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NNHMetisDriverWillPerformDiscovery" object:self];
 	
-	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
+	while(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
 		NSLog(@"Setting receive timeout failed: %s\n", strerror(errno));
-		return NO;
+		//return NO;
 	}
 		
 	while(gotDiscovery == NO && stopDiscovery == NO) {
@@ -788,9 +789,27 @@
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"NNHMetisDriverDidCompleteDiscovery" object:nil];
 }
 
+-(void)emptyMetisSocket {
+    unsigned char garbage[1520];
+    int bytesRead;
+    
+    if(fcntl(metisSocket, F_SETFL, O_NONBLOCK) == -1) {
+        NSLog(@"Couldn't set the metis socket to nonblocking\n");
+    }
+        
+    while((bytesRead = recvfrom(metisSocket, (void *) garbage, sizeof(garbage), 0, NULL, NULL)) > 0);
+    
+    if(fcntl(metisSocket, F_SETFL, 0) == -1) {
+        NSLog(@"Couldn't set the metis socket to nonblocking\n");
+    }
+    
+}
+
 -(BOOL) start {
 	
 	stopDiscovery = NO;
+    
+    [self emptyMetisSocket];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
     
@@ -805,6 +824,8 @@
 	
 	stopDiscovery = YES;
     running = NO;
+    
+    while(![writeLoopLock tryLock] || ![socketServiceLoopLock tryLock]);
 	
 	stopPacket.magic = htons(0xEFFE);
 	stopPacket.opcode = 0x04;
@@ -827,6 +848,9 @@
 		NSLog(@"Short write to network.\n");
 		return NO;
 	}
+    
+    [writeLoopLock unlock];
+    [socketServiceLoopLock unlock];
 
 	return YES;
 }	
@@ -866,7 +890,12 @@
     NSMutableData *metisData = [NSMutableData dataWithLength:sizeof(MetisPacket)];
     MetisPacket *buffer = (MetisPacket *) [metisData bytes];
 	
-    [socketServiceLoopLock lock];
+    NSLog(@"Beginning Socket Service Thread\n");
+    if(![socketServiceLoopLock lockBeforeDate:[NSDate dateWithTimeIntervalSinceNow:5.0]]) {
+        NSLog(@"Timeout acquiring thread lock\n");
+        return;
+    }
+    
 	while(running == YES) {
 				
 		bytesRead = recvfrom(metisSocket, 
@@ -960,7 +989,11 @@
 	} 
 	NSLog(@"Beginning write thread\n");
 	
-    [writeLoopLock lock];
+    if(![writeLoopLock lockBeforeDate:[NSDate dateWithTimeIntervalSinceNow:5.0]]) {
+        NSLog(@"Timeout acquiring thread lock\n");
+        return;
+    }
+
     [outputBuffer clear];
 	while(running == YES) {
         @autoreleasepool {
