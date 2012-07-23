@@ -30,10 +30,14 @@
 
 +(id)audioUnitWithType:(OSType)type subType:(OSType)subType andManufacturer:(OSType)manufacturer;
 
--(OSStatus)setProperty:(AudioUnitPropertyID)property withScope:(AudioUnitScope)scope andData:(NSData *)data;
+-(OSStatus)setProperty:(AudioUnitPropertyID)property withScope:(AudioUnitScope)scope bus:(UInt32)bus andData:(NSData *)data;
 -(OSStatus)setInputFormat:(AudioStreamBasicDescription *)format;
+-(OSStatus)setOutputFormat:(AudioStreamBasicDescription *)format;
 -(OSStatus)setMaxFramesPerSlice:(UInt32)frames;
--(OSStatus)setCallback:(AURenderCallbackStruct *)callback;
+-(OSStatus)setOutputCallback:(AURenderCallbackStruct *)callback;
+-(OSStatus)setInputCallback:(AURenderCallbackStruct *)callback;
+-(OSStatus)enablePlayback;
+-(OSStatus)enableRecording;
 -(id)initWithType:(OSType)type subType:(OSType)subType andManufacturer:(OSType)manufacturer;
 -(void)initialize;
 -(void)uninitialize;

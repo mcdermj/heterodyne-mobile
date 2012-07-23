@@ -26,6 +26,7 @@
 #import "XTRingBuffer.h"
 
 #import <AVFoundation/AVAudioSession.h>
+#import <AudioUnit/AudioUnit.h>
 
 #include <mach/semaphore.h>
 
@@ -40,11 +41,13 @@ kern_return_t   thread_policy_set(
                                   mach_msg_type_number_t          count);
 
 
-OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
+static OSStatus outputCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
+static OSStatus inputCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData);
 void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void *propertyValue);
 
 @interface XTSystemAudio () {
     XTRingBuffer *buffer;
+    XTRingBuffer *inputBuffer;
     
 	XTAudioUnit *equalizerAudioUnit;
 	XTOutputAudioUnit *defaultOutputUnit;
@@ -56,8 +59,13 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	int sampleRate;
     
     NSThread *audioThread;
+    
+    AudioBufferList inputBufferList;
 }
 
+-(void)fillAUBuffer: (AudioBuffer *) auBuffer;
+
+@property XTOutputAudioUnit *defaultOutputUnit;
 
 @end
 
@@ -65,12 +73,20 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 
 @synthesize running;
 @synthesize ready;
+@synthesize defaultOutputUnit;
+@synthesize inputBuffer;
 
 -(id)initWithBuffer:(XTRingBuffer *) _buffer andSampleRate:(int)theSampleRate {
 	self = [super init];
 	if(self) {
 		buffer = _buffer;
 		running = NO;
+        
+        inputBuffer = [[XTRingBuffer alloc] initWithEntries:10240];
+        inputBufferList.mNumberBuffers = 1;
+        inputBufferList.mBuffers[0].mNumberChannels = 1;
+        inputBufferList.mBuffers[0].mDataByteSize = 4096;
+        inputBufferList.mBuffers[0].mData = malloc(inputBufferList.mBuffers[0].mDataByteSize);
 		
 		sampleRate = theSampleRate;
 		
@@ -107,28 +123,45 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     
     audioSession = [AVAudioSession sharedInstance];
     
-    //if([audioSession setPreferredHardwareSampleRate:(float)sampleRate error:&audioSessionError] == NO) {
     if([audioSession setPreferredHardwareSampleRate:48000.0f error:&audioSessionError] == NO) {
             
         NSLog(@"Error setting preferred sample rate: %@\n", [audioSessionError localizedDescription]);
     }
     
     audioSessionError = nil;
-    if([audioSession setCategory:AVAudioSessionCategoryPlayback error:&audioSessionError] == NO) {
+    if([audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionError] == NO) {
         NSLog(@"Error setting audio category: %@\n", [audioSessionError localizedDescription]);
     }
 
 	defaultOutputUnit = [XTOutputAudioUnit remoteIOAudioUnit];
+    
+    //  Enable recording and playback
+    if((errNo = [defaultOutputUnit enableRecording]) != noErr) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
+        NSLog(@"Error enabling recording: %@\n", [error localizedDescription]);
+    }
+    if((errNo = [defaultOutputUnit enablePlayback]) != noErr) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
+        NSLog(@"Error enabling recording: %@\n", [error localizedDescription]);
+    }
 	
 	AURenderCallbackStruct renderCallback;
-	renderCallback.inputProc = audioUnitCallback;
+	renderCallback.inputProc = outputCallback;
 	renderCallback.inputProcRefCon = (__bridge_retained void *) self;
 	
-	errNo = [defaultOutputUnit setCallback:&renderCallback];
-	if(errNo != noErr) {
+	if((errNo = [defaultOutputUnit setOutputCallback:&renderCallback]) != noErr) {
         NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
 		NSLog(@"Error setting callback: %@\n", [error localizedDescription]);
-	}	
+	}
+    
+    //  Set up the input callback
+    renderCallback.inputProc = inputCallback;
+    renderCallback.inputProcRefCon = (__bridge_retained void *) self;
+    
+    if((errNo = [defaultOutputUnit setInputCallback:&renderCallback]) != noErr) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
+		NSLog(@"Error setting callback: %@\n", [error localizedDescription]);
+	}
 	
 	AudioStreamBasicDescription format;
 	//format.mSampleRate = (float) sampleRate;
@@ -141,18 +174,38 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	format.mChannelsPerFrame = 2;
 	format.mBitsPerChannel = 32;
 	
-	errNo = [defaultOutputUnit setInputFormat:&format];
-	if(errNo != noErr) {
+	if((errNo = [defaultOutputUnit setInputFormat:&format]) != noErr) {
         NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
-		NSLog(@"Error setting callback: %@\n", [error localizedDescription]);
+		NSLog(@"Error setting input format: %@\n", [error localizedDescription]);
 	}
     
-    static const UInt32 doChangeDefaultRoute = 1;
-    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(doChangeDefaultRoute), &doChangeDefaultRoute);
+    
+    //  Set up the input stream format.  This is mono, not stereo.
+    format.mSampleRate = 48000.0f;
+	format.mFormatID = kAudioFormatLinearPCM;
+	format.mFormatFlags = kAudioFormatFlagIsFloat | kAudioFormatFlagsNativeEndian | kAudioFormatFlagIsPacked;
+	format.mBytesPerPacket = 4;
+	format.mBytesPerFrame = 4;
+	format.mFramesPerPacket = 1;
+	format.mChannelsPerFrame = 1;
+	format.mBitsPerChannel = 32;
+    
+    if((errNo = [defaultOutputUnit setOutputFormat:&format]) != noErr) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
+        NSLog(@"Error setting output format: %@\n", [error localizedDescription]);
+    }
+    
+    static const UInt32 one = 1;
+    if((errNo = [defaultOutputUnit setProperty:kAudioUnitProperty_ShouldAllocateBuffer withScope:kAudioUnitScope_Input bus:1 andData:[NSData dataWithBytes:&one length:sizeof(one)]]) != noErr) {
+        NSError *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:errNo userInfo:nil];
+        NSLog(@"Error setting input buffer allocation policy: %@\n", [error localizedDescription]);
+    }
+    
+    AudioSessionSetProperty(kAudioSessionProperty_OverrideCategoryDefaultToSpeaker, sizeof(one), &one);
     
     static const AudioSessionPropertyID routeChangeID = kAudioSessionProperty_AudioRouteChange;
     
-    AudioSessionAddPropertyListener(routeChangeID, audioRouteChangeCallback, (__bridge void *) self);
+    // AudioSessionAddPropertyListener(routeChangeID, audioRouteChangeCallback, (__bridge void *) self);
 	
 	[defaultOutputUnit setMaxFramesPerSlice:8192];
 	
@@ -160,8 +213,6 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	[defaultOutputUnit start];	
 	[buffer clear];	
 
-	[NSThread setThreadPriority:1.0];
-		
 	//  You need a dummy port added to the run loop so that the thread doesn't freak out
 	[[NSRunLoop currentRunLoop] addPort:[NSMachPort port] forMode:NSDefaultRunLoopMode];
     
@@ -199,20 +250,15 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 
 -(void)start {
     audioThread = [[NSThread alloc] initWithTarget:self selector:@selector(audioProcessingLoop) object:nil];
+    [inputBuffer clear];
     [audioThread start];
-	// [NSThread detachNewThreadSelector:@selector(audioProcessingLoop) toTarget:self withObject:nil];
 }
 
 
 -(void)fillAUBuffer: (AudioBuffer *) auBuffer {
     ready = YES;
     
-	@autoreleasepool {
-        //  Figure out the duration of time the current sample represents so that we can figure out how much time to wait for data before we give up and just send back an empty buffer.
-        //  Give it a 20% fudge factor to account for miscellaneous delays.
-        //double duration = ((auBuffer->mDataByteSize / (2 * sizeof(float))) / 48000.0) * 1.25;
-        //NSData *audioBuffer = [buffer waitForSize: auBuffer->mDataByteSize withTimeout:[NSDate dateWithTimeIntervalSinceNow:duration]];
-        
+	@autoreleasepool {        
         if(buffer.entries < auBuffer->mDataByteSize) {
             memset(auBuffer->mData, 0, auBuffer->mDataByteSize);
             return;
@@ -228,6 +274,18 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 	
         memcpy(auBuffer->mData, [audioBuffer bytes], [audioBuffer length]);
     }
+}
+
+-(void) renderInputWithTimestamp: (const AudioTimeStamp *) inTimeStamp actionFlags: (AudioUnitRenderActionFlags *) actionFlags busNumber: (UInt32) inBusNumber andNumFrames: (UInt32) inNumberFrames {
+    OSStatus errNo;
+    
+    errNo = AudioUnitRender(*(defaultOutputUnit.unit), actionFlags, inTimeStamp, inBusNumber, inNumberFrames, &inputBufferList);
+    
+    [inputBuffer put:[NSData dataWithBytes:inputBufferList.mBuffers[0].mData length:inputBufferList.mBuffers[0].mDataByteSize]];
+}
+
+-(void)processInputBuffer: (AudioBuffer *) auBuffer {    
+    [inputBuffer put:[NSData dataWithBytes:auBuffer->mData length:auBuffer->mDataByteSize]];
 }
 
 #pragma mark - Interruption handling
@@ -269,17 +327,24 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     return sampleRate;
 }
 
-
 @end
 
-OSStatus audioUnitCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
+static OSStatus outputCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
 	XTSystemAudio *self = (__bridge XTSystemAudio *) userData;
-        
+    
 	for(int i = 0; i < ioData->mNumberBuffers; ++i) {
 		[self fillAUBuffer: &(ioData->mBuffers[i])];
 	}
-	
+    
 	return kCVReturnSuccess;
+}
+
+static OSStatus inputCallback (void *userData, AudioUnitRenderActionFlags *actionFlags, const AudioTimeStamp *inTimeStamp, UInt32 inBusNumber, UInt32 inNumberFrames, AudioBufferList *ioData) {
+    XTSystemAudio *self = (__bridge XTSystemAudio *) userData;
+    
+    [self renderInputWithTimestamp: inTimeStamp actionFlags: actionFlags busNumber: inBusNumber andNumFrames: inNumberFrames];
+    
+    return kCVReturnSuccess;
 }
 
 void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID, UInt32 propertyValueSize, const void *propertyValue) {

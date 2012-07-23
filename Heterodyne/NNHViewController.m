@@ -190,10 +190,16 @@ inline static int toPow(float elements) {
 - (void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
+    [[UIApplication sharedApplication] beginReceivingRemoteControlEvents];
+    
+    [self becomeFirstResponder];
 }
 
 - (void)viewWillDisappear:(BOOL)animated
 {
+    [[UIApplication sharedApplication] endReceivingRemoteControlEvents];
+    [self resignFirstResponder];
+    
 	[super viewWillDisappear:animated];
 }
 
@@ -205,6 +211,10 @@ inline static int toPow(float elements) {
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
     // Return YES for supported orientations
+    return YES;
+}
+
+-(BOOL)canBecomeFirstResponder {
     return YES;
 }
 
@@ -373,6 +383,28 @@ static const float scaling = 0.66;
         [currentPopover dismissPopoverAnimated:YES];
     } else {
         [self performSegueWithIdentifier:@"statsPopover" sender:sender];
+    }
+}
+
+#pragma mark - Remote control handling
+
+-(void)remoteControlReceivedWithEvent:(UIEvent *)event {
+    if(event.type != UIEventTypeRemoteControl) 
+        return;
+        
+    switch(event.subtype) {
+        case UIEventSubtypeRemoteControlTogglePlayPause:
+            NSLog(@"Toggled Play/Pause\n");
+            break;
+        case UIEventSubtypeRemoteControlPlay:
+            NSLog(@"Pressed Play\n");
+            break;
+        case UIEventSubtypeRemoteControlPause:
+            NSLog(@"Pressed Pause\n");
+            break;
+        default:
+            NSLog(@"Other remote event\n");
+            break;
     }
 }
 

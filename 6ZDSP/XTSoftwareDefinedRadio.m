@@ -46,6 +46,8 @@
     
     NSMutableData *sampleBufferData;
 	DSPComplex *sampleBuffer;
+    
+    BOOL transmitterRunning;
 }
 
 @end
@@ -100,9 +102,12 @@
     audioBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 32 andName: @"audio"];
     audioThread = [[XTSystemAudio alloc] initWithBuffer:audioBuffer andSampleRate: sampleRate];
     [audioThread start];
+    
+    [NSThread detachNewThreadSelector:@selector(transmitterLoop) toTarget:self withObject:nil];
 }
 
 -(void)stop {
+    transmitterRunning = NO;
 	[audioThread stop];
 }
 
@@ -170,6 +175,22 @@
 
 -(int)tapSize {
     return [spectrumTap elements];
+}
+
+-(void)transmitterLoop {
+    NSData *micData;
+    XTDSPBlock *transmitterBlock = [XTDSPBlock dspBlockWithBlockSize:1024];
+    
+    [NSThread setThreadPriority:1.0];
+    
+    transmitterRunning = YES;
+    
+    while(transmitterRunning) {
+        micData = [audioThread.inputBuffer waitForSize:1024];
+        memcpy(transmitterBlock.realData.elements, micData.bytes, micData.length);
+    }
+    
+    NSLog(@"Transmitter thread done\n");
 }
 
 @end

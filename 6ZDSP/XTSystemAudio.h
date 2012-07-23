@@ -30,6 +30,7 @@
 @property BOOL running;
 @property BOOL ready;
 @property int sampleRate;
+@property XTRingBuffer *inputBuffer;
 
 -(id)initWithBuffer:(XTRingBuffer *)_buffer andSampleRate:(int)sampleRate;
 -(void)start;

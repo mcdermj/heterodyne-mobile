@@ -22,6 +22,9 @@
 
 #import "XTAudioUnit.h"
 
+#define kOutputBus 0
+#define kInputBus 1
+
 @implementation XTAudioUnit
 
 +(id)audioUnitWithType:(OSType)type subType:(OSType)subType andManufacturer:(OSType)manufacturer {
@@ -84,20 +87,41 @@
 	return &theUnit;
 }
 
--(OSStatus)setProperty:(AudioUnitPropertyID)property withScope:(AudioUnitScope)scope andData:(NSData *)data {
-	return AudioUnitSetProperty(theUnit, property, scope, 0, [data bytes], [data length]);
+-(OSStatus)setProperty:(AudioUnitPropertyID)property withScope:(AudioUnitScope)scope bus:(UInt32)bus andData:(NSData *)data {
+	return AudioUnitSetProperty(theUnit, property, scope, bus, [data bytes], [data length]);
 }
 
 -(OSStatus)setInputFormat:(AudioStreamBasicDescription *)format {
-	return [self setProperty:kAudioUnitProperty_StreamFormat withScope:kAudioUnitScope_Input andData:[NSData dataWithBytes:format length:sizeof(AudioStreamBasicDescription)]];
+	return [self setProperty:kAudioUnitProperty_StreamFormat withScope:kAudioUnitScope_Input bus:kOutputBus andData:[NSData dataWithBytes:format length:sizeof(AudioStreamBasicDescription)]];
+}
+
+-(OSStatus)setOutputFormat:(AudioStreamBasicDescription *)format {
+    return [self setProperty:kAudioUnitProperty_StreamFormat withScope:kAudioUnitScope_Output bus:kInputBus andData:[NSData dataWithBytes:format length:sizeof(AudioStreamBasicDescription)]];
+}
+
+-(OSStatus)enableRecording {
+    UInt32 flag = 1;
+    
+    return [self setProperty:kAudioOutputUnitProperty_EnableIO withScope:kAudioUnitScope_Input bus:kInputBus andData:[NSData dataWithBytes:&flag length:sizeof(flag)]];
+}
+
+-(OSStatus)enablePlayback {
+    UInt32 flag = 1;
+    
+    return [self setProperty:kAudioOutputUnitProperty_EnableIO withScope:kAudioUnitScope_Output bus:kOutputBus andData:[NSData dataWithBytes:&flag length:sizeof(flag)]];
 }
 
 -(OSStatus)setMaxFramesPerSlice:(UInt32)frames {
-	return [self setProperty:kAudioUnitProperty_MaximumFramesPerSlice withScope:kAudioUnitScope_Global andData:[NSData dataWithBytes:&frames length:sizeof(frames)]];
+	return [self setProperty:kAudioUnitProperty_MaximumFramesPerSlice withScope:kAudioUnitScope_Global bus:kOutputBus andData:[NSData dataWithBytes:&frames length:sizeof(frames)]];
 }
 
--(OSStatus)setCallback:(AURenderCallbackStruct *)callback {
-	return [self setProperty:kAudioUnitProperty_SetRenderCallback withScope:kAudioUnitScope_Input andData:[NSData dataWithBytes:callback length:sizeof(AURenderCallbackStruct)]];
+-(OSStatus)setOutputCallback:(AURenderCallbackStruct *)callback {
+	return [self setProperty:kAudioUnitProperty_SetRenderCallback withScope:kAudioUnitScope_Global bus:kOutputBus andData:[NSData dataWithBytes:callback length:sizeof(AURenderCallbackStruct)]];
 }
+
+-(OSStatus)setInputCallback:(AURenderCallbackStruct *)callback {
+	return [self setProperty:kAudioOutputUnitProperty_SetInputCallback withScope:kAudioUnitScope_Global bus:kInputBus andData:[NSData dataWithBytes:callback length:sizeof(AURenderCallbackStruct)]];
+}
+
 
 @end
