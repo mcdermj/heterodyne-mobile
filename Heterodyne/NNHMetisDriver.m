@@ -32,6 +32,9 @@
 #include <mach/mach_time.h>
 #include <sys/time.h>
 #include <fcntl.h>
+#include <sys/types.h>
+#include <sys/socket.h>
+#include <ifaddrs.h>
 
 @implementation NNHMetisDriver
 
@@ -154,16 +157,35 @@
 		sampleData = [NSMutableData dataWithLength:sizeof(OzySamplesOut) * 128];
 		outBuffer = (OzySamplesOut *) [sampleData mutableBytes];		
 		
+        //  Find out our network interfaces so that we can find the WiFi interface
+        struct ifaddrs *interfaces;
+        struct sockaddr_in bindAddress;
+        
+        bindAddress.sin_len = sizeof(bindAddress);
+		bindAddress.sin_family = AF_INET;
+		bindAddress.sin_addr.s_addr = htonl(INADDR_ANY);
+        
+        if(getifaddrs(&interfaces)) {
+            NSLog(@"Couldn't get interface list: %s\n", strerror(errno));
+        }
+        
+        for(struct ifaddrs *iterator = interfaces; iterator->ifa_next != NULL; iterator = iterator->ifa_next) {
+            struct sockaddr_in *interfaceAddress = (struct sockaddr_in *) iterator->ifa_addr;
+            
+            if(interfaceAddress->sin_family != AF_INET) continue;
+            
+            if(!strcmp("en0", iterator->ifa_name)) {
+                NSLog(@"Found WiFi Interface at IP %s\n", inet_ntoa(interfaceAddress->sin_addr));
+                memcpy(&bindAddress, interfaceAddress, sizeof(bindAddress));
+            }
+        }
+        
+        freeifaddrs(interfaces);
+        
+        bindAddress.sin_port = 0;
+        
 		//  Create a socket to communicate with Metis
 		metisSocket = socket(PF_INET, SOCK_DGRAM, 0);
-		
-		//  Bind it to port 1024
-		struct sockaddr_in bindAddress;
-		bindAddress.sin_len = sizeof(bindAddress);
-		bindAddress.sin_family = AF_INET;
-		bindAddress.sin_port = 0;
-		bindAddress.sin_addr.s_addr = htonl(INADDR_ANY);
-		
 		
 		if(bind(metisSocket, (struct sockaddr *) &bindAddress, sizeof(bindAddress)) == -1)
 			NSLog(@"Couldn'g bind socket: %s\n", strerror(errno));
