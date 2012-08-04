@@ -162,13 +162,28 @@
     GLuint renderbuffer;
     GLuint vertexBuffer;
     GLuint depthRenderBuffer;
+    GLuint vertexArray;
     GLint width;
     GLint height;
     CADisplayLink *displayLink;
     
     float _dynamicRange;
     float _referenceLevel;
+    
+    NSMutableData *verticiesData;
+    float *verticies;
+    
+    NSMutableData *shadedAreaIndiciesData;
+    GLushort *shadedAreaIndicies;
+    GLuint shadedAreaIndexBuffer;
+    
+    NSMutableData *lineIndiciesData;
+    GLushort *lineIndicies;
+    GLuint lineIndexBuffer;
 }
+
+-(void)setupGLContext;
+
 @end
 
 @implementation XTUIPanadapterView
@@ -204,31 +219,11 @@
         [[self layer] addSublayer:filterLayer];
         [filterLayer setNeedsDisplay];
         
-        //  Create an OpenGL Context
-        glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
-        if(!glContext || ![EAGLContext setCurrentContext:glContext]) {
-            NSLog(@"Couldn't create context\n");
-        }
+        [self setupGLContext];
         
-        glGenFramebuffersOES(1, &framebuffer);
-        glGenRenderbuffersOES(1, &renderbuffer);
-        
-        glBindFramebufferOES(GL_FRAMEBUFFER_OES, framebuffer);
-        glBindRenderbuffer(GL_RENDERBUFFER_OES, renderbuffer);
-        //[glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:(CAEAGLLayer *)self.layer];
-        [glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:signalLayer];
-        glFramebufferRenderbuffer(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, renderbuffer);
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &width);
-        glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &height);
-        
-        GLenum status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
-        if(status != GL_FRAMEBUFFER_COMPLETE_OES) {
-            NSLog(@"Framebuffer creation failed %x", status);
-        }
-        
-        glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureWidth);
-        
-        NSLog(@"Maximum Texture Size for this platform is %d\n", [self textureWidth]);
+        verticiesData = [NSMutableData dataWithLength:1];
+        lineIndiciesData = [NSMutableData dataWithLength:1];
+        shadedAreaIndiciesData = [NSMutableData dataWithLength:1];
         
         [[NSNotificationCenter defaultCenter] addObserver:tickLayer selector:@selector(setNeedsDisplay) name:@"XTFrequencyChanged" object:nil];
         [[NSNotificationCenter defaultCenter] addObserver:filterLayer selector:@selector(setNeedsDisplay) name:@"XTReceiverFilterDidChange" object:nil];
@@ -237,6 +232,73 @@
 
     }
     return self;
+}
+
+-(void)setupGLContext {
+    //  Create an OpenGL Context
+    glContext = [[EAGLContext alloc] initWithAPI:kEAGLRenderingAPIOpenGLES1];
+    if(!glContext || ![EAGLContext setCurrentContext:glContext]) {
+        NSLog(@"Couldn't create context\n");
+    }
+    
+    glGenFramebuffersOES(1, &framebuffer);
+    glGenRenderbuffersOES(1, &renderbuffer);
+    
+    glBindFramebufferOES(GL_FRAMEBUFFER_OES, framebuffer);
+    glBindRenderbuffer(GL_RENDERBUFFER_OES, renderbuffer);
+    
+    [glContext renderbufferStorage:GL_RENDERBUFFER_OES fromDrawable:signalLayer];
+    glFramebufferRenderbuffer(GL_FRAMEBUFFER_OES, GL_COLOR_ATTACHMENT0_OES, GL_RENDERBUFFER_OES, renderbuffer);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_WIDTH_OES, &width);
+    glGetRenderbufferParameteriv(GL_RENDERBUFFER_OES, GL_RENDERBUFFER_HEIGHT_OES, &height);
+    
+    GLenum status = glCheckFramebufferStatusOES(GL_FRAMEBUFFER_OES);
+    if(status != GL_FRAMEBUFFER_COMPLETE_OES) {
+        NSLog(@"Framebuffer creation failed %x", status);
+    }
+    
+    glGetIntegerv(GL_MAX_TEXTURE_SIZE, &textureWidth);
+    
+    glGenBuffers(1, &vertexBuffer);
+    glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+    
+    glGenVertexArraysOES(1, &vertexArray);
+    glBindVertexArrayOES(vertexArray);
+    
+    glGenBuffers(1, &lineIndexBuffer);
+    
+    glGenBuffers(1, &shadedAreaIndexBuffer);
+    
+    glViewport(0, 0, width, height);
+    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
+    glShadeModel(GL_SMOOTH);
+    glLineWidth(0.5);
+    
+    glMatrixMode(GL_PROJECTION);
+    glLoadIdentity();
+    glOrthof(0.0, width, 0.0, height, 0, 1);
+    
+    glScalef(width, height, 1.0);
+    glMatrixMode(GL_MODELVIEW);
+    
+    glDepthMask(GL_FALSE);
+    
+    GLfloat lineSizes[2];
+    glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, lineSizes);
+    
+    glEnable(GL_BLEND);
+    glEnable(GL_LINE_SMOOTH);
+    glDisable(GL_DITHER);
+    glDisable(GL_ALPHA_TEST);
+    glDisable(GL_STENCIL_TEST);
+    glDisable(GL_FOG);
+    glDisable(GL_TEXTURE_2D);
+    glDisable(GL_DEPTH_TEST);
+    
+    glEnableClientState(GL_VERTEX_ARRAY);
+    
+    NSLog(@"Maximum Texture Size for this platform is %d\n", [self textureWidth]);
 }
 
 #pragma mark - Accessors
@@ -268,80 +330,57 @@
 static const float zero = 0.0f;
 
 -(void)drawFrameWithData:(NSData *) inputData {
-    float *verticies;
     float negativeReferenceLevel;
     
     const float *smoothBuffer = [inputData bytes];
     
     int numSamples = [inputData length] / sizeof(float);
     
-    verticies = malloc([inputData length] * 4);
-        
-    negativeReferenceLevel = -self.referenceLevel;
-    vDSP_vsadd((float *) smoothBuffer, 1, &negativeReferenceLevel, &verticies[3], 4, numSamples);
-    
-    vDSP_vsdiv(&verticies[3], 4, &_dynamicRange, &verticies[3], 4, numSamples);
-    
-    float increment = 1.0f / numSamples;    
-    vDSP_vfill((float *) &zero, &verticies[1], 4, numSamples);
-    vDSP_vramp((float *) &zero, &increment, verticies, 4, numSamples);
-    vDSP_vramp((float *) &zero, &increment, &verticies[2], 4, numSamples);
-    
     //  Set up the framebuffer for drawing
     [EAGLContext setCurrentContext:glContext];
-    glBindFramebuffer(GL_FRAMEBUFFER, framebuffer);
-    
-    if(glIsBuffer(vertexBuffer) == GL_FALSE) {
-        glGenBuffers(1, &vertexBuffer);
-        glBindBuffer(GL_ARRAY_BUFFER, vertexBuffer);
+            
+    if(verticiesData.length != inputData.length * 4) {
+        verticiesData.length = inputData.length * 4;
+        verticies = (float *) verticiesData.mutableBytes;
+        glVertexPointer(2, GL_FLOAT, 0, 0);
+        
+        lineIndiciesData.length = numSamples * sizeof(GLushort);
+        lineIndicies = lineIndiciesData.mutableBytes;
+        for(int i = 0, j = 1; i < numSamples; ++i, j += 2)
+            lineIndicies[i] = j;
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lineIndexBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numSamples * sizeof(GLushort), lineIndicies, GL_STATIC_DRAW);
+                
+        shadedAreaIndiciesData.length = numSamples * sizeof(GLushort) * 2;
+        shadedAreaIndicies = shadedAreaIndiciesData.mutableBytes;
+        for(int i = 0; i < numSamples * 2; ++i)
+            shadedAreaIndicies[i] = i;
+        glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shadedAreaIndexBuffer);
+        glBufferData(GL_ELEMENT_ARRAY_BUFFER, numSamples * sizeof(GLushort) * 2, shadedAreaIndicies, GL_STATIC_DRAW);
+        
+        float increment = 1.0f / numSamples;
+        vDSP_vfill((float *) &zero, &verticies[1], 4, numSamples);
+        vDSP_vramp((float *) &zero, &increment, verticies, 4, numSamples);
+        vDSP_vramp((float *) &zero, &increment, &verticies[2], 4, numSamples);
     }
     
-    glClearColor(0, 0, 0, 0.0);
-    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    negativeReferenceLevel = -self.referenceLevel;
+    vDSP_vsadd((float *) smoothBuffer, 1, &negativeReferenceLevel, &verticies[3], 4, numSamples);
+    vDSP_vsdiv(&verticies[3], 4, &_dynamicRange, &verticies[3], 4, numSamples);
         
-    glViewport(0, 0, width, height);
+    glBufferData(GL_ARRAY_BUFFER, [inputData length] * 4, verticies, GL_DYNAMIC_DRAW);
     
-    glMatrixMode(GL_PROJECTION);
-    glLoadIdentity();
-    glOrthof(0.0, width, 0.0, height, 0, 1);
-    glPushMatrix();
-    glScalef(width, height, 1.0);
-    glMatrixMode(GL_MODELVIEW); 
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     
-    glEnable(GL_BLEND);
-    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-    glEnable(GL_LINE_SMOOTH);
-    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
-    glDepthMask(GL_FALSE);
-    glShadeModel(GL_SMOOTH);
-    
-    GLfloat lineSizes[2];
-    glGetFloatv(GL_SMOOTH_LINE_WIDTH_RANGE, lineSizes);
-    glLineWidth(0.5);
     glColor4f(1.0, 1.0, 1.0, 1.0);
-    
-    glEnableClientState(GL_VERTEX_ARRAY);
-    
-    glBufferData(GL_ARRAY_BUFFER, [inputData length] * 4, verticies, GL_STREAM_DRAW);
-    glVertexPointer(2, GL_FLOAT, 4 * sizeof(float), (const GLvoid *) (2 * sizeof(float)));
-    glDrawArrays(GL_LINE_STRIP, 0, numSamples);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, lineIndexBuffer);
+    glDrawElements(GL_LINE_STRIP, numSamples, GL_UNSIGNED_SHORT, 0);
     
     glColor4f(1.0, 1.0, 1.0, 0.25);
-    glVertexPointer(2, GL_FLOAT, 0, 0);
-    glDrawArrays(GL_TRIANGLE_STRIP, 0, numSamples * 2);
-    
-    glDisableClientState(GL_VERTEX_ARRAY);
-    
-    glDepthMask(GL_TRUE);
-    glDisable(GL_LINE_SMOOTH);
-    glDisable(GL_BLEND);
-    
-    glPopMatrix();
-    free(verticies);
-    
-    glBindRenderbufferOES(GL_RENDERBUFFER_OES, renderbuffer);
+    glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, shadedAreaIndexBuffer);
+    glDrawElements(GL_TRIANGLE_STRIP, numSamples * 2, GL_UNSIGNED_SHORT, 0);
+        
     [glContext presentRenderbuffer:GL_RENDERBUFFER_OES];
-    
 }
 
 @end
