@@ -84,16 +84,16 @@
 static const float headerScaling = 1060.0 / 1032.0;
 
 -(void)updateStats {
-    packetsIn.text = [NSString stringWithFormat:@"%d (%d/sec)", driver.packetsIn, driver.packetsIn - oldPacketsIn];
+    packetsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec)", driver.packetsIn, driver.packetsIn - oldPacketsIn];
     oldPacketsIn = driver.packetsIn;
     
-    droppedPacketsIn.text = [NSString stringWithFormat:@"%d (%d/sec) %.2f %%", driver.droppedPacketsIn, driver.droppedPacketsIn - oldDroppedPacketsIn, driver.packetsIn / driver.droppedPacketsIn];
+    droppedPacketsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec) %.2f %%", driver.droppedPacketsIn, driver.droppedPacketsIn - oldDroppedPacketsIn, (double) driver.packetsIn / (double) driver.droppedPacketsIn];
     oldDroppedPacketsIn = driver.droppedPacketsIn;
 
-    outOfOrderPacketsIn.text = [NSString stringWithFormat:@"%d (%d/sec)", driver.outOfOrderPacketsIn, driver.outOfOrderPacketsIn - oldOutOfOrderPacketsIn];
+    outOfOrderPacketsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec)", driver.outOfOrderPacketsIn, driver.outOfOrderPacketsIn - oldOutOfOrderPacketsIn];
     oldOutOfOrderPacketsIn = driver.outOfOrderPacketsIn;
 
-    packetsOut.text = [NSString stringWithFormat:@"%d (%d/sec)", driver.packetsOut, driver.packetsOut - oldPacketsOut];
+    packetsOut.text = [NSString stringWithFormat:@"%lu (%lu/sec)", driver.packetsOut, driver.packetsOut - oldPacketsOut];
     oldPacketsOut = driver.packetsOut;
     
     bandwidthIn.text = [NSString stringWithFormat:@"%.2f Mbps", (float) ((driver.bytesIn - oldBytesIn) * 8) / 1000000.0f * headerScaling];

@@ -112,10 +112,6 @@
 	vDSP_fft_zip(fftSetup, &fftOut, 1,
 				 fftSize, kFFTDirection_Forward);
 	
-    //NSLog(@"Buffer length = %d, Tap Length = %d\n", [destinationData elementLength], [realTapBuffer elementLength]);
-    int bufferDataLength = [realTapBuffer elementLength];
-	//int length = [destinationData elementLength] > bufferDataLength ? 
-	//bufferDataLength : [destinationData elementLength];
 	int length = [destinationData elementLength];
     
 	[destinationData clearElements];

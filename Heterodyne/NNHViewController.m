@@ -158,12 +158,11 @@ inline static int toPow(float elements) {
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
+        
     glThread = [[XTWorkerThread alloc] init];
     glThread.name = @"OpenGL Processing";
     [glThread start];
     [self performSelector:@selector(setupDisplayLink) onThread:glThread withObject:nil waitUntilDone:NO];
-    
 }
 
 -(void)pauseDisplayLink {
@@ -178,11 +177,8 @@ inline static int toPow(float elements) {
 - (void)setupDisplayLink {
     displayLink = [CADisplayLink displayLinkWithTarget:self selector:@selector(drawFrame)];
     
-    NSLog(@"Refresh Rate is %d\n", [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"]); 
-/*    if([[NNHAppDelegate getHardwareVersion] isEqualToString:@"iPad1,1"]) {
-        NSLog(@"iPad 1 detected, cranking down framerate\n");
-        displayLink.frameInterval = 1;
-    } */
+    NSLog(@"Refresh Rate is %d\n", [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"]);
+    
     displayLink.frameInterval = [[NSUserDefaults standardUserDefaults] integerForKey:@"refreshRate"];
     [displayLink addToRunLoop:[NSRunLoop currentRunLoop] forMode:NSRunLoopCommonModes];
 }
