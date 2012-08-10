@@ -61,6 +61,8 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     NSThread *audioThread;
     
     AudioBufferList inputBufferList;
+    
+    NSMutableData *inputBufferData;
 }
 
 -(void)fillAUBuffer: (AudioBuffer *) auBuffer;
@@ -82,11 +84,13 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 		buffer = _buffer;
 		running = NO;
         
+        inputBufferData = [NSMutableData dataWithLength:4096];
+        
         inputBuffer = [[XTRingBuffer alloc] initWithEntries:10240];
         inputBufferList.mNumberBuffers = 1;
         inputBufferList.mBuffers[0].mNumberChannels = 1;
-        inputBufferList.mBuffers[0].mDataByteSize = 4096;
-        inputBufferList.mBuffers[0].mData = malloc(inputBufferList.mBuffers[0].mDataByteSize);
+        inputBufferList.mBuffers[0].mDataByteSize = inputBufferData.length;
+        inputBufferList.mBuffers[0].mData = inputBufferData.mutableBytes;
 		
 		sampleRate = theSampleRate;
 		
@@ -281,11 +285,7 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     
     errNo = AudioUnitRender(*(defaultOutputUnit.unit), actionFlags, inTimeStamp, inBusNumber, inNumberFrames, &inputBufferList);
     
-    [inputBuffer put:[NSData dataWithBytes:inputBufferList.mBuffers[0].mData length:inputBufferList.mBuffers[0].mDataByteSize]];
-}
-
--(void)processInputBuffer: (AudioBuffer *) auBuffer {    
-    [inputBuffer put:[NSData dataWithBytes:auBuffer->mData length:auBuffer->mDataByteSize]];
+    [inputBuffer put:inputBufferData];
 }
 
 #pragma mark - Interruption handling
