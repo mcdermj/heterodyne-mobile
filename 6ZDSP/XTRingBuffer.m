@@ -90,11 +90,18 @@
 }
 
 -(void)put: (NSData *) _data {
+    //  This function really needs to get fixed to be able to handle large buffers that will copy more than once.
+    
 	@synchronized(self) {
-		if([self space] < [_data length]) {
+		/* if([self space] < [_data length]) {
 			NSLog(@"buffer: %@ space=%d, wanted=%d, entries=%d, length=%d\n", name, [self space], (int) [_data length], entries, size);
 			return;
-		}
+		} */
+        
+        if(_data.length > size) {
+            NSLog(@"Incoming data too large to fit in an empty buffer.");
+            return;
+        }
         
         const void *dataBytes = [_data bytes];
         		
@@ -109,7 +116,12 @@
             memcpy(buffer, dataBytes + firstFragmentLength, secondFragmentLength);            
 			insertIndex = secondFragmentLength;
 		}
-        entries += [_data length];
+        
+        if((entries += [_data length]) > size) {
+            removeIndex = insertIndex + 1;
+            entries = size;
+        }
+        //entries += [_data length];
 	}
 	
 	[sizeLock lock];
