@@ -225,7 +225,7 @@ static const float high = 19999.0;
         
         // XXX This function is a hog.
         vDSP_vsort(sortBuffer, textureWidth, 1);
-        negLow = -sortBuffer[1024];
+        negLow = -sortBuffer[textureWidth / 5];
         
         scale = 20008.0f / dynamicRange; 
         
