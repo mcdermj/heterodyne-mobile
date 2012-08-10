@@ -84,8 +84,6 @@ inline static int toPow(float elements) {
     [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(beginDiscovery) name: @"NNHMetisDriverWillBeginDiscovery" object: nil];
     
     discoveryWindow = nil;
-    if(driver.gotDiscovery == NO) 
-        [self beginDiscovery];
     
     dataBuffer = [XTRealData realDataWithElements:waterfall.textureWidth];
     spectrumBuffer = [dataBuffer elements];
@@ -428,11 +426,10 @@ static const float scaling = 0.66;
     [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
 }
 
--(void)beginDiscovery {
+-(void)discoveryStarted {
     discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     
     [discoveryWindow show];
-
 }
 
 @end

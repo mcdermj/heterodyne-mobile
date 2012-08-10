@@ -24,4 +24,7 @@
 -(void)pauseDisplayLink;
 -(void)resumeDisplayLink;
 
+-(void)discoveryStarted;
+-(void)discoveryComplete;
+
 @end

@@ -52,7 +52,7 @@
 @synthesize micGain;
 @synthesize txGain;
 @synthesize sdr;
-@synthesize gotDiscovery;
+@synthesize discoveryStatus;
 @synthesize packetsIn;
 @synthesize droppedPacketsIn;
 @synthesize outOfOrderPacketsIn;
@@ -690,8 +690,8 @@
 	}
 }	
 
--(BOOL)performDiscovery {
-	gotDiscovery = NO;
+-(void)performDiscovery {
+	discoveryStatus = DISCOVERY_IN_PROGRESS;
 	MetisDiscoveryReply reply;
 	struct sockaddr_in replyAddress;
 	socklen_t replyAddressLen;
@@ -708,7 +708,7 @@
 		//return NO;
 	}
 		
-	while(gotDiscovery == NO && stopDiscovery == NO) {
+	while(discoveryStatus == DISCOVERY_IN_PROGRESS && stopDiscovery == NO) {
 		char ipAddr[32];
 		
 		[self sendDiscover];		
@@ -744,7 +744,7 @@
 				metisAddressStruct.sin_addr.s_addr = replyAddress.sin_addr.s_addr;
 				running = YES;
 				
-				gotDiscovery = YES;
+				discoveryStatus = DISCOVERY_COMPLETE;
 			}
 		} else {
 			if(inet_ntop(AF_INET, &(replyAddress.sin_addr.s_addr), ipAddr, 32) == NULL) {
@@ -762,11 +762,12 @@
 	timeout.tv_sec = 0;
 	if(setsockopt(metisSocket, SOL_SOCKET, SO_RCVTIMEO, &timeout, sizeof(timeout)) == -1) {
 		NSLog(@"Resetting receive timeout failed: %s\n", strerror(errno));
-		return NO;
+		return;
 	}	
 	
     [[NSNotificationCenter defaultCenter] postNotificationName:@"NNHMetisDriverDidCompleteDiscovery" object:self];
-	return gotDiscovery;
+    
+	return;
 }
 
 
@@ -873,6 +874,8 @@
     
     [writeLoopLock unlock];
     [socketServiceLoopLock unlock];
+    
+    discoveryStatus = DISCOVERY_NOT_ACTIVE;
 
 	return YES;
 }	

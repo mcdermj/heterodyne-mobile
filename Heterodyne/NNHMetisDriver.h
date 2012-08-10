@@ -37,6 +37,10 @@
 
 #define XVERTER 3
 
+#define DISCOVERY_NOT_ACTIVE 0
+#define DISCOVERY_IN_PROGRESS 1
+#define DISCOVERY_COMPLETE 2
+
 typedef struct _ozySamplesOut {
 	int16_t leftRx;
 	int16_t rightRx;
@@ -230,7 +234,7 @@ typedef struct _metisProgramReply {
 @property float micGain;
 @property float txGain;
 
-@property BOOL gotDiscovery;
+@property int discoveryStatus;
 
 @property unsigned long packetsIn;
 @property unsigned long droppedPacketsIn;
