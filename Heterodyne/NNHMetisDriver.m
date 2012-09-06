@@ -955,9 +955,9 @@
 		if(ntohs(buffer->header.magic) == 0xEFFE) {
             buffer->header.sequence = CFSwapInt32BigToHost(buffer->header.sequence);
             if(sequenceNumber == 0)
-                sequenceNumber = buffer->header.sequence - 1;
+                sequenceNumber = buffer->header.sequence;
             
-            if(buffer->header.sequence < ++sequenceNumber) {
+            if(buffer->header.sequence < sequenceNumber) {
                 //NSLog(@"Out of order packet.  Expected sequence %u, got %u\n", sequenceNumber, buffer->header.sequence);
                 ++outOfOrderPacketsIn;
                 continue;
@@ -966,6 +966,8 @@
                 droppedPacketsIn += buffer->header.sequence - sequenceNumber;
                 sequenceNumber = buffer->header.sequence;
             }
+            
+            ++sequenceNumber;
             
 			switch(buffer->header.endpoint) {
 				case 6:

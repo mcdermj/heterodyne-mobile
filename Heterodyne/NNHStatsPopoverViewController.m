@@ -87,7 +87,7 @@ static const float headerScaling = 1060.0 / 1032.0;
     packetsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec)", driver.packetsIn, driver.packetsIn - oldPacketsIn];
     oldPacketsIn = driver.packetsIn;
     
-    droppedPacketsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec) %.2f %%", driver.droppedPacketsIn, driver.droppedPacketsIn - oldDroppedPacketsIn, (double) driver.packetsIn / (double) driver.droppedPacketsIn];
+    droppedPacketsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec) %.2f %%", driver.droppedPacketsIn, driver.droppedPacketsIn - oldDroppedPacketsIn, (double) driver.droppedPacketsIn / (double) driver.packetsIn];
     oldDroppedPacketsIn = driver.droppedPacketsIn;
 
     outOfOrderPacketsIn.text = [NSString stringWithFormat:@"%lu (%lu/sec)", driver.outOfOrderPacketsIn, driver.outOfOrderPacketsIn - oldOutOfOrderPacketsIn];
