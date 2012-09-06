@@ -80,8 +80,8 @@ inline static int toPow(float elements) {
     delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
     NNHMetisDriver *driver = [delegate driver];
     
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(beginDiscovery) name: @"NNHMetisDriverWillBeginDiscovery" object: nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(beginDiscovery) name: @"NNHMetisDriverWillBeginDiscovery" object: nil];
     
     discoveryWindow = nil;
     
@@ -423,13 +423,18 @@ static const float scaling = 0.66;
 #pragma mark - Discovery handling
 
 -(void)discoveryComplete {
-    [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
+    if(discoveryWindow != nil) {
+        [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
+        discoveryWindow = nil;
+    }
 }
 
 -(void)discoveryStarted {
-    discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    if(discoveryWindow == nil) {
+        discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     
-    [discoveryWindow show];
+        [discoveryWindow show];
+    }
 }
 
 @end

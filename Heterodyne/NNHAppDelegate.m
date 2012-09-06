@@ -16,6 +16,12 @@
 
 #include <sys/utsname.h>
 
+@interface NNHAppDelegate () {
+    UIAlertView *discoveryWindow;
+}
+
+@end
+
 @implementation NNHAppDelegate
 
 @synthesize window = _window;
@@ -32,6 +38,8 @@
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    
+    discoveryWindow = nil;
     
     [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
@@ -57,6 +65,9 @@
     mainReceiver.highCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"highCut"];
     mainReceiver.lowCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"LowCut"];
     mainReceiver.mode = [[NSUserDefaults standardUserDefaults] stringForKey:@"mode"];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(discoveryComplete) name: @"NNHMetisDriverDidCompleteDiscovery" object: nil];
+    //[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(beginDiscovery) name: @"NNHMetisDriverWillBeginDiscovery" object: nil];
     
     [_driver start];
     [_sdr start];
@@ -129,8 +140,11 @@
      Restart any tasks that were paused (or not yet started) while the application was inactive. If the application was previously in the background, optionally refresh the user interface.
      */
     
+    discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
+    [discoveryWindow show];
+    
     NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
-    [rootController discoveryStarted];
+    //[rootController discoveryStarted];
 }
 
 - (void)applicationWillTerminate:(UIApplication *)application
@@ -154,6 +168,19 @@
     
     [self.driver stop];
     [self.sdr stop];
+}
+
+#pragma mark - Discovery handling
+
+-(void)discoveryComplete {
+    [self performSelectorOnMainThread:@selector(dismissDiscoveryWindow) withObject:nil waitUntilDone:NO];
+}
+
+-(void)dismissDiscoveryWindow {
+    if(discoveryWindow != nil) {
+        [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
+        discoveryWindow = nil;
+    }
 }
 
 @end
