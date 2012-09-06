@@ -55,6 +55,7 @@
 @implementation XTSoftwareDefinedRadio
 
 @synthesize receivers;
+@synthesize outputBuffer;
 
 -(void)loadParams {
 	BOOL newSystemAudioState = [[NSUserDefaults standardUserDefaults] boolForKey:@"systemAudio"];
@@ -94,6 +95,8 @@
 		spectrumTap = [[XTDSPSpectrumTap alloc] initWithSampleRate: sampleRate andSize: 4096];
         
         receiverCondition = [[NSCondition alloc] init];
+        
+        outputBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 32 andName: @"output"];
 	}
 	return self;
 }
@@ -145,6 +148,7 @@
         //vDSP_ztoc([complexData signal], 1, sampleBuffer, 2, [complexData blockSize]);
 		vDSP_ztoc([complexData signal], audioDecimationFactor, sampleBuffer, 2, [complexData blockSize] / audioDecimationFactor);
 		[audioBuffer put:sampleBufferData];
+        [outputBuffer put:sampleBufferData];
 	}
 }
 

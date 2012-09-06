@@ -24,12 +24,14 @@
 
 @class XTDSPBlock;
 @class XTRealData;
+@class XTRingBuffer;
 
 @interface XTSoftwareDefinedRadio : NSObject
 
 @property float sampleRate;
 @property (readonly) NSArray *receivers;
 @property (nonatomic) int tapSize;
+@property (readonly) XTRingBuffer *outputBuffer;
 
 -(id)initWithSampleRate: (float)initialSampleRate;
 -(void)processComplexSamples: (XTDSPBlock *)complexData;
