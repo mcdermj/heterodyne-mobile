@@ -385,10 +385,11 @@ static const float scaling = 0.66;
 -(void)remoteControlReceivedWithEvent:(UIEvent *)event {
     if(event.type != UIEventTypeRemoteControl) 
         return;
-        
+            
     switch(event.subtype) {
         case UIEventSubtypeRemoteControlTogglePlayPause:
             NSLog(@"Toggled Play/Pause\n");
+            [delegate.sdr togglePtt];
             break;
         case UIEventSubtypeRemoteControlPlay:
             NSLog(@"Pressed Play\n");

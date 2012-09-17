@@ -32,11 +32,14 @@
 @property (readonly) NSArray *receivers;
 @property (nonatomic) int tapSize;
 @property (readonly) XTRingBuffer *outputBuffer;
+@property (readonly) XTRingBuffer *transmitterBuffer;
+@property BOOL Ptt;
 
 -(id)initWithSampleRate: (float)initialSampleRate;
 -(void)processComplexSamples: (XTDSPBlock *)complexData;
 -(void)tapSpectrumWithRealData:(XTRealData *)spectrumData;
 -(void)start;
 -(void)stop;
+-(void)togglePtt;
 
 @end

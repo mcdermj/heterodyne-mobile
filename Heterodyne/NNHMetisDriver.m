@@ -942,7 +942,10 @@
 	double mult;
 	NSMutableData *packetData = [NSMutableData dataWithLength:sizeof(MetisPacket)];
 	MetisPacket *packet = (MetisPacket *) [packetData mutableBytes];
+    
 	NSData *bufferData;
+    NSMutableData *transmitterData = nil;
+    
 	int bytesWritten;
     int i, j, samplesProcessed;
 	
@@ -982,13 +985,18 @@
                 continue;
             }
             const float *buffer = [bufferData bytes];
+            const float *transmitterBuffer;
             
-            /* mox = NO;
-            for(int i = 5; i < [bufferData length]; i += 8)
-                if(buffer[i] != 0x00) {
-                    mox = YES;
-                    break;
-                } */
+            transmitterBuffer = nil;
+            mox = NO;
+            
+            if(sdr.transmitterBuffer.entries > 0) {
+                int size = sdr.transmitterBuffer.entries > 252 * sizeof(float) ? 252 * sizeof(float) : sdr.transmitterBuffer.entries;
+                transmitterData = [NSMutableData dataWithData:[sdr.transmitterBuffer get:size]];
+                [transmitterData setLength:252 * sizeof(float)];
+                transmitterBuffer = [transmitterData bytes];
+                mox = YES;
+            }
             
             packet->header.sequence = htonl(metisWriteSequence++);	
             [self fillHeader:packet->packets[0].header];
@@ -996,12 +1004,19 @@
             
             for(j = 0, samplesProcessed = 0; j < 2; ++j)
                 for(i = 0; i < 63; ++i) {
-                    packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
-                    packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
-                    packet->packets[j].samples.out[i].leftTx = 0;
-                    packet->packets[j].samples.out[i].rightTx = 0;
+                    if(transmitterBuffer) {
+                        packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        packet->packets[j].samples.out[i].leftTx = CFSwapInt16HostToBig((int16_t)(transmitterBuffer[samplesProcessed] * 32767.0f));
+                        packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        packet->packets[j].samples.out[i].rightTx = CFSwapInt16HostToBig((int16_t)(transmitterBuffer[samplesProcessed] * 32767.0f));
+                    } else {
+                        packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        packet->packets[j].samples.out[i].leftTx = 0;
+                        packet->packets[j].samples.out[i].rightTx = 0;
+                    }
                 }
-            
+                       
             bytesWritten = sendto(metisSocket, 
                                   packet, 
                                   sizeof(MetisPacket), 
