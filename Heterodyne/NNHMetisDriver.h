@@ -64,7 +64,10 @@ typedef struct _ozySamplesIn {
 typedef struct _ozyPacket {
 	char magic[3];
 	char header[5];
-	OzySamplesIn samples[63];
+    union _samples {
+        OzySamplesIn in[63];
+        OzySamplesOut out[63];
+    } samples;
 } __attribute__((packed)) OzyPacket;
 
 typedef struct _metisPacket {
@@ -135,10 +138,7 @@ typedef struct _metisProgramReply {
 	int receiverFrequency[8];	
 	
 	XTBlockBuffer *ep4Buffers;
-	XTRingBuffer *outputBuffer;
-	
-	NSOperationQueue *operationQueue;
-		
+			
 	BOOL ADCOverflow;
 	
 	int mercuryVersion;
@@ -151,11 +151,7 @@ typedef struct _metisProgramReply {
 	
 	float leftMicBuffer[DTTSP_BUFFER_SIZE];
 	float rightMicBuffer[DTTSP_BUFFER_SIZE];
-	float leftTxBuffer[DTTSP_BUFFER_SIZE];
-	float rightTxBuffer[DTTSP_BUFFER_SIZE];
 	int samples;
-	
-	int outputSampleIncrement;
 	
 	int headerSequence;
 	
@@ -199,8 +195,6 @@ typedef struct _metisProgramReply {
 	
 	BOOL running;
 	
-//	XTSoftwareDefinedRadio *sdr;
-    
     NSLock *socketServiceLoopLock;
     NSLock *writeLoopLock;
         

@@ -145,10 +145,7 @@
 
 //		[[NSUserDefaults standardUserDefaults] registerDefaults:driverDefaults];
 		
-		operationQueue = [[NSOperationQueue alloc] init];
-		
 		ep4Buffers = [[XTBlockBuffer alloc] initWithSize:BANDSCOPE_BUFFER_SIZE quantity: 16];
-		outputBuffer = [[XTRingBuffer alloc] initWithEntries:(16 * sizeof(MetisPacket)) andName:@"Metis Output Buffer"];
 				
 		[[NSNotificationCenter defaultCenter] addObserver:self selector: @selector(loadParams) name: NSUserDefaultsDidChangeNotification object: nil];
 
@@ -210,9 +207,6 @@
 }
 
 -(void)processInputBuffer:(NSData *)buffer {
-    int c = 0;
-	int k = 0;
-	
 	OzyPacket *currentOzyPacket;
 	OzySamplesIn *inSamples;
     
@@ -273,7 +267,7 @@
 		}
 		
 		for(int j = 0; j < 63; ++j) {
-			inSamples = &(currentOzyPacket->samples[j]);
+			inSamples = &(currentOzyPacket->samples.in[j]);
 			realSamples[samples] = (float)((signed char) inSamples->i[0] << 16 |
 											   (unsigned char) inSamples->i[1] << 8 |
 											   (unsigned char) inSamples->i[2]) / 8388607.0f;
@@ -281,42 +275,10 @@
 												(unsigned char) inSamples->q[1] << 8 |
 												(unsigned char) inSamples->q[2]) / 8388607.0f;
 			leftMicBuffer[samples] = rightMicBuffer[samples] = (float)(CFSwapInt16BigToHost(inSamples->mic)) / 32767.0f * micGain;
-            if(realSamples[samples] > 1.0f || imaginarySamples[samples] > 1.0f) {
-                NSLog(@"Samples exceed max: %f %f\n", realSamples[samples], imaginarySamples[samples]);
-            }
-			++samples;
-			
-			if(samples == DTTSP_BUFFER_SIZE) {
+
+			if(++samples == DTTSP_BUFFER_SIZE) {
                 [sdr processComplexSamples:processingBlock];
-				
-				if(ptt == YES) {
-					// memset(rightMicBuffer, 0, DTTSP_BUFFER_SIZE);
-					// [sdr audioCallbackForThread: 1 realIn:leftMicBuffer imagIn:rightMicBuffer realOut:leftTxBuffer imagOut:rightTxBuffer size:DTTSP_BUFFER_SIZE];
-				}
-				
-				for(k = 0; k < DTTSP_BUFFER_SIZE; k += outputSampleIncrement) {
-					outBuffer[c].leftRx = CFSwapInt16HostToBig((int16_t)(realSamples[k] * 32767.0f));
-					outBuffer[c].rightRx = CFSwapInt16HostToBig((int16_t)(imaginarySamples[k] * 32767.0f));
-					
-					if(ptt == YES) {
-						outBuffer[c].leftTx = CFSwapInt16HostToBig((int16_t) (leftTxBuffer[k] * 32767.0f * txGain));
-						outBuffer[c].rightTx = CFSwapInt16HostToBig((int16_t) (rightTxBuffer[k] * 32767.0f * txGain));
-					} else {
-						outBuffer[c].leftTx = 0;
-						outBuffer[c].rightTx = 0;
-					}
-					
-					++c;
-					
-					if(c == 128) {
-						[outputBuffer put:sampleData];
-						c = 0;
-					}
-				}
-								
 				samples = 0;
-                [processingBlock clearBlock];
-				
 			}
 		}
 	}
@@ -577,19 +539,15 @@
 	
 	switch(_sampleRate){
 		case 48000:
-			outputSampleIncrement = 1;
 			sampleRate = 48000;
 			break;
 		case 96000:
-			outputSampleIncrement = 2;
 			sampleRate = 96000;
 			break;
 		case 192000:
-			outputSampleIncrement = 4;
 			sampleRate = 192000;
 			break;
 		default:
-			outputSampleIncrement = 1;
 			sampleRate = 48000;
 			break;
 	}
@@ -607,12 +565,6 @@
 
 -(UInt8)openCollectors {
     return openCollectors;
-}
-
--(void)notifyBandscopeWatchers {
-	[operationQueue addOperation:[NSBlockOperation blockOperationWithBlock: ^{
-		[[NSNotificationCenter defaultCenter] postNotificationName:@"XTBandscopeDataReady" object:self];
-	}]];
 }
 
 -(void)sendDiscover {
@@ -666,8 +618,8 @@
 	
 	for(int i = 0; i < 32; ++i) {
 		packet.header.sequence = htonl(metisWriteSequence++);
-		memset(packet.packets[0].samples, 0, sizeof(OzySamplesOut) * 63);
-		memset(packet.packets[1].samples, 0, sizeof(OzySamplesOut) * 63);
+		memset(packet.packets[0].samples.out, 0, sizeof(OzySamplesOut) * 63);
+		memset(packet.packets[1].samples.out, 0, sizeof(OzySamplesOut) * 63);
 		[self fillHeader:packet.packets[0].header];
 		[self fillHeader:packet.packets[1].header];
 				
@@ -992,6 +944,7 @@
 	MetisPacket *packet = (MetisPacket *) [packetData mutableBytes];
 	NSData *bufferData;
 	int bytesWritten;
+    int i, j, samplesProcessed;
 	
 	mach_timebase_info(&tTBI);
 	mult = ((double)tTBI.denom / (double)tTBI.numer) * 1000000;
@@ -1020,30 +973,34 @@
         NSLog(@"Timeout acquiring thread lock\n");
         return;
     }
-
-    [outputBuffer clear];
+    
 	while(running == YES) {
         @autoreleasepool {
-            bufferData = [outputBuffer waitForSize:sizeof(packet->packets[0].samples) * 2 withTimeout:[NSDate dateWithTimeIntervalSinceNow:1.0]];
+            bufferData = [sdr.outputBuffer waitForSize:63 * 4 * sizeof(float) withTimeout:[NSDate dateWithTimeIntervalSinceNow:1.0]];
             if(bufferData == NULL) {
                 NSLog(@"Write loop timeout\n");
                 continue;
             }
-            const unsigned char *buffer = [bufferData bytes];
+            const float *buffer = [bufferData bytes];
             
-            mox = NO;
+            /* mox = NO;
             for(int i = 5; i < [bufferData length]; i += 8)
                 if(buffer[i] != 0x00) {
                     mox = YES;
                     break;
-                }
+                } */
             
             packet->header.sequence = htonl(metisWriteSequence++);	
             [self fillHeader:packet->packets[0].header];
             [self fillHeader:packet->packets[1].header];
             
-            memcpy(packet->packets[0].samples, buffer, sizeof(packet->packets[0].samples));
-            memcpy(packet->packets[1].samples, buffer + sizeof(packet->packets[0].samples), sizeof(packet->packets[0].samples));
+            for(j = 0, samplesProcessed = 0; j < 2; ++j)
+                for(i = 0; i < 63; ++i) {
+                    packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                    packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                    packet->packets[j].samples.out[i].leftTx = 0;
+                    packet->packets[j].samples.out[i].rightTx = 0;
+                }
             
             bytesWritten = sendto(metisSocket, 
                                   packet, 
