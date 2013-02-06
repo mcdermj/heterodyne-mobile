@@ -75,7 +75,6 @@
 }
 
 -(void)calculateCoefficients {
-	int i;
     float realSum = 0.0f;
     float imagSum = 0.0f;
 		
@@ -95,7 +94,8 @@
 		
 		float filterCenter = (high - low) / 2.0f;
 		float ff = (low + high) * M_PI;
-		int midpoint = size >> 1;
+		
+        /*int midpoint = size >> 1;
 		
 		for(i = 1; i <= size; ++i) {
 			int j = i - 1;
@@ -111,11 +111,24 @@
 			
 			temp *= 2.0f * window[j];
 			
-			realCoefficients[j] = temp * cosf(phase);
-			imaginaryCoefficients[j] = temp * sinf(phase);
+			realCoefficients[j] = temp * cos(phase);
+			imaginaryCoefficients[j] = temp * sin(phase);
             realSum += realCoefficients[j];
             imagSum += imaginaryCoefficients[j];
-		}
+		} */
+        
+        float midpoint = 0.5 * (size - 1);
+        for(int i = 0; i < size; ++i) {
+            float k = (float) i - midpoint;
+            float tmp, phase = ff * k;
+            if((float) i != midpoint)
+                tmp = (float) ((sin(2.0 * M_PI * k * filterCenter) / (M_PI * k)) * window[i]);
+            else
+                tmp = (float) (2.0 * filterCenter);
+            tmp *= 2.0;
+            realCoefficients[i] = tmp * cos(phase);
+            imaginaryCoefficients[i] = tmp * sin(phase);
+        }
         
         realSum = realSum == 0.0f ? 1.0f : realSum;
         imagSum = imagSum == 0.0f ? 1.0f : imagSum;
