@@ -11,6 +11,8 @@
 #import "XTDSPBlock.h"
 #import "XTDSPSimpleHilbertTransform.h"
 #import "XTDSPBandpassFilter.h"
+#import "XTDSPRealOscillator.h"
+#import "XTDSPComplexOscillator.h"
 
 @interface XTDSPTransmitter () {
     NSMutableArray *dspModules;
@@ -27,9 +29,14 @@
     if(self) {
         sampleRate = initialSampleRate;
         
-        dspModules = [NSMutableArray arrayWithCapacity:2];
+        dspModules = [NSMutableArray arrayWithCapacity:3];
+        XTDSPRealOscillator *osc = [[XTDSPRealOscillator alloc] initWithSampleRate:sampleRate];
+        //XTDSPComplexOscillator *osc = [[XTDSPComplexOscillator alloc] initWithSampleRate:sampleRate];
+
+        osc.frequency = 1000.0;
+        [dspModules addObject:osc];
         [dspModules addObject:[[XTDSPSimpleHilbertTransform alloc] initWithSampleRate:sampleRate]];
-        [dspModules addObject:[[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:-300.0f andHighCutoff:3000.0f]];
+        [dspModules addObject:[[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0f andHighCutoff:3000.0f]];
         
     }
     return self;
