@@ -118,10 +118,9 @@
 		}
         
         if((entries += [_data length]) > size) {
-            removeIndex = (insertIndex + 1) % size;
+            removeIndex = insertIndex;
             entries = size;
         }
-        //entries += [_data length];
 	}
 	
 	[sizeLock lock];
