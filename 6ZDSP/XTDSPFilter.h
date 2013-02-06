@@ -52,4 +52,6 @@
 -(void)performWithRealSignal:(XTRealData *)signal;
 -(void)performWithComplexSignal:(XTDSPBlock *)signal;
 
+-(void)clearOverlap;
+
 @end

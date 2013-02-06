@@ -127,5 +127,10 @@
 	[self calculateCoefficients];
 }
 
+-(void)clearOverlap {
+    [realOverlap clearElements];
+    [imaginaryOverlap clearElements];
+}
+
 	
 @end

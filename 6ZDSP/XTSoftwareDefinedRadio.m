@@ -51,6 +51,7 @@
     
     BOOL transmitterRunning;
     BOOL Ptt;
+    BOOL resetTransmitter;
 }
 
 @end
@@ -88,6 +89,7 @@
         transmitterBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 64 andName:@"transmitter"];
         
         Ptt = NO;
+        resetTransmitter = NO;
 	}
 	return self;
 }
@@ -187,6 +189,11 @@
         [pttCondition lock];
         while(!Ptt)
             [pttCondition wait];
+        
+        if(resetTransmitter == YES) {
+            [transmitter reset];
+            resetTransmitter = NO;
+        }
  
         micData = [audioThread.inputBuffer waitForSize:1024 * sizeof(float)];
         memcpy(transmitterBlock.realData.elements, micData.bytes, micData.length);
@@ -195,18 +202,16 @@
         
         vDSP_ztoc([transmitterBlock signal], 1, (DSPComplex *) buffer, 2, [transmitterBlock blockSize]);
         [transmitterBuffer put:bufferData];
-        // NSLog(@"putting %d bytes into buffer", bufferData.length);
         [pttCondition unlock];
     }
-    
     
     NSLog(@"Transmitter thread done\n");
 }
 
 -(void)togglePtt {
-    NSLog(@"Toggling");
     [pttCondition lock];
     Ptt = !Ptt;
+    resetTransmitter = YES;
     [pttCondition signal];
     [pttCondition unlock];
 }

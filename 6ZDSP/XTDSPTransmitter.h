@@ -14,5 +14,6 @@
 
 -(void)processComplexSamples:(XTDSPBlock *)complexData;
 -(id)initWithSampleRate:(float)sampleRate;
+-(void)reset;
 
 @end
