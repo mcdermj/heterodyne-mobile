@@ -38,7 +38,7 @@
     float *imagElements = [signal imaginaryElements];
     
     for(int i = 0; i < [signal blockSize]; ++i) {
-        realElements[i] = sin(phase);
+        realElements[i] = sin(phase) * 0.5;
         imagElements[i] = 0;
         phase += phaseAdvance;
     }
