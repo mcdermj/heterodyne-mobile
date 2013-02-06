@@ -948,7 +948,7 @@
 	MetisPacket *packet = (MetisPacket *) [packetData mutableBytes];
     
 	NSData *bufferData;
-    NSMutableData *transmitterData = nil;
+    NSData *transmitterData = nil;
     
 	int bytesWritten;
     int i, j, samplesProcessed;
@@ -970,6 +970,8 @@
 	packet->packets[1].magic[0] = SYNC;
 	packet->packets[1].magic[1] = SYNC;
 	packet->packets[1].magic[2] = SYNC;
+    
+    static const size_t maxTransmitBufferSize = 63 * 2 * 2 * sizeof(float);
 	
 	if((thread_policy_set(mach_thread_self(), THREAD_TIME_CONSTRAINT_POLICY, (thread_policy_t) &ttcpolicy, THREAD_TIME_CONSTRAINT_POLICY_COUNT)) != KERN_SUCCESS) {
 		NSLog(@" Failed to set realtime priority\n");
@@ -995,10 +997,17 @@
             mox = NO;
             
             if(sdr.transmitterBuffer.entries > 0) {
-                int size = sdr.transmitterBuffer.entries > 252 * sizeof(float) ? 252 * sizeof(float) : sdr.transmitterBuffer.entries;
-                transmitterData = [NSMutableData dataWithData:[sdr.transmitterBuffer get:size]];
-                [transmitterData setLength:252 * sizeof(float)];
-                transmitterBuffer = [transmitterData bytes];
+                // NSLog(@"Entries = %d", sdr.transmitterBuffer.entries);
+                if(sdr.transmitterBuffer.entries >= maxTransmitBufferSize) {
+                    transmitterData = [sdr.transmitterBuffer get:maxTransmitBufferSize];
+                    // NSLog(@"Removing %d bytes from buffer", maxTransmitBufferSize);
+                    transmitterBuffer = (const float *) [transmitterData bytes];
+                 } else {
+                    //NSLog(@"Sending blank packet");
+                    transmitterData = [NSData dataWithData:[NSMutableData dataWithLength:maxTransmitBufferSize]];
+                    transmitterBuffer = [transmitterData bytes];
+                }
+                
                 mox = YES;
             }
             
@@ -1009,10 +1018,17 @@
             for(j = 0, samplesProcessed = 0; j < 2; ++j)
                 for(i = 0; i < 63; ++i) {
                     if(transmitterBuffer) {
-                        packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
                         packet->packets[j].samples.out[i].leftTx = CFSwapInt16HostToBig((int16_t)(transmitterBuffer[samplesProcessed] * 32767.0f));
-                        packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        // NSLog(@"I sample = %f", transmitterBuffer[samplesProcessed]);
+                        packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        
                         packet->packets[j].samples.out[i].rightTx = CFSwapInt16HostToBig((int16_t)(transmitterBuffer[samplesProcessed] * 32767.0f));
+                        packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
+                        
+                        //packet->packets[j].samples.out[i].rightTx = CFSwapInt16HostToBig((int16_t)(transmitterBuffer[samplesProcessed] * 32767.0f));
+                        //packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig(32767);
+                        
+
                     } else {
                         packet->packets[j].samples.out[i].leftRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
                         packet->packets[j].samples.out[i].rightRx = CFSwapInt16HostToBig((int16_t)(buffer[samplesProcessed++] * 32767.0f));
