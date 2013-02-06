@@ -9,17 +9,15 @@
 #import "XTDSPComplexOscillator.h"
 #import "XTDSPBlock.h"
 
-@implementation XTDSPComplexOscillator
-
-- (id)initWithSampleRate:(float)initialSampleRate
-{
-    self = [super initWithSampleRate:initialSampleRate];
-    if (self) {
-        // Initialization code here.
-    }
-    
-    return self;
+@interface XTDSPComplexOscillator () {
+        double frequency;
+        double phase;
+        double phaseAdvance;
 }
+
+@end
+
+@implementation XTDSPComplexOscillator
 
 -(void)setFrequency:(double)newFrequency {
     frequency = newFrequency;

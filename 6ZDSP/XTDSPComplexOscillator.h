@@ -10,12 +10,7 @@
 
 #import "XTDSPModule.h"
 
-@interface XTDSPComplexOscillator : XTDSPModule {
-@private
-    double frequency;
-    double phase;
-    double phaseAdvance;
-}
+@interface XTDSPComplexOscillator : XTDSPModule
 
 @property double frequency;
 
