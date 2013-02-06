@@ -380,6 +380,10 @@ static const float scaling = 0.66;
     }
 }
 
+-(IBAction)togglePtt:(id)sender {
+    [delegate.sdr togglePtt];
+}
+
 #pragma mark - Remote control handling
 
 -(void)remoteControlReceivedWithEvent:(UIEvent *)event {
