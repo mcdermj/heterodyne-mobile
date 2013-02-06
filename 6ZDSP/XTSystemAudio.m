@@ -84,9 +84,9 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
 		buffer = _buffer;
 		running = NO;
         
-        inputBufferData = [NSMutableData dataWithLength:4096];
+        inputBufferData = [NSMutableData dataWithLength:1024 * sizeof(float)];
         
-        inputBuffer = [[XTRingBuffer alloc] initWithEntries:10240];
+        inputBuffer = [[XTRingBuffer alloc] initWithEntries:10240 * sizeof(float)];
         inputBufferList.mNumberBuffers = 1;
         inputBufferList.mBuffers[0].mNumberChannels = 1;
         inputBufferList.mBuffers[0].mDataByteSize = inputBufferData.length;
@@ -284,8 +284,11 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     OSStatus errNo;
     
     errNo = AudioUnitRender(*(defaultOutputUnit.unit), actionFlags, inTimeStamp, inBusNumber, inNumberFrames, &inputBufferList);
+    if(inputBufferList.mBuffers[0].mDataByteSize != inputBufferData.length) {
+        // NSLog(@"mDataByteSize changed to: %ld", inputBufferList.mBuffers[0].mDataByteSize);
+    }
     
-    [inputBuffer put:inputBufferData];
+    [inputBuffer put:[inputBufferData subdataWithRange:NSMakeRange(0, inputBufferList.mBuffers[0].mDataByteSize)]];
 }
 
 #pragma mark - Interruption handling

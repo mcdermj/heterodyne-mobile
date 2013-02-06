@@ -85,7 +85,7 @@
         pttCondition = [[NSCondition alloc] init];
         
         outputBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 32 andName: @"output"];
-        transmitterBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 32 andName:@"transmitter"];
+        transmitterBuffer = [[XTRingBuffer alloc] initWithEntries:sizeof(float) * 2048 * 64 andName:@"transmitter"];
         
         Ptt = NO;
 	}
@@ -176,7 +176,7 @@
     NSData *micData;
     XTDSPBlock *transmitterBlock = [XTDSPBlock dspBlockWithBlockSize:1024];
     XTDSPTransmitter *transmitter = [[XTDSPTransmitter alloc] initWithSampleRate: 48000.0f];
-    NSMutableData *bufferData = [NSMutableData dataWithLength:transmitterBlock.realData.length + transmitterBlock.imaginaryData.length];
+    NSMutableData *bufferData = [NSMutableData dataWithLength:[transmitterBlock blockSize] * sizeof(float) * 2];
     float *buffer = [bufferData mutableBytes];
     
     [NSThread setThreadPriority:1.0];
@@ -188,14 +188,14 @@
         while(!Ptt)
             [pttCondition wait];
  
-        micData = [audioThread.inputBuffer waitForSize:1024];
+        micData = [audioThread.inputBuffer waitForSize:1024 * sizeof(float)];
         memcpy(transmitterBlock.realData.elements, micData.bytes, micData.length);
         memset(transmitterBlock.imaginaryData.elements, 0, transmitterBlock.imaginaryData.length);
         [transmitter processComplexSamples:transmitterBlock];
         
         vDSP_ztoc([transmitterBlock signal], 1, (DSPComplex *) buffer, 2, [transmitterBlock blockSize]);
         [transmitterBuffer put:bufferData];
-        
+        // NSLog(@"putting %d bytes into buffer", bufferData.length);
         [pttCondition unlock];
     }
     
@@ -204,6 +204,7 @@
 }
 
 -(void)togglePtt {
+    NSLog(@"Toggling");
     [pttCondition lock];
     Ptt = !Ptt;
     [pttCondition signal];
