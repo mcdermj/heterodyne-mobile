@@ -6,8 +6,10 @@
 //
 //
 
-#import "XTDSPModule.h"
+#import "XTDSPFilter.h"
 
-@interface XTDSPSimpleHilbertTransform : XTDSPModule
+@interface XTDSPSimpleHilbertTransform : XTDSPFilter
+
+@property BOOL invert;
 
 @end

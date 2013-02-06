@@ -7,48 +7,69 @@
 //
  
 #import "XTDSPSimpleHilbertTransform.h"
+#import "XTDSPBlackmanHarrisWindow.h"
 #import "XTDSPBlock.h"
 
 @interface XTDSPSimpleHilbertTransform () {
-    float x[4];
-    float y[6];
-    float d[6];
-    
-    BOOL invert;
 }
 
 @end
 
 @implementation XTDSPSimpleHilbertTransform
 
--(void)performWithComplexSignal: (XTDSPBlock *)signal {
-    float *xin = [signal realElements];
-    float *yin = [signal imaginaryElements];
+@synthesize invert;
+
+-(id)initWithElements:(int)_size andSampleRate:(float)newSampleRate {
+    self = [super initWithElements:_size andSampleRate:newSampleRate];
+    if(self) {
+        [self calculateCoefficients];
+        invert = NO;
+    }
     
-    for(int i = 0; i < [signal blockSize]; ++i) {
-        x[0] = d[1] - xin[i];
-        x[1] = d[0] - x[0] * 0.00196f;
-        x[2] = d[3] - x[1];
-        x[3] = d[1] + x[2] * 0.737f;
+    return self;
+}
+
+-(void)calculateCoefficients {
+	int i;
+    
+	XTDSPBlackmanHarrisWindow *windowData =
+    [XTDSPBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
+	const float *window = [windowData bytes];
+	
+	@synchronized(realKernel) {
+		[realKernel clearElements];
+		[imaginaryKernel clearElements];
+		float *realCoefficients = [realKernel elements];
+		float *imaginaryCoefficients = [imaginaryKernel elements];
         
-        d[1] = x[1];
-        d[3] = x[3];
+        int midpoint = size >> 1;
+		
+        for(i = 0; i < size; ++i) {
+            if(i < midpoint) {
+                realCoefficients[i] = -1;
+                imaginaryCoefficients[i] = -1;
+            } else if(i > midpoint) {
+                realCoefficients[i] = 1;
+                imaginaryCoefficients[i] = 1;
+            } else {
+                realCoefficients[i] = 0;
+                realCoefficients[i] = 0;
+            }
+        }
         
-        y[0] = d[2] - xin[i];
-        y[1] = d[0] + y[0] * 0.924f;
-        y[2] = d[4] - y[1];
-        y[3] = d[2] + y[2] * 0.439f;
-        y[4] = d[5] - y[3];
-        y[5] = d[4] - y[4] * 0.586f;
-        
-        d[2] = y[1];
-        d[4] = y[3];
-        d[5] = y[5];
-        
-        d[0] = xin[i];
-        
-        xin[i] = x[3];
-        yin[i] = y[5];
+ 		//vDSP_fft_zip(fftSetup, &kernel, 1, fftSize, kFFTDirection_Forward);
+ 	}
+
+}
+
+-(void)performWithComplexSignal: (XTDSPBlock *)signal {
+    [super performWithComplexSignal:signal];
+    
+    if(invert) {
+        //  This should be for USB.  LSB can be used unchanged.
+        float *imaginaryElements = [signal imaginaryElements];
+        float negOne = -1;
+        vDSP_vsmul(imaginaryElements, 1, &negOne, imaginaryElements, 1, [signal blockSize]);
     }
 }
 
