@@ -348,7 +348,7 @@ static const float scaling = 0.66;
 
 #pragma mark - Button handling
 
--(void)displayFrequencyControl:(id)sender {
+-(IBAction)displayFrequencyControl:(id)sender {
     if([currentPopover isPopoverVisible]) {
         [currentPopover dismissPopoverAnimated:YES];
     } else {
@@ -356,7 +356,7 @@ static const float scaling = 0.66;
     }
 }
 
--(void)displayVolumeControl:(id)sender {
+-(IBAction)displayVolumeControl:(id)sender {
     if([currentPopover isPopoverVisible]) {
         [currentPopover dismissPopoverAnimated:YES];
     } else {
@@ -364,7 +364,7 @@ static const float scaling = 0.66;
     }
 }
 
--(void)displayModeControl:(id)sender {
+-(IBAction)displayModeControl:(id)sender {
     if([currentPopover isPopoverVisible]) {
         [currentPopover dismissPopoverAnimated:YES];
     } else {
@@ -372,7 +372,7 @@ static const float scaling = 0.66;
     }
 }
 
--(void)displayStatsControl:(id)sender {
+-(IBAction)displayStatsControl:(id)sender {
     if([currentPopover isPopoverVisible]) {
         [currentPopover dismissPopoverAnimated:YES];
     } else {
