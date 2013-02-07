@@ -32,19 +32,12 @@
     if(self) {
         sampleRate = initialSampleRate;
         
-        dspModules = [NSMutableArray arrayWithCapacity:3];
-        XTDSPRealOscillator *osc = [[XTDSPRealOscillator alloc] initWithSampleRate:sampleRate];
-        //XTDSPComplexOscillator *osc = [[XTDSPComplexOscillator alloc] initWithSampleRate:sampleRate];
-
-        osc.frequency = 1000.0;
-        [dspModules addObject:osc];
+        dspModules = [NSMutableArray arrayWithCapacity:2];
         XTDSPSimpleHilbertTransform *hil = [[XTDSPSimpleHilbertTransform alloc] initWithElements:1024 andSampleRate:sampleRate];
         hil.invert = YES;
         [dspModules addObject:hil];
         filter = [[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0 andHighCutoff:3000.0];
         [dspModules addObject:filter];
-        //[dspModules addObject:];
-        
     }
     return self;
 }
