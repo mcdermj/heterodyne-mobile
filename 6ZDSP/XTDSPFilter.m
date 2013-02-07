@@ -103,7 +103,10 @@
 	float *realSignalElements = [signal realElements];
 	float *imaginarySignalElements = [signal imaginaryElements];
 	memcpy(overlap.realp, &(realSignalElements[[signal blockSize]]), [signal blockSize] * sizeof(float));
-	memcpy(overlap.imagp, &(imaginarySignalElements[[signal blockSize]]), [signal blockSize] * sizeof(float));    
+	memcpy(overlap.imagp, &(imaginarySignalElements[[signal blockSize]]), [signal blockSize] * sizeof(float));
+    
+    memset(&(realSignalElements[[signal blockSize]]), 0, [signal blockSize] * sizeof(float));
+    memset(&(imaginarySignalElements[[signal blockSize]]), 0, [signal blockSize] * sizeof(float));
 }
 
 // XXX This is probably broken
