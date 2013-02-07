@@ -114,7 +114,8 @@
 
 -(id)initWithSDR:(XTSoftwareDefinedRadio *)newSdr
 {
-	
+    self = [super init];
+
 	if(self) {	
 		
 		mox = FALSE;
