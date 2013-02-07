@@ -1,8 +1,7 @@
 //
 //  XTWorkerThread.h
-//  MacHPSDR
 //
-//  Copyright (c) 2010 - Jeremy C. McDermond (NH6Z)
+//  Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,15 +17,7 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: XTWorkerThread.h 242 2011-04-13 14:39:26Z mcdermj $
-
-@interface XTWorkerThread : NSThread {
-	
-	NSRunLoop *runLoop;
-	BOOL running;
-    BOOL realtime;
-
-}
+@interface XTWorkerThread : NSThread
 
 @property (readonly) NSRunLoop *runLoop;
 @property BOOL running;

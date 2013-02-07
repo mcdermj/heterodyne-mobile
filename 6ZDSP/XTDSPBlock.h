@@ -1,8 +1,7 @@
 //
 //  XTDSPBlock.h
-//  MacHPSDR
 //
-//  Copyright (c) 2010 - Jeremy C. McDermond (NH6Z)
+//  Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -24,15 +23,7 @@
 
 #import "XTRealData.h"
 
-@interface XTDSPBlock : NSObject {
-	XTRealData *real;
-	XTRealData *imaginary;
-	int blockSize;
-	int fftSize;
-	DSPSplitComplex signal;
-	
-	FFTSetup fftSetup;
-}
+@interface XTDSPBlock : NSObject
 
 @property (readonly) int blockSize;
 @property (readonly) float *realElements;
@@ -43,10 +34,7 @@
 
 -(id)initWithBlockSize: (int)newBlockSize;
 +(XTDSPBlock *)dspBlockWithBlockSize: (int)newBlockSize;
--(float *)realElements;
--(float *)imaginaryElements;
 -(void)performFFT: (FFTDirection) direction;
 -(void)clearBlock;
 -(void)copyTo:(XTDSPBlock *)destBlock;
-
 @end

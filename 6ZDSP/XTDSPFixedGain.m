@@ -1,6 +1,5 @@
 //
 //  XTDSPFixedGain.m
-//  MacHPSDR
 //
 //  Copyright (c) 2010 - Jeremy C. McDermond (NH6Z)
 
@@ -18,11 +17,14 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: XTDSPFixedGain.m 243 2011-04-13 14:40:14Z mcdermj $
-
 #import "XTDSPFixedGain.h"
 
 #import "XTDSPBlock.h"
+
+@interface XTDSPFixedGain () {
+    float gain;
+}
+@end
 
 @implementation XTDSPFixedGain
 

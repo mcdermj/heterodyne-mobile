@@ -1,8 +1,7 @@
 //
 //  XTDSPFilter.h
-//  MacHPSDR
 //
-//  Copyright (c) 2010 - Jeremy C. McDermond (NH6Z)
+//  Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -18,29 +17,21 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-// $Id: XTDSPFilter.h 141 2010-03-18 21:19:57Z mcdermj $
-
-#import <Accelerate/Accelerate.h>
-
 #import "XTDSPModule.h"
+#import <Accelerate/Accelerate.h>
 
 @class XTDSPBlock;
 @class XTRealData;
 
 @interface XTDSPFilter : XTDSPModule {
-		
-	XTRealData *realKernel;
+    XTRealData *realKernel;
 	XTRealData *imaginaryKernel;
-	XTRealData *realOverlap;
-	XTRealData *imaginaryOverlap;
-	
-	DSPSplitComplex kernel;
-	DSPSplitComplex overlap;
 	
 	FFTSetup fftSetup;
-	int fftSize;
-	int size;
-
+    DSPSplitComplex kernel;
+    int fftSize;
+    
+    int size;
 }
 
 @property (readonly) DSPSplitComplex kernel;
