@@ -66,11 +66,11 @@
 }
 
 +(NSString *)versionString {
-	return [NSString stringWithFormat:@"%0.1f", [NNHMetisDriver version]];
+	return [NSString stringWithFormat:@"%0.1f", (float) [NNHMetisDriver version]];
 }
 
 +(NSString *)IDString {
-	return [NSString stringWithFormat:@"%@ v%0.1f", [NNHMetisDriver name], [NNHMetisDriver version]];
+	return [NSString stringWithFormat:@"%@ v%0.1f", [NNHMetisDriver name], (float) [NNHMetisDriver version]];
 }
 
 -(void)loadParams {
