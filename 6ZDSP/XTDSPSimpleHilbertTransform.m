@@ -41,12 +41,6 @@
 }
 
 -(void)calculateCoefficients {
-	int i;
-    
-	XTDSPBlackmanHarrisWindow *windowData =
-    [XTDSPBlackmanHarrisWindow blackmanHarrisWindowWithElements:size];
-	const float *window = [windowData bytes];
-	
 	@synchronized(realKernel) {
 		[realKernel clearElements];
 		[imaginaryKernel clearElements];
@@ -55,7 +49,7 @@
         
         int midpoint = size >> 1;
 		
-        for(i = 0; i < size; ++i) {
+        for(int i = 0; i < size; ++i) {
             if(i < midpoint) {
                 realCoefficients[i] = -1;
                 imaginaryCoefficients[i] = -1;
@@ -68,8 +62,6 @@
             }
             
         }
-        
- 		//vDSP_fft_zip(fftSetup, &kernel, 1, fftSize, kFFTDirection_Forward);
  	}
 
 }
