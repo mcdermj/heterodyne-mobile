@@ -24,6 +24,9 @@
 #import "XTDSPBandpassFilter.h"
 #import "XTDSPRealOscillator.h"
 #import "XTDSPComplexOscillator.h"
+#import "XTDSPRealNoiseGenerator.h"
+#import "XTDSPFixedGain.h"
+#import "XTDSPAutomaticGainControl.h"
 
 @interface XTDSPTransmitter () {
     NSMutableArray *dspModules;
@@ -42,12 +45,27 @@
     if(self) {
         sampleRate = initialSampleRate;
         
-        dspModules = [NSMutableArray arrayWithCapacity:2];
+        dspModules = [NSMutableArray arrayWithCapacity:4];
+        //[dspModules addObject:[[XTDSPRealNoiseGenerator alloc] initWithSampleRate:sampleRate]];
         XTDSPSimpleHilbertTransform *hil = [[XTDSPSimpleHilbertTransform alloc] initWithElements:1024 andSampleRate:sampleRate];
         hil.invert = YES;
         [dspModules addObject:hil];
         filter = [[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0 andHighCutoff:3000.0];
         [dspModules addObject:filter];
+        XTDSPFixedGain *amp = [[XTDSPFixedGain alloc] initWithSampleRate:sampleRate];
+        amp.dBGain = -10;
+        [dspModules addObject:amp];
+        XTDSPAutomaticGainControl *alc = [[XTDSPAutomaticGainControl alloc] initWithSampleRate:sampleRate];
+        alc.target = 1.2;
+        alc.attack = 2;
+        alc.decay = 10;
+        alc.slope = 1;
+        alc.maxGain = 1.0;
+        alc.minGain = .00001;
+        alc.currentGain = 1.0;
+        alc.hangTime = 500;
+        [dspModules addObject:alc];
+        //[dspModules addObject:[[XTDSPAutomaticGainControl alloc] initWithSampleRate:sampleRate]];
     }
     return self;
 }
