@@ -59,6 +59,9 @@ typedef struct _AGCParams {
     XTDSPBlock *ringBuffer;
     
     int iterations;
+    
+    float maxGain;
+    float minGain;
 }
 
 @end
@@ -67,8 +70,6 @@ typedef struct _AGCParams {
 
 @synthesize slope;
 @synthesize target;
-@synthesize maxGain;
-@synthesize minGain;
 @synthesize currentGain;
 
 -(id)initWithSampleRate:(float)newSampleRate {
@@ -143,6 +144,25 @@ typedef struct _AGCParams {
 
 -(float)hangTime {
     return params[0].hangTime / 0.001f;
+}
+
+-(void)setMaxGain:(float)_maxGain {
+    maxGain = _maxGain;
+    
+    params[0].hangGate = params[1].hangGate = maxGain * params[0].hangThreshold + minGain * (float) (1.0 - params[0].hangThreshold);
+}
+
+-(float)maxGain {
+    return maxGain;
+}
+
+-(void)setMinGain:(float)_minGain {
+    params[0].hangThreshold = params[1].hangThreshold = minGain = _minGain;
+    params[0].hangGate = params[1].hangGate = maxGain * params[0].hangThreshold + minGain * (float) (1.0 - params[0].hangThreshold);
+}
+
+-(float)minGain {
+    return minGain;
 }
 
 #pragma mark - DSP Functions
