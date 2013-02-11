@@ -21,6 +21,10 @@
 
 @interface XTDSPTransmitter : NSObject
 
+@property float sampleRate;
+@property NSString *mode;
+@property (readonly) NSArray *modes;
+
 -(void)processComplexSamples:(XTDSPBlock *)complexData;
 -(id)initWithSampleRate:(float)sampleRate;
 -(void)reset;

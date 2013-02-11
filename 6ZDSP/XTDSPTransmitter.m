@@ -27,18 +27,37 @@
 #import "XTDSPRealNoiseGenerator.h"
 #import "XTDSPFixedGain.h"
 #import "XTDSPAutomaticGainControl.h"
+#import "XTDSPModulator.h"
 
 @interface XTDSPTransmitter () {
     NSMutableArray *dspModules;
     
     float sampleRate;
     
-    XTDSPBandpassFilter *filter;
+    NSString *mode;
+    NSDictionary *modeDict;
 }
+
+@property (readonly) XTDSPSimpleHilbertTransform *hilbert;
+@property (readonly) XTDSPBandpassFilter *filter;
+@property (readonly) XTDSPModulator *modulator;
 
 @end
 
 @implementation XTDSPTransmitter
+
+#pragma mark - Utility functions
+
++(NSInvocation *)createInvocationOnTarget:(id)target selector:(SEL)selector {
+    NSInvocation *invocation = [NSInvocation invocationWithMethodSignature:[target methodSignatureForSelector:selector]];
+    
+    [invocation setTarget:target];
+    [invocation setSelector:selector];
+    
+    return invocation;
+}
+
+#pragma mark - Initialization
 
 -(id)initWithSampleRate:(float)initialSampleRate {
     self = [super init];
@@ -50,7 +69,7 @@
         XTDSPSimpleHilbertTransform *hil = [[XTDSPSimpleHilbertTransform alloc] initWithElements:1024 andSampleRate:sampleRate];
         hil.invert = YES;
         [dspModules addObject:hil];
-        filter = [[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0 andHighCutoff:3000.0];
+        XTDSPBandpassFilter *filter = [[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0 andHighCutoff:3000.0];
         [dspModules addObject:filter];
         XTDSPFixedGain *amp = [[XTDSPFixedGain alloc] initWithSampleRate:sampleRate];
         amp.dBGain = -10;
@@ -66,6 +85,12 @@
         alc.hangTime = 500;
         [dspModules addObject:alc];
         //[dspModules addObject:[[XTDSPAutomaticGainControl alloc] initWithSampleRate:sampleRate]];
+        
+        modeDict = [NSDictionary dictionaryWithObjectsAndKeys:
+                    [XTDSPTransmitter createInvocationOnTarget:self selector:@selector(ssbMode:)], @"USB",
+                    [XTDSPTransmitter createInvocationOnTarget:self selector:@selector(ssbMode:)], @"LSB",
+                    nil];
+        mode = @"USB";
     }
     return self;
 }
@@ -76,7 +101,88 @@
 }
 
 -(void)reset {
-    [filter clearOverlap];
+    [self.filter clearOverlap];
+}
+
+#pragma mark - Find modules on the stack
+
+-(XTDSPBandpassFilter *)filter {
+    for(XTDSPModule *module in dspModules)
+        if([module isKindOfClass:[XTDSPBandpassFilter class]])
+            return (XTDSPBandpassFilter *) module;
+    
+    return nil;
+}
+
+-(XTDSPSimpleHilbertTransform *)hilbert {
+    for(XTDSPModule *module in dspModules)
+        if([module isKindOfClass:[XTDSPSimpleHilbertTransform class]])
+            return (XTDSPSimpleHilbertTransform *) module;
+    
+    return nil;
+}
+
+-(XTDSPModulator *)modulator {
+    for(XTDSPModule *module in dspModules)
+        if([module isKindOfClass:[XTDSPModulator class]])
+            return (XTDSPModulator *) module;
+    
+    return nil;
+}
+
+#pragma mark - Accessors
+
+-(NSString *) mode {
+    return mode;
+}
+
+-(void)setMode:(NSString *)newMode {
+    if([newMode isEqualToString:self.mode]) return;
+    
+    NSInvocation *method = [modeDict objectForKey:newMode];
+    if(method == nil) {
+        NSLog(@"Mode %@ not found\n", newMode);
+        return;
+    }
+    
+    [method setArgument:&newMode atIndex:2];
+    [method invoke];
+    
+    mode = newMode;
+}
+
+-(NSArray *) modes {
+    return modeDict.allKeys;
+}
+
+-(void)setSampleRate:(float)newSampleRate {
+    NSLog(@"Changing Sample Rate in Transmitter");
+	sampleRate = newSampleRate;
+    
+	for(XTDSPModule *module in dspModules)
+		[module setSampleRate:newSampleRate];
+}
+
+-(float)sampleRate {
+    return sampleRate;
+}
+
+#pragma mark - Mode Handling Functions
+
+-(void)ssbMode:(NSString *)newMode {
+    NSLog(@"Changing transmitter mode to %@", newMode);
+    
+    /* [dspModules removeObject:self.modulator];
+    
+    if([newMode isEqualToString:@"LSB"]) {
+        self.hilbert.invert = NO;
+        self.filter.highCut = -300;
+        self.filter.lowCut = -3000;
+    } else {
+        self.hilbert.invert = YES;
+        self.filter.highCut = 3000;
+        self.filter.lowCut = 300;
+    } */
 }
 
 @end
