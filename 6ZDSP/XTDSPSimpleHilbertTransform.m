@@ -64,8 +64,9 @@
                 imaginaryCoefficients[i] = 1;
             } else {
                 realCoefficients[i] = 0;
-                realCoefficients[i] = 0;
+                imaginaryCoefficients[i] = 0;
             }
+            
         }
         
  		//vDSP_fft_zip(fftSetup, &kernel, 1, fftSize, kFFTDirection_Forward);
