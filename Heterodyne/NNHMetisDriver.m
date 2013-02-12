@@ -549,7 +549,9 @@
 	broadcastAddressStruct.sin_addr.s_addr = htonl(INADDR_BROADCAST);
 	
 	int yes = 1;
-	setsockopt(metisSocket, SOL_SOCKET, SO_BROADCAST, (void *)&yes, sizeof(yes));
+	if(setsockopt(metisSocket, SOL_SOCKET, SO_BROADCAST, (void *)&yes, sizeof(yes)) == -1) {
+        NSLog(@"Could not set socket broadcast option: %s", strerror(errno));
+    }
 	
 	bytesWritten = sendto(metisSocket, 
 						  &discovery, 
@@ -780,6 +782,15 @@
     
     //  Create a socket to communicate with Metis
     metisSocket = socket(PF_INET, SOCK_DGRAM, 0);
+    
+    int one = 1;
+    if(setsockopt(metisSocket, SOL_SOCKET, SO_NOSIGPIPE, &one, sizeof(one)) == -1) {
+        NSLog(@"Couldn't set socket to NOSIGPIPE: %s", strerror(errno));
+    }
+    
+    if(setsockopt(metisSocket, SOL_SOCKET, SO_REUSEADDR, &one, sizeof(one)) == -1) {
+        NSLog(@"Couldn't set SO_REUSEADDR: %s", strerror(errno));
+    }
     
     if(bind(metisSocket, (struct sockaddr *) &bindAddress, sizeof(bindAddress)) == -1)
         NSLog(@"Couldn'g bind socket: %s\n", strerror(errno));
