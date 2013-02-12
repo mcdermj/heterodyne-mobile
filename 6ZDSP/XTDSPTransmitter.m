@@ -66,14 +66,14 @@
         
         dspModules = [NSMutableArray arrayWithCapacity:4];
         //[dspModules addObject:[[XTDSPRealNoiseGenerator alloc] initWithSampleRate:sampleRate]];
+        XTDSPFixedGain *amp = [[XTDSPFixedGain alloc] initWithSampleRate:sampleRate];
+        amp.dBGain = -20;
+        [dspModules addObject:amp];
         XTDSPSimpleHilbertTransform *hil = [[XTDSPSimpleHilbertTransform alloc] initWithElements:1024 andSampleRate:sampleRate];
         hil.invert = YES;
         [dspModules addObject:hil];
         XTDSPBandpassFilter *filter = [[XTDSPBandpassFilter alloc] initWithSize:1024 sampleRate:sampleRate lowCutoff:300.0 andHighCutoff:3000.0];
         [dspModules addObject:filter];
-        XTDSPFixedGain *amp = [[XTDSPFixedGain alloc] initWithSampleRate:sampleRate];
-        amp.dBGain = -10;
-        [dspModules addObject:amp];
         XTDSPAutomaticGainControl *alc = [[XTDSPAutomaticGainControl alloc] initWithSampleRate:sampleRate];
         alc.target = 1.2;
         alc.attack = 2;

@@ -47,7 +47,7 @@
 }
 
 +(XTOutputAudioUnit *)remoteIOAudioUnit {
-	return [[XTOutputAudioUnit alloc] initWithType:kAudioUnitType_Output subType:kAudioUnitSubType_RemoteIO andManufacturer:kAudioUnitManufacturer_Apple];
+	return [[XTOutputAudioUnit alloc] initWithType:kAudioUnitType_Output subType:kAudioUnitSubType_VoiceProcessingIO andManufacturer:kAudioUnitManufacturer_Apple];
 }
 
 @end

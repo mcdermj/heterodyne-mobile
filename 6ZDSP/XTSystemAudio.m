@@ -125,7 +125,6 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     audioSession = [AVAudioSession sharedInstance];
     
     if([audioSession setPreferredHardwareSampleRate:48000.0f error:&audioSessionError] == NO) {
-            
         NSLog(@"Error setting preferred sample rate: %@\n", [audioSessionError localizedDescription]);
     }
     
