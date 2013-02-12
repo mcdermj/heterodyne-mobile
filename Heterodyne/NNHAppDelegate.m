@@ -53,9 +53,9 @@
     
     discoveryWindow = nil;
     
-    [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-    
+    [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
+        
     NSLog(@"Device is: %@\n", [[UIDevice currentDevice] model]);
     
     NSLog(@"Machine is: %@\n", [NNHAppDelegate getHardwareVersion]);
