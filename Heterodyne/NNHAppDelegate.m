@@ -23,6 +23,7 @@
 #import "XTDSPReceiver.h"
 #import "NNHViewController.h"
 
+#import <Crashlytics/Crashlytics.h>
 #import <AVFoundation/AVFoundation.h>
 
 #include <sys/utsname.h>
@@ -82,6 +83,8 @@
     
     [_driver start];
     [_sdr start];
+    
+    [Crashlytics startWithAPIKey:@"5b451701f153f15de9b9741676f90fc9846e5206"];
     
     return YES;
 }
