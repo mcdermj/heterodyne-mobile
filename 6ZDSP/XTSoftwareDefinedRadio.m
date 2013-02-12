@@ -49,6 +49,8 @@
     BOOL transmitterRunning;
     BOOL Ptt;
     BOOL resetTransmitter;
+    
+    XTDSPTransmitter *transmitter;
 }
 
 @end
@@ -59,6 +61,7 @@
 @synthesize outputBuffer;
 @synthesize Ptt;
 @synthesize transmitterBuffer;
+@synthesize transmitter;
 
 -(id)initWithSampleRate: (float)initialSampleRate {
 	self = [super init];
@@ -87,6 +90,8 @@
         
         Ptt = NO;
         resetTransmitter = NO;
+        
+        // transmitter = [[XTDSPTransmitter alloc] initWithSampleRate: 48000.0f];
 	}
 	return self;
 }
@@ -174,7 +179,7 @@
 -(void)transmitterLoop {
     NSData *micData;
     XTDSPBlock *transmitterBlock = [XTDSPBlock dspBlockWithBlockSize:1024];
-    XTDSPTransmitter *transmitter = [[XTDSPTransmitter alloc] initWithSampleRate: 48000.0f];
+    transmitter = [[XTDSPTransmitter alloc] initWithSampleRate: 48000.0f];
     NSMutableData *bufferData = [NSMutableData dataWithLength:[transmitterBlock blockSize] * sizeof(float) * 2];
     float *buffer = [bufferData mutableBytes];
     
@@ -201,6 +206,8 @@
         [transmitterBuffer put:bufferData];
         [pttCondition unlock];
     }
+    
+    transmitter = nil;
     
     NSLog(@"Transmitter thread done\n");
 }

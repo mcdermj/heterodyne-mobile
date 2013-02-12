@@ -24,6 +24,7 @@
 #import "NNHMetisDriver.h"
 #import "XTSoftwareDefinedRadio.h"
 #import "XTDSPReceiver.h"
+#import "XTDSPTransmitter.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
@@ -134,7 +135,9 @@
 }
 
 -(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    [mainReceiver setMode:[[mainReceiver modes] objectAtIndex:row]];
+    NSString *mode = [[mainReceiver modes] objectAtIndex:row];
+    mainReceiver.mode = mode;
+    ((NNHAppDelegate *)[[UIApplication sharedApplication] delegate]).sdr.transmitter.mode = mode;
         
     [self updateFilter];
 }

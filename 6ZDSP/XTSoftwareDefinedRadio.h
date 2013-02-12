@@ -20,6 +20,7 @@
 @class XTDSPBlock;
 @class XTRealData;
 @class XTRingBuffer;
+@class XTDSPTransmitter;
 
 @interface XTSoftwareDefinedRadio : NSObject
 
@@ -28,6 +29,7 @@
 @property (nonatomic) int tapSize;
 @property (readonly) XTRingBuffer *outputBuffer;
 @property (readonly) XTRingBuffer *transmitterBuffer;
+@property (readonly) XTDSPTransmitter *transmitter;
 @property BOOL Ptt;
 
 -(id)initWithSampleRate: (float)initialSampleRate;

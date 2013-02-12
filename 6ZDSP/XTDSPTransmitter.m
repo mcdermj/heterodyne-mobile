@@ -172,7 +172,7 @@
 -(void)ssbMode:(NSString *)newMode {
     NSLog(@"Changing transmitter mode to %@", newMode);
     
-    /* [dspModules removeObject:self.modulator];
+    [dspModules removeObject:self.modulator];
     
     if([newMode isEqualToString:@"LSB"]) {
         self.hilbert.invert = NO;
@@ -182,7 +182,7 @@
         self.hilbert.invert = YES;
         self.filter.highCut = 3000;
         self.filter.lowCut = 300;
-    } */
+    }
 }
 
 @end
