@@ -31,6 +31,7 @@
 -(IBAction)displayVolumeControl:(id)sender;
 -(IBAction)displayModeControl:(id)sender;
 -(IBAction)displayStatsControl:(id)sender;
+-(IBAction)displayMicGainControl:(id)sender;
 -(IBAction)togglePtt:(id)sender;
 
 -(void)pauseDisplayLink;

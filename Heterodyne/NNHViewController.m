@@ -375,6 +375,15 @@ static const float scaling = 0.66;
     }
 }
 
+
+-(IBAction)displayMicGainControl:(id)sender {
+    if([currentPopover isPopoverVisible]) {
+        [currentPopover dismissPopoverAnimated:YES];
+    } else {
+        [self performSegueWithIdentifier:@"micGainPopover" sender:sender];
+    }
+}
+
 -(IBAction)displayModeControl:(id)sender {
     if([currentPopover isPopoverVisible]) {
         [currentPopover dismissPopoverAnimated:YES];

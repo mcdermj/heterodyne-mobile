@@ -130,7 +130,22 @@
     return nil;
 }
 
+-(XTDSPFixedGain *)amplifier {
+    for(XTDSPModule *module in dspModules)
+        if([module isKindOfClass:[XTDSPFixedGain class]])
+            return (XTDSPFixedGain *) module;
+    return nil;
+}
+
 #pragma mark - Accessors
+
+-(void)setGain:(float)gain {
+    self.amplifier.dBGain = gain;
+}
+
+-(float)gain {
+    return self.amplifier.dBGain;
+}
 
 -(NSString *) mode {
     return mode;

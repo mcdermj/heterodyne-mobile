@@ -1,7 +1,7 @@
 //
-//  XTDSPTransmitter.h
+//  NNHMicGainPopoverViewController.h
 //
-//  Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
+// Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,17 +17,15 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-@class XTDSPBlock;
+#import <UIKit/UIKit.h>
 
-@interface XTDSPTransmitter : NSObject
+@interface NNHMicGainPopoverViewController : UIViewController
 
-@property float sampleRate;
-@property NSString *mode;
-@property (readonly) NSArray *modes;
-@property float gain;
+@property (nonatomic) UIPopoverController *popover;
+@property (nonatomic) UIViewController *masterViewController;
 
--(void)processComplexSamples:(XTDSPBlock *)complexData;
--(id)initWithSampleRate:(float)sampleRate;
--(void)reset;
+@property (nonatomic) IBOutlet UISlider *volumeSlider;
+
+-(IBAction)sliderValueChanged:(id)sender;
 
 @end
