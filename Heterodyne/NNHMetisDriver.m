@@ -125,7 +125,7 @@
 		alexAttenuator = 0;
 		alexAntenna = 0;
 		alexTxRelay = 0;
-		driveLevel = 0;
+		driveLevel = 0xff;
 		micBoost = 0;
 		
 		openCollectors = 0x0;
