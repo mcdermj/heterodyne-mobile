@@ -132,6 +132,11 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     if([audioSession setCategory:AVAudioSessionCategoryPlayAndRecord error:&audioSessionError] == NO) {
         NSLog(@"Error setting audio category: %@\n", [audioSessionError localizedDescription]);
     }
+    
+    audioSessionError = nil;
+    if([audioSession setMode:AVAudioSessionModeVoiceChat error:&audioSessionError] == NO) {
+        NSLog(@"Error setting audio mode: %@", [audioSessionError localizedDescription]);
+    }
 
 	defaultOutputUnit = [XTOutputAudioUnit remoteIOAudioUnit];
     
@@ -283,8 +288,9 @@ void audioRouteChangeCallback (void *userData, AudioSessionPropertyID propertyID
     if(inputBufferList.mBuffers[0].mDataByteSize != inputBufferData.length) {
         // NSLog(@"mDataByteSize changed to: %ld", inputBufferList.mBuffers[0].mDataByteSize);
     }
-    
-    [inputBuffer put:[inputBufferData subdataWithRange:NSMakeRange(0, inputBufferList.mBuffers[0].mDataByteSize)]];
+    @autoreleasepool {
+        [inputBuffer put:[inputBufferData subdataWithRange:NSMakeRange(0, inputBufferList.mBuffers[0].mDataByteSize)]];
+    }
 }
 
 #pragma mark - Interruption handling
