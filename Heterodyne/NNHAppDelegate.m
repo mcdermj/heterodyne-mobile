@@ -30,6 +30,8 @@
 
 @interface NNHAppDelegate () {
     UIAlertView *discoveryWindow;
+    
+    NSTimer *refreshTimer;
 }
 
 @end
@@ -120,6 +122,8 @@
     
     [self.driver stop];
     [self.sdr stop];
+    
+    [refreshTimer invalidate];
 }
 
 - (void)applicationWillEnterForeground:(UIApplication *)application
@@ -146,6 +150,7 @@
     
     [_driver start];
     [_sdr start];
+    
 }
 
 - (void)applicationDidBecomeActive:(UIApplication *)application
@@ -158,6 +163,9 @@
     [discoveryWindow show];
     
     NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
+    
+    refreshTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(updateStats) userInfo:nil repeats:YES];
+
     //[rootController discoveryStarted];
 }
 
@@ -195,6 +203,10 @@
         [discoveryWindow dismissWithClickedButtonIndex:0 animated:YES];
         discoveryWindow = nil;
     }
+}
+
+-(void)updateStats {
+    NSLog(@"In: %lu Dropped: %lu OOO: %lu Out: %lu", self.driver.packetsIn, self.driver.droppedPacketsIn, self.driver.outOfOrderPacketsIn, self.driver.packetsOut);
 }
 
 @end
