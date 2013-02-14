@@ -1,0 +1,910 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		09061A2116C2DDDF004E8758 /* XTDSPRealOscillator.m in Sources */ = {isa = PBXBuildFile; fileRef = 09061A2016C2DDDF004E8758 /* XTDSPRealOscillator.m */; };
+		09061A2416C4868B004E8758 /* XTDSPModulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 09061A2316C48689004E8758 /* XTDSPModulator.m */; };
+		09061A2716C99DCB004E8758 /* XTDSPRealNoiseGenerator.m in Sources */ = {isa = PBXBuildFile; fileRef = 09061A2616C99DC9004E8758 /* XTDSPRealNoiseGenerator.m */; };
+		090A74B31537E0B7007249C2 /* XTUIKeypadButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */; };
+		090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */ = {isa = PBXBuildFile; fileRef = 090A74B61537E793007249C2 /* XTUIKeypadView.m */; };
+		090C5BB9155B23B5006CCC65 /* sinewave.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BB7155B23B5006CCC65 /* sinewave.png */; };
+		090C5BBA155B23B5006CCC65 /* sinewave@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BB8155B23B5006CCC65 /* sinewave@2x.png */; };
+		090C5BC1155D6E43006CCC65 /* NNHVolumePopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */; };
+		090C5BC6155D7718006CCC65 /* speaker.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BC4155D7718006CCC65 /* speaker.png */; };
+		090C5BC7155D7718006CCC65 /* speaker@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BC5155D7718006CCC65 /* speaker@2x.png */; };
+		090C5BD7155D8004006CCC65 /* XTAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD4155D8004006CCC65 /* XTAudioUnit.m */; };
+		090C5BD8155D8004006CCC65 /* XTOutputAudioUnit.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */; };
+		090C5BD9155D800F006CCC65 /* XTSystemAudio.m in Sources */ = {isa = PBXBuildFile; fileRef = 090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */; };
+		090C5BDB155D94E1006CCC65 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BDA155D94E1006CCC65 /* CoreAudio.framework */; };
+		090C5BE0155D95EE006CCC65 /* AudioToolbox.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */; };
+		090C5BE2155D9855006CCC65 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5BE1155D9854006CCC65 /* AVFoundation.framework */; };
+		090C5BE71561A033006CCC65 /* Defaults.plist in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BE61561A033006CCC65 /* Defaults.plist */; };
+		090C5BEA1561AD37006CCC65 /* Keypad@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BE81561AD37006CCC65 /* Keypad@2x.png */; };
+		090C5BEB1561AD37006CCC65 /* Keypad.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BE91561AD37006CCC65 /* Keypad.png */; };
+		090C5BEE1561B0D7006CCC65 /* Band@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BEC1561B0D7006CCC65 /* Band@2x.png */; };
+		090C5BEF1561B0D7006CCC65 /* Band.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BED1561B0D7006CCC65 /* Band.png */; };
+		090C5BF91561BFCC006CCC65 /* Delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BF81561BFCC006CCC65 /* Delete@2x.png */; };
+		090C5BFB1561C00E006CCC65 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BFA1561C00E006CCC65 /* Delete.png */; };
+		090C5C011561C1D5006CCC65 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5C001561C1D5006CCC65 /* libz.dylib */; };
+		092C116E15AA5CED00A750FC /* XTDSPAutomaticGainControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 092C116D15AA5CED00A750FC /* XTDSPAutomaticGainControl.m */; };
+		0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
+		0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
+		0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC711515E898006C8F0E /* CoreGraphics.framework */; };
+		0948DC781515E898006C8F0E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC761515E898006C8F0E /* InfoPlist.strings */; };
+		0948DC7A1515E898006C8F0E /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC791515E898006C8F0E /* main.m */; };
+		0948DC7E1515E898006C8F0E /* NNHAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */; };
+		0948DC811515E898006C8F0E /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */; };
+		0948DC841515E898006C8F0E /* NNHViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC831515E898006C8F0E /* NNHViewController.m */; };
+		0948DC8C1515E898006C8F0E /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC8B1515E898006C8F0E /* SenTestingKit.framework */; };
+		0948DC8D1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
+		0948DC8E1515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
+		0948DC961515E898006C8F0E /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 0948DC941515E898006C8F0E /* InfoPlist.strings */; };
+		0948DC991515E898006C8F0E /* HeterodyneTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DC981515E898006C8F0E /* HeterodyneTests.m */; };
+		0948DCA31515E8AB006C8F0E /* Accelerate.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DCA21515E8AB006C8F0E /* Accelerate.framework */; };
+		0948DCA51515E8B6006C8F0E /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DCA41515E8B6006C8F0E /* OpenGLES.framework */; };
+		0948DCD41515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCAC1515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.m */; };
+		0948DCD51515EB77006C8F0E /* XTDSPComplexToRealStereo.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCAE1515EB77006C8F0E /* XTDSPComplexToRealStereo.m */; };
+		0948DCD61515EB77006C8F0E /* XTDSPAMDemodulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCB01515EB77006C8F0E /* XTDSPAMDemodulator.m */; };
+		0948DCD81515EB77006C8F0E /* XTDSPBandpassFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCB41515EB77006C8F0E /* XTDSPBandpassFilter.m */; };
+		0948DCD91515EB77006C8F0E /* XTDSPBlock.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCB61515EB77006C8F0E /* XTDSPBlock.m */; };
+		0948DCDA1515EB77006C8F0E /* XTDSPReceiver.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCB91515EB77006C8F0E /* XTDSPReceiver.m */; };
+		0948DCDB1515EB77006C8F0E /* XTDSPComplexOscillator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCBB1515EB77006C8F0E /* XTDSPComplexOscillator.m */; };
+		0948DCDC1515EB77006C8F0E /* XTDSPDemodulator.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCBC1515EB77006C8F0E /* XTDSPDemodulator.m */; };
+		0948DCDD1515EB77006C8F0E /* XTDSPComplexMixer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCBE1515EB77006C8F0E /* XTDSPComplexMixer.m */; };
+		0948DCDE1515EB77006C8F0E /* XTDSPFilter.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCC01515EB77006C8F0E /* XTDSPFilter.m */; };
+		0948DCDF1515EB77006C8F0E /* XTDSPFixedGain.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCC21515EB77006C8F0E /* XTDSPFixedGain.m */; };
+		0948DCE31515EB77006C8F0E /* XTDSPModule.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCCA1515EB77006C8F0E /* XTDSPModule.m */; };
+		0948DCE41515EB77006C8F0E /* XTDSPSpectrumTap.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCCC1515EB77006C8F0E /* XTDSPSpectrumTap.m */; };
+		0948DCE51515EB77006C8F0E /* XTRealData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCCE1515EB77006C8F0E /* XTRealData.m */; };
+		0948DCE61515EB77006C8F0E /* XTSoftwareDefinedRadio.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCD01515EB77006C8F0E /* XTSoftwareDefinedRadio.m */; };
+		0948DCE71515EB77006C8F0E /* XTSplitComplexData.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCD21515EB77006C8F0E /* XTSplitComplexData.m */; };
+		0948DCEB1515EC5C006C8F0E /* XTWorkerThread.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCEA1515EC5C006C8F0E /* XTWorkerThread.m */; };
+		0948DCEF1515ECBB006C8F0E /* XTRingBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCEE1515ECBA006C8F0E /* XTRingBuffer.m */; };
+		0948DCF21515EF37006C8F0E /* NNHMetisDriver.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCF11515EF36006C8F0E /* NNHMetisDriver.m */; };
+		0948DCF51515EF5D006C8F0E /* XTBlockBuffer.m in Sources */ = {isa = PBXBuildFile; fileRef = 0948DCF41515EF5D006C8F0E /* XTBlockBuffer.m */; };
+		0948DCF7151626E3006C8F0E /* Heterodyne.png in Resources */ = {isa = PBXBuildFile; fileRef = 0948DCF6151626E3006C8F0E /* Heterodyne.png */; };
+		095540E3152501D500564609 /* XTUIWaterfallView.m in Sources */ = {isa = PBXBuildFile; fileRef = 095540E2152501D500564609 /* XTUIWaterfallView.m */; };
+		0958F2EF15AE3822004C0BBE /* NNHStatsPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 0958F2EE15AE3822004C0BBE /* NNHStatsPopoverViewController.m */; };
+		095B0C6B154B721A001B97C8 /* NNHFrequencyPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */; };
+		096470F1168BCDC400D086DC /* redLEDOff@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470ED168BCDC400D086DC /* redLEDOff@2x.png */; };
+		096470F2168BCDC400D086DC /* redLEDOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470EE168BCDC400D086DC /* redLEDOff.png */; };
+		096470F3168BCDC400D086DC /* redLEDOn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470EF168BCDC400D086DC /* redLEDOn@2x.png */; };
+		096470F4168BCDC400D086DC /* redLEDOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470F0168BCDC400D086DC /* redLEDOn.png */; };
+		09AF9A6C1687CA0200E1107A /* XTDSPCarrier.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF9A6B1687CA0200E1107A /* XTDSPCarrier.m */; };
+		09C319FC160728A9008909A3 /* XTDSPSimpleHilbertTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C319FB160728A9008909A3 /* XTDSPSimpleHilbertTransform.m */; };
+		09C31A0016072C18008909A3 /* XTDSPTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C319FF16072C18008909A3 /* XTDSPTransmitter.m */; };
+		09EC0188151A79750027B783 /* Heterodyne Small.png in Resources */ = {isa = PBXBuildFile; fileRef = 09EC0187151A79750027B783 /* Heterodyne Small.png */; };
+		09FA7327151D5017004BF6CD /* XTUIPanadapterView.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */; };
+		09FA732A151D730B004BF6CD /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA7329151D730B004BF6CD /* QuartzCore.framework */; };
+		09FA732C151EAA7E004BF6CD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA732B151EAA7E004BF6CD /* CoreFoundation.framework */; };
+		09FA732E151EAAAB004BF6CD /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA732D151EAAAB004BF6CD /* CoreText.framework */; };
+		09FD068A16C9C9B600FB257C /* NNHMicGainPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */; };
+		09FD068D16C9D99400FB257C /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068C16C9D99400FB257C /* libTestFlight.a */; };
+		09FD069016C9DCA200FB257C /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068F16C9DCA200FB257C /* Crashlytics.framework */; };
+		09FF7A731585610800868760 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 09FF7A721585610800868760 /* Settings.bundle */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		0948DC8F1515E898006C8F0E /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 0948DC601515E898006C8F0E /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0948DC681515E898006C8F0E;
+			remoteInfo = Heterodyne;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		09061A1F16C2DDDF004E8758 /* XTDSPRealOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPRealOscillator.h; sourceTree = "<group>"; };
+		09061A2016C2DDDF004E8758 /* XTDSPRealOscillator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPRealOscillator.m; sourceTree = "<group>"; };
+		09061A2216C48687004E8758 /* XTDSPModulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPModulator.h; sourceTree = "<group>"; };
+		09061A2316C48689004E8758 /* XTDSPModulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPModulator.m; sourceTree = "<group>"; };
+		09061A2516C99DC8004E8758 /* XTDSPRealNoiseGenerator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPRealNoiseGenerator.h; sourceTree = "<group>"; };
+		09061A2616C99DC9004E8758 /* XTDSPRealNoiseGenerator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPRealNoiseGenerator.m; sourceTree = "<group>"; };
+		090A74B11537E0B7007249C2 /* XTUIKeypadButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIKeypadButton.h; sourceTree = "<group>"; };
+		090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIKeypadButton.m; sourceTree = "<group>"; };
+		090A74B51537E793007249C2 /* XTUIKeypadView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIKeypadView.h; sourceTree = "<group>"; };
+		090A74B61537E793007249C2 /* XTUIKeypadView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIKeypadView.m; sourceTree = "<group>"; };
+		090C5BB7155B23B5006CCC65 /* sinewave.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = sinewave.png; sourceTree = "<group>"; };
+		090C5BB8155B23B5006CCC65 /* sinewave@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "sinewave@2x.png"; sourceTree = "<group>"; };
+		090C5BBF155D6E43006CCC65 /* NNHVolumePopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHVolumePopoverViewController.h; sourceTree = "<group>"; };
+		090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHVolumePopoverViewController.m; sourceTree = "<group>"; };
+		090C5BC4155D7718006CCC65 /* speaker.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = speaker.png; sourceTree = "<group>"; };
+		090C5BC5155D7718006CCC65 /* speaker@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "speaker@2x.png"; sourceTree = "<group>"; };
+		090C5BD0155D7D8E006CCC65 /* XTSystemAudio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XTSystemAudio.h; path = ../6ZDSP/XTSystemAudio.h; sourceTree = "<group>"; };
+		090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XTSystemAudio.m; path = ../6ZDSP/XTSystemAudio.m; sourceTree = "<group>"; };
+		090C5BD3155D8003006CCC65 /* XTAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTAudioUnit.h; sourceTree = "<group>"; };
+		090C5BD4155D8004006CCC65 /* XTAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTAudioUnit.m; sourceTree = "<group>"; };
+		090C5BD5155D8004006CCC65 /* XTOutputAudioUnit.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTOutputAudioUnit.h; sourceTree = "<group>"; };
+		090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTOutputAudioUnit.m; sourceTree = "<group>"; };
+		090C5BDA155D94E1006CCC65 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		090C5BDC155D94FE006CCC65 /* AudioUnit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioUnit.framework; path = System/Library/Frameworks/AudioUnit.framework; sourceTree = SDKROOT; };
+		090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AudioToolbox.framework; path = System/Library/Frameworks/AudioToolbox.framework; sourceTree = SDKROOT; };
+		090C5BE1155D9854006CCC65 /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		090C5BE61561A033006CCC65 /* Defaults.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Defaults.plist; sourceTree = "<group>"; };
+		090C5BE81561AD37006CCC65 /* Keypad@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Keypad@2x.png"; sourceTree = "<group>"; };
+		090C5BE91561AD37006CCC65 /* Keypad.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Keypad.png; sourceTree = "<group>"; };
+		090C5BEC1561B0D7006CCC65 /* Band@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Band@2x.png"; sourceTree = "<group>"; };
+		090C5BED1561B0D7006CCC65 /* Band.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Band.png; sourceTree = "<group>"; };
+		090C5BF81561BFCC006CCC65 /* Delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delete@2x.png"; sourceTree = "<group>"; };
+		090C5BFA1561C00E006CCC65 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
+		090C5C001561C1D5006CCC65 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		092C116C15AA5CED00A750FC /* XTDSPAutomaticGainControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPAutomaticGainControl.h; sourceTree = "<group>"; };
+		092C116D15AA5CED00A750FC /* XTDSPAutomaticGainControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPAutomaticGainControl.m; sourceTree = "<group>"; };
+		0948DC691515E898006C8F0E /* Heterodyne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heterodyne.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		0948DC6D1515E898006C8F0E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		0948DC6F1515E898006C8F0E /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		0948DC711515E898006C8F0E /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		0948DC751515E898006C8F0E /* Heterodyne-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "Heterodyne-Info.plist"; sourceTree = "<group>"; };
+		0948DC771515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0948DC791515E898006C8F0E /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "Heterodyne-Prefix.pch"; sourceTree = "<group>"; };
+		0948DC7C1515E898006C8F0E /* NNHAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NNHAppDelegate.h; sourceTree = "<group>"; };
+		0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NNHAppDelegate.m; sourceTree = "<group>"; };
+		0948DC801515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		0948DC821515E898006C8F0E /* NNHViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = NNHViewController.h; sourceTree = "<group>"; };
+		0948DC831515E898006C8F0E /* NNHViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = NNHViewController.m; sourceTree = "<group>"; };
+		0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = HeterodyneTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		0948DC8B1515E898006C8F0E /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		0948DC931515E898006C8F0E /* HeterodyneTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "HeterodyneTests-Info.plist"; sourceTree = "<group>"; };
+		0948DC951515E898006C8F0E /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		0948DC971515E898006C8F0E /* HeterodyneTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = HeterodyneTests.h; sourceTree = "<group>"; };
+		0948DC981515E898006C8F0E /* HeterodyneTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = HeterodyneTests.m; sourceTree = "<group>"; };
+		0948DCA21515E8AB006C8F0E /* Accelerate.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Accelerate.framework; path = System/Library/Frameworks/Accelerate.framework; sourceTree = SDKROOT; };
+		0948DCA41515E8B6006C8F0E /* OpenGLES.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = OpenGLES.framework; path = System/Library/Frameworks/OpenGLES.framework; sourceTree = SDKROOT; };
+		0948DCAB1515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPBlackmanHarrisWindow.h; sourceTree = "<group>"; };
+		0948DCAC1515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPBlackmanHarrisWindow.m; sourceTree = "<group>"; };
+		0948DCAD1515EB77006C8F0E /* XTDSPComplexToRealStereo.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPComplexToRealStereo.h; sourceTree = "<group>"; };
+		0948DCAE1515EB77006C8F0E /* XTDSPComplexToRealStereo.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPComplexToRealStereo.m; sourceTree = "<group>"; };
+		0948DCAF1515EB77006C8F0E /* XTDSPAMDemodulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPAMDemodulator.h; sourceTree = "<group>"; };
+		0948DCB01515EB77006C8F0E /* XTDSPAMDemodulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPAMDemodulator.m; sourceTree = "<group>"; };
+		0948DCB31515EB77006C8F0E /* XTDSPBandpassFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPBandpassFilter.h; sourceTree = "<group>"; };
+		0948DCB41515EB77006C8F0E /* XTDSPBandpassFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPBandpassFilter.m; sourceTree = "<group>"; };
+		0948DCB51515EB77006C8F0E /* XTDSPBlock.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPBlock.h; sourceTree = "<group>"; };
+		0948DCB61515EB77006C8F0E /* XTDSPBlock.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPBlock.m; sourceTree = "<group>"; };
+		0948DCB71515EB77006C8F0E /* XTDSPDemodulator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPDemodulator.h; sourceTree = "<group>"; };
+		0948DCB81515EB77006C8F0E /* XTDSPReceiver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPReceiver.h; sourceTree = "<group>"; };
+		0948DCB91515EB77006C8F0E /* XTDSPReceiver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPReceiver.m; sourceTree = "<group>"; };
+		0948DCBA1515EB77006C8F0E /* XTDSPComplexOscillator.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPComplexOscillator.h; sourceTree = "<group>"; };
+		0948DCBB1515EB77006C8F0E /* XTDSPComplexOscillator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPComplexOscillator.m; sourceTree = "<group>"; };
+		0948DCBC1515EB77006C8F0E /* XTDSPDemodulator.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPDemodulator.m; sourceTree = "<group>"; };
+		0948DCBD1515EB77006C8F0E /* XTDSPComplexMixer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPComplexMixer.h; sourceTree = "<group>"; };
+		0948DCBE1515EB77006C8F0E /* XTDSPComplexMixer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPComplexMixer.m; sourceTree = "<group>"; };
+		0948DCBF1515EB77006C8F0E /* XTDSPFilter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPFilter.h; sourceTree = "<group>"; };
+		0948DCC01515EB77006C8F0E /* XTDSPFilter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPFilter.m; sourceTree = "<group>"; };
+		0948DCC11515EB77006C8F0E /* XTDSPFixedGain.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPFixedGain.h; sourceTree = "<group>"; };
+		0948DCC21515EB77006C8F0E /* XTDSPFixedGain.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPFixedGain.m; sourceTree = "<group>"; };
+		0948DCC91515EB77006C8F0E /* XTDSPModule.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPModule.h; sourceTree = "<group>"; };
+		0948DCCA1515EB77006C8F0E /* XTDSPModule.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPModule.m; sourceTree = "<group>"; };
+		0948DCCB1515EB77006C8F0E /* XTDSPSpectrumTap.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPSpectrumTap.h; sourceTree = "<group>"; };
+		0948DCCC1515EB77006C8F0E /* XTDSPSpectrumTap.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPSpectrumTap.m; sourceTree = "<group>"; };
+		0948DCCD1515EB77006C8F0E /* XTRealData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTRealData.h; sourceTree = "<group>"; };
+		0948DCCE1515EB77006C8F0E /* XTRealData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTRealData.m; sourceTree = "<group>"; };
+		0948DCCF1515EB77006C8F0E /* XTSoftwareDefinedRadio.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSoftwareDefinedRadio.h; sourceTree = "<group>"; };
+		0948DCD01515EB77006C8F0E /* XTSoftwareDefinedRadio.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSoftwareDefinedRadio.m; sourceTree = "<group>"; };
+		0948DCD11515EB77006C8F0E /* XTSplitComplexData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTSplitComplexData.h; sourceTree = "<group>"; };
+		0948DCD21515EB77006C8F0E /* XTSplitComplexData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTSplitComplexData.m; sourceTree = "<group>"; };
+		0948DCE91515EC5C006C8F0E /* XTWorkerThread.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XTWorkerThread.h; path = ../6ZDSP/XTWorkerThread.h; sourceTree = "<group>"; };
+		0948DCEA1515EC5C006C8F0E /* XTWorkerThread.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XTWorkerThread.m; path = ../6ZDSP/XTWorkerThread.m; sourceTree = "<group>"; };
+		0948DCED1515ECBA006C8F0E /* XTRingBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XTRingBuffer.h; path = ../6ZDSP/XTRingBuffer.h; sourceTree = "<group>"; };
+		0948DCEE1515ECBA006C8F0E /* XTRingBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XTRingBuffer.m; path = ../6ZDSP/XTRingBuffer.m; sourceTree = "<group>"; };
+		0948DCF01515EF36006C8F0E /* NNHMetisDriver.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHMetisDriver.h; sourceTree = "<group>"; };
+		0948DCF11515EF36006C8F0E /* NNHMetisDriver.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHMetisDriver.m; sourceTree = "<group>"; };
+		0948DCF31515EF5D006C8F0E /* XTBlockBuffer.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = XTBlockBuffer.h; path = ../6ZDSP/XTBlockBuffer.h; sourceTree = "<group>"; };
+		0948DCF41515EF5D006C8F0E /* XTBlockBuffer.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = XTBlockBuffer.m; path = ../6ZDSP/XTBlockBuffer.m; sourceTree = "<group>"; };
+		0948DCF6151626E3006C8F0E /* Heterodyne.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Heterodyne.png; sourceTree = "<group>"; };
+		095540E1152501D500564609 /* XTUIWaterfallView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIWaterfallView.h; sourceTree = "<group>"; };
+		095540E2152501D500564609 /* XTUIWaterfallView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIWaterfallView.m; sourceTree = "<group>"; };
+		0958F2ED15AE3822004C0BBE /* NNHStatsPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHStatsPopoverViewController.h; sourceTree = "<group>"; };
+		0958F2EE15AE3822004C0BBE /* NNHStatsPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHStatsPopoverViewController.m; sourceTree = "<group>"; };
+		095B0C67154B487B001B97C8 /* XTGlobals.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = XTGlobals.h; sourceTree = "<group>"; };
+		095B0C69154B721A001B97C8 /* NNHFrequencyPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHFrequencyPopupViewController.h; sourceTree = "<group>"; };
+		095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHFrequencyPopupViewController.m; sourceTree = "<group>"; };
+		096470ED168BCDC400D086DC /* redLEDOff@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redLEDOff@2x.png"; sourceTree = "<group>"; };
+		096470EE168BCDC400D086DC /* redLEDOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redLEDOff.png; sourceTree = "<group>"; };
+		096470EF168BCDC400D086DC /* redLEDOn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redLEDOn@2x.png"; sourceTree = "<group>"; };
+		096470F0168BCDC400D086DC /* redLEDOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redLEDOn.png; sourceTree = "<group>"; };
+		09AF9A6A1687CA0100E1107A /* XTDSPCarrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPCarrier.h; sourceTree = "<group>"; };
+		09AF9A6B1687CA0200E1107A /* XTDSPCarrier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPCarrier.m; sourceTree = "<group>"; };
+		09C319FA160728A9008909A3 /* XTDSPSimpleHilbertTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPSimpleHilbertTransform.h; sourceTree = "<group>"; };
+		09C319FB160728A9008909A3 /* XTDSPSimpleHilbertTransform.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPSimpleHilbertTransform.m; sourceTree = "<group>"; };
+		09C319FE16072C18008909A3 /* XTDSPTransmitter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPTransmitter.h; sourceTree = "<group>"; };
+		09C319FF16072C18008909A3 /* XTDSPTransmitter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPTransmitter.m; sourceTree = "<group>"; };
+		09EC0187151A79750027B783 /* Heterodyne Small.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Heterodyne Small.png"; sourceTree = "<group>"; };
+		09FA7325151D5017004BF6CD /* XTUIPanadapterView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUIPanadapterView.h; sourceTree = "<group>"; };
+		09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUIPanadapterView.m; sourceTree = "<group>"; };
+		09FA7329151D730B004BF6CD /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		09FA732B151EAA7E004BF6CD /* CoreFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreFoundation.framework; path = System/Library/Frameworks/CoreFoundation.framework; sourceTree = SDKROOT; };
+		09FA732D151EAAAB004BF6CD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		09FD068816C9C9B500FB257C /* NNHMicGainPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHMicGainPopoverViewController.h; sourceTree = "<group>"; };
+		09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHMicGainPopoverViewController.m; sourceTree = "<group>"; };
+		09FD068B16C9D99400FB257C /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
+		09FD068C16C9D99400FB257C /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		09FD068F16C9DCA200FB257C /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		09FF7A721585610800868760 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		0948DC661515E898006C8F0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				090C5C011561C1D5006CCC65 /* libz.dylib in Frameworks */,
+				090C5BE2155D9855006CCC65 /* AVFoundation.framework in Frameworks */,
+				090C5BE0155D95EE006CCC65 /* AudioToolbox.framework in Frameworks */,
+				090C5BDB155D94E1006CCC65 /* CoreAudio.framework in Frameworks */,
+				09FA732E151EAAAB004BF6CD /* CoreText.framework in Frameworks */,
+				09FA732C151EAA7E004BF6CD /* CoreFoundation.framework in Frameworks */,
+				09FA732A151D730B004BF6CD /* QuartzCore.framework in Frameworks */,
+				0948DCA51515E8B6006C8F0E /* OpenGLES.framework in Frameworks */,
+				0948DCA31515E8AB006C8F0E /* Accelerate.framework in Frameworks */,
+				0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */,
+				0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */,
+				0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */,
+				09FD068D16C9D99400FB257C /* libTestFlight.a in Frameworks */,
+				09FD069016C9DCA200FB257C /* Crashlytics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC861515E898006C8F0E /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC8C1515E898006C8F0E /* SenTestingKit.framework in Frameworks */,
+				0948DC8D1515E898006C8F0E /* UIKit.framework in Frameworks */,
+				0948DC8E1515E898006C8F0E /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		090A74B41537E5AD007249C2 /* UI Components */ = {
+			isa = PBXGroup;
+			children = (
+				090A74B11537E0B7007249C2 /* XTUIKeypadButton.h */,
+				090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */,
+				090A74B51537E793007249C2 /* XTUIKeypadView.h */,
+				090A74B61537E793007249C2 /* XTUIKeypadView.m */,
+			);
+			name = "UI Components";
+			sourceTree = "<group>";
+		};
+		090C5BFF1561C19B006CCC65 /* TestFlight */ = {
+			isa = PBXGroup;
+			children = (
+				09FD068B16C9D99400FB257C /* TestFlight.h */,
+				09FD068C16C9D99400FB257C /* libTestFlight.a */,
+			);
+			name = TestFlight;
+			sourceTree = "<group>";
+		};
+		092C116B15AA556E00A750FC /* Utility Classes */ = {
+			isa = PBXGroup;
+			children = (
+				0948DCF31515EF5D006C8F0E /* XTBlockBuffer.h */,
+				0948DCF41515EF5D006C8F0E /* XTBlockBuffer.m */,
+				0948DCE91515EC5C006C8F0E /* XTWorkerThread.h */,
+				0948DCEA1515EC5C006C8F0E /* XTWorkerThread.m */,
+				0948DCED1515ECBA006C8F0E /* XTRingBuffer.h */,
+				0948DCEE1515ECBA006C8F0E /* XTRingBuffer.m */,
+			);
+			name = "Utility Classes";
+			sourceTree = "<group>";
+		};
+		0948DC5E1515E898006C8F0E = {
+			isa = PBXGroup;
+			children = (
+				090C5C001561C1D5006CCC65 /* libz.dylib */,
+				090C5BE1155D9854006CCC65 /* AVFoundation.framework */,
+				090C5BDF155D95EE006CCC65 /* AudioToolbox.framework */,
+				090C5BDC155D94FE006CCC65 /* AudioUnit.framework */,
+				090C5BDA155D94E1006CCC65 /* CoreAudio.framework */,
+				09FA732D151EAAAB004BF6CD /* CoreText.framework */,
+				09FA732B151EAA7E004BF6CD /* CoreFoundation.framework */,
+				09FA7329151D730B004BF6CD /* QuartzCore.framework */,
+				09EC0187151A79750027B783 /* Heterodyne Small.png */,
+				0948DCF6151626E3006C8F0E /* Heterodyne.png */,
+				0948DCA41515E8B6006C8F0E /* OpenGLES.framework */,
+				0948DCA21515E8AB006C8F0E /* Accelerate.framework */,
+				0948DC731515E898006C8F0E /* Heterodyne */,
+				0948DC911515E898006C8F0E /* HeterodyneTests */,
+				0948DC6C1515E898006C8F0E /* Frameworks */,
+				0948DC6A1515E898006C8F0E /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		0948DC6A1515E898006C8F0E /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC691515E898006C8F0E /* Heterodyne.app */,
+				0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		0948DC6C1515E898006C8F0E /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				09FD068F16C9DCA200FB257C /* Crashlytics.framework */,
+				0948DC6D1515E898006C8F0E /* UIKit.framework */,
+				0948DC6F1515E898006C8F0E /* Foundation.framework */,
+				0948DC711515E898006C8F0E /* CoreGraphics.framework */,
+				0948DC8B1515E898006C8F0E /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		0948DC731515E898006C8F0E /* Heterodyne */ = {
+			isa = PBXGroup;
+			children = (
+				092C116B15AA556E00A750FC /* Utility Classes */,
+				090C5BFF1561C19B006CCC65 /* TestFlight */,
+				090A74B41537E5AD007249C2 /* UI Components */,
+				0948DCAA1515EB09006C8F0E /* 6ZDSP */,
+				0948DC7C1515E898006C8F0E /* NNHAppDelegate.h */,
+				0948DC7D1515E898006C8F0E /* NNHAppDelegate.m */,
+				095B0C67154B487B001B97C8 /* XTGlobals.h */,
+				09FA7325151D5017004BF6CD /* XTUIPanadapterView.h */,
+				09FA7326151D5017004BF6CD /* XTUIPanadapterView.m */,
+				095540E1152501D500564609 /* XTUIWaterfallView.h */,
+				095540E2152501D500564609 /* XTUIWaterfallView.m */,
+				0948DCF01515EF36006C8F0E /* NNHMetisDriver.h */,
+				0948DCF11515EF36006C8F0E /* NNHMetisDriver.m */,
+				0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */,
+				0948DC821515E898006C8F0E /* NNHViewController.h */,
+				0948DC831515E898006C8F0E /* NNHViewController.m */,
+				095B0C69154B721A001B97C8 /* NNHFrequencyPopupViewController.h */,
+				095B0C6A154B721A001B97C8 /* NNHFrequencyPopupViewController.m */,
+				09FD068816C9C9B500FB257C /* NNHMicGainPopoverViewController.h */,
+				09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */,
+				090C5BBF155D6E43006CCC65 /* NNHVolumePopoverViewController.h */,
+				090C5BC0155D6E43006CCC65 /* NNHVolumePopoverViewController.m */,
+				0958F2ED15AE3822004C0BBE /* NNHStatsPopoverViewController.h */,
+				0958F2EE15AE3822004C0BBE /* NNHStatsPopoverViewController.m */,
+				090C5BD0155D7D8E006CCC65 /* XTSystemAudio.h */,
+				090C5BD1155D7D8E006CCC65 /* XTSystemAudio.m */,
+				090C5BD3155D8003006CCC65 /* XTAudioUnit.h */,
+				090C5BD4155D8004006CCC65 /* XTAudioUnit.m */,
+				090C5BD5155D8004006CCC65 /* XTOutputAudioUnit.h */,
+				090C5BD6155D8004006CCC65 /* XTOutputAudioUnit.m */,
+				0948DC741515E898006C8F0E /* Supporting Files */,
+			);
+			path = Heterodyne;
+			sourceTree = "<group>";
+		};
+		0948DC741515E898006C8F0E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				096470ED168BCDC400D086DC /* redLEDOff@2x.png */,
+				096470EE168BCDC400D086DC /* redLEDOff.png */,
+				096470EF168BCDC400D086DC /* redLEDOn@2x.png */,
+				096470F0168BCDC400D086DC /* redLEDOn.png */,
+				090C5BE81561AD37006CCC65 /* Keypad@2x.png */,
+				090C5BE91561AD37006CCC65 /* Keypad.png */,
+				090C5BEC1561B0D7006CCC65 /* Band@2x.png */,
+				090C5BED1561B0D7006CCC65 /* Band.png */,
+				090C5BB7155B23B5006CCC65 /* sinewave.png */,
+				090C5BB8155B23B5006CCC65 /* sinewave@2x.png */,
+				0948DC751515E898006C8F0E /* Heterodyne-Info.plist */,
+				090C5BFA1561C00E006CCC65 /* Delete.png */,
+				090C5BF81561BFCC006CCC65 /* Delete@2x.png */,
+				090C5BC4155D7718006CCC65 /* speaker.png */,
+				090C5BC5155D7718006CCC65 /* speaker@2x.png */,
+				0948DC761515E898006C8F0E /* InfoPlist.strings */,
+				0948DC791515E898006C8F0E /* main.m */,
+				0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */,
+				090C5BE61561A033006CCC65 /* Defaults.plist */,
+				09FF7A721585610800868760 /* Settings.bundle */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0948DC911515E898006C8F0E /* HeterodyneTests */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC971515E898006C8F0E /* HeterodyneTests.h */,
+				0948DC981515E898006C8F0E /* HeterodyneTests.m */,
+				0948DC921515E898006C8F0E /* Supporting Files */,
+			);
+			path = HeterodyneTests;
+			sourceTree = "<group>";
+		};
+		0948DC921515E898006C8F0E /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				0948DC931515E898006C8F0E /* HeterodyneTests-Info.plist */,
+				0948DC941515E898006C8F0E /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		0948DCAA1515EB09006C8F0E /* 6ZDSP */ = {
+			isa = PBXGroup;
+			children = (
+				0948DCAB1515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.h */,
+				0948DCAC1515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.m */,
+				0948DCAD1515EB77006C8F0E /* XTDSPComplexToRealStereo.h */,
+				0948DCAE1515EB77006C8F0E /* XTDSPComplexToRealStereo.m */,
+				0948DCAF1515EB77006C8F0E /* XTDSPAMDemodulator.h */,
+				0948DCB01515EB77006C8F0E /* XTDSPAMDemodulator.m */,
+				0948DCB31515EB77006C8F0E /* XTDSPBandpassFilter.h */,
+				0948DCB41515EB77006C8F0E /* XTDSPBandpassFilter.m */,
+				0948DCB51515EB77006C8F0E /* XTDSPBlock.h */,
+				0948DCB61515EB77006C8F0E /* XTDSPBlock.m */,
+				0948DCB81515EB77006C8F0E /* XTDSPReceiver.h */,
+				0948DCB91515EB77006C8F0E /* XTDSPReceiver.m */,
+				0948DCBA1515EB77006C8F0E /* XTDSPComplexOscillator.h */,
+				0948DCBB1515EB77006C8F0E /* XTDSPComplexOscillator.m */,
+				09061A1F16C2DDDF004E8758 /* XTDSPRealOscillator.h */,
+				09061A2016C2DDDF004E8758 /* XTDSPRealOscillator.m */,
+				0948DCB71515EB77006C8F0E /* XTDSPDemodulator.h */,
+				0948DCBC1515EB77006C8F0E /* XTDSPDemodulator.m */,
+				092C116C15AA5CED00A750FC /* XTDSPAutomaticGainControl.h */,
+				092C116D15AA5CED00A750FC /* XTDSPAutomaticGainControl.m */,
+				0948DCBD1515EB77006C8F0E /* XTDSPComplexMixer.h */,
+				0948DCBE1515EB77006C8F0E /* XTDSPComplexMixer.m */,
+				0948DCBF1515EB77006C8F0E /* XTDSPFilter.h */,
+				0948DCC01515EB77006C8F0E /* XTDSPFilter.m */,
+				0948DCC11515EB77006C8F0E /* XTDSPFixedGain.h */,
+				0948DCC21515EB77006C8F0E /* XTDSPFixedGain.m */,
+				0948DCC91515EB77006C8F0E /* XTDSPModule.h */,
+				0948DCCA1515EB77006C8F0E /* XTDSPModule.m */,
+				0948DCCB1515EB77006C8F0E /* XTDSPSpectrumTap.h */,
+				0948DCCC1515EB77006C8F0E /* XTDSPSpectrumTap.m */,
+				0948DCCD1515EB77006C8F0E /* XTRealData.h */,
+				0948DCCE1515EB77006C8F0E /* XTRealData.m */,
+				0948DCCF1515EB77006C8F0E /* XTSoftwareDefinedRadio.h */,
+				0948DCD01515EB77006C8F0E /* XTSoftwareDefinedRadio.m */,
+				0948DCD11515EB77006C8F0E /* XTSplitComplexData.h */,
+				0948DCD21515EB77006C8F0E /* XTSplitComplexData.m */,
+				09C319FA160728A9008909A3 /* XTDSPSimpleHilbertTransform.h */,
+				09C319FB160728A9008909A3 /* XTDSPSimpleHilbertTransform.m */,
+				09C319FE16072C18008909A3 /* XTDSPTransmitter.h */,
+				09C319FF16072C18008909A3 /* XTDSPTransmitter.m */,
+				09AF9A6A1687CA0100E1107A /* XTDSPCarrier.h */,
+				09AF9A6B1687CA0200E1107A /* XTDSPCarrier.m */,
+				09061A2216C48687004E8758 /* XTDSPModulator.h */,
+				09061A2316C48689004E8758 /* XTDSPModulator.m */,
+				09061A2516C99DC8004E8758 /* XTDSPRealNoiseGenerator.h */,
+				09061A2616C99DC9004E8758 /* XTDSPRealNoiseGenerator.m */,
+			);
+			name = 6ZDSP;
+			path = ../6ZDSP;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0948DC681515E898006C8F0E /* Heterodyne */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0948DC9C1515E898006C8F0E /* Build configuration list for PBXNativeTarget "Heterodyne" */;
+			buildPhases = (
+				091B4D2F158AB60D00896062 /* ShellScript */,
+				0948DC651515E898006C8F0E /* Sources */,
+				0948DC661515E898006C8F0E /* Frameworks */,
+				0948DC671515E898006C8F0E /* Resources */,
+				09FD068E16C9DC7400FB257C /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = Heterodyne;
+			productName = Heterodyne;
+			productReference = 0948DC691515E898006C8F0E /* Heterodyne.app */;
+			productType = "com.apple.product-type.application";
+		};
+		0948DC891515E898006C8F0E /* HeterodyneTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 0948DC9F1515E898006C8F0E /* Build configuration list for PBXNativeTarget "HeterodyneTests" */;
+			buildPhases = (
+				0948DC851515E898006C8F0E /* Sources */,
+				0948DC861515E898006C8F0E /* Frameworks */,
+				0948DC871515E898006C8F0E /* Resources */,
+				0948DC881515E898006C8F0E /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				0948DC901515E898006C8F0E /* PBXTargetDependency */,
+			);
+			name = HeterodyneTests;
+			productName = HeterodyneTests;
+			productReference = 0948DC8A1515E898006C8F0E /* HeterodyneTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		0948DC601515E898006C8F0E /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0460;
+			};
+			buildConfigurationList = 0948DC631515E898006C8F0E /* Build configuration list for PBXProject "Heterodyne" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 0948DC5E1515E898006C8F0E;
+			productRefGroup = 0948DC6A1515E898006C8F0E /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				0948DC681515E898006C8F0E /* Heterodyne */,
+				0948DC891515E898006C8F0E /* HeterodyneTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		0948DC671515E898006C8F0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC781515E898006C8F0E /* InfoPlist.strings in Resources */,
+				0948DC811515E898006C8F0E /* MainStoryboard.storyboard in Resources */,
+				0948DCF7151626E3006C8F0E /* Heterodyne.png in Resources */,
+				09EC0188151A79750027B783 /* Heterodyne Small.png in Resources */,
+				090C5BB9155B23B5006CCC65 /* sinewave.png in Resources */,
+				090C5BBA155B23B5006CCC65 /* sinewave@2x.png in Resources */,
+				090C5BC6155D7718006CCC65 /* speaker.png in Resources */,
+				090C5BC7155D7718006CCC65 /* speaker@2x.png in Resources */,
+				090C5BE71561A033006CCC65 /* Defaults.plist in Resources */,
+				090C5BEA1561AD37006CCC65 /* Keypad@2x.png in Resources */,
+				090C5BEB1561AD37006CCC65 /* Keypad.png in Resources */,
+				090C5BEE1561B0D7006CCC65 /* Band@2x.png in Resources */,
+				090C5BEF1561B0D7006CCC65 /* Band.png in Resources */,
+				090C5BF91561BFCC006CCC65 /* Delete@2x.png in Resources */,
+				090C5BFB1561C00E006CCC65 /* Delete.png in Resources */,
+				09FF7A731585610800868760 /* Settings.bundle in Resources */,
+				096470F1168BCDC400D086DC /* redLEDOff@2x.png in Resources */,
+				096470F2168BCDC400D086DC /* redLEDOff.png in Resources */,
+				096470F3168BCDC400D086DC /* redLEDOn@2x.png in Resources */,
+				096470F4168BCDC400D086DC /* redLEDOn.png in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC871515E898006C8F0E /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC961515E898006C8F0E /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		091B4D2F158AB60D00896062 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 8;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 1;
+			shellPath = /bin/sh;
+			shellScript = "#!/bin/bash\nbuildNumber=$(/usr/libexec/PlistBuddy -c \"Print CFBundleVersion\" Heterodyne/Heterodyne-Info.plist)\nbuildNumber=$(($buildNumber + 1))\n/usr/libexec/PlistBuddy -c \"Set :CFBundleVersion $buildNumber\" Heterodyne/Heterodyne-Info.plist";
+		};
+		0948DC881515E898006C8F0E /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+		09FD068E16C9DC7400FB257C /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "./Crashlytics.framework/run 5b451701f153f15de9b9741676f90fc9846e5206";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		0948DC651515E898006C8F0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC7A1515E898006C8F0E /* main.m in Sources */,
+				0948DC7E1515E898006C8F0E /* NNHAppDelegate.m in Sources */,
+				0948DC841515E898006C8F0E /* NNHViewController.m in Sources */,
+				0948DCD41515EB77006C8F0E /* XTDSPBlackmanHarrisWindow.m in Sources */,
+				0948DCD51515EB77006C8F0E /* XTDSPComplexToRealStereo.m in Sources */,
+				0948DCD61515EB77006C8F0E /* XTDSPAMDemodulator.m in Sources */,
+				0948DCD81515EB77006C8F0E /* XTDSPBandpassFilter.m in Sources */,
+				0948DCD91515EB77006C8F0E /* XTDSPBlock.m in Sources */,
+				0948DCDA1515EB77006C8F0E /* XTDSPReceiver.m in Sources */,
+				0948DCDB1515EB77006C8F0E /* XTDSPComplexOscillator.m in Sources */,
+				0948DCDC1515EB77006C8F0E /* XTDSPDemodulator.m in Sources */,
+				0948DCDD1515EB77006C8F0E /* XTDSPComplexMixer.m in Sources */,
+				0948DCDE1515EB77006C8F0E /* XTDSPFilter.m in Sources */,
+				0948DCDF1515EB77006C8F0E /* XTDSPFixedGain.m in Sources */,
+				0948DCE31515EB77006C8F0E /* XTDSPModule.m in Sources */,
+				0948DCE41515EB77006C8F0E /* XTDSPSpectrumTap.m in Sources */,
+				0948DCE51515EB77006C8F0E /* XTRealData.m in Sources */,
+				0948DCE61515EB77006C8F0E /* XTSoftwareDefinedRadio.m in Sources */,
+				0948DCE71515EB77006C8F0E /* XTSplitComplexData.m in Sources */,
+				0948DCEB1515EC5C006C8F0E /* XTWorkerThread.m in Sources */,
+				0948DCEF1515ECBB006C8F0E /* XTRingBuffer.m in Sources */,
+				0948DCF21515EF37006C8F0E /* NNHMetisDriver.m in Sources */,
+				0948DCF51515EF5D006C8F0E /* XTBlockBuffer.m in Sources */,
+				09FA7327151D5017004BF6CD /* XTUIPanadapterView.m in Sources */,
+				095540E3152501D500564609 /* XTUIWaterfallView.m in Sources */,
+				090A74B31537E0B7007249C2 /* XTUIKeypadButton.m in Sources */,
+				090A74B71537E793007249C2 /* XTUIKeypadView.m in Sources */,
+				095B0C6B154B721A001B97C8 /* NNHFrequencyPopupViewController.m in Sources */,
+				090C5BC1155D6E43006CCC65 /* NNHVolumePopoverViewController.m in Sources */,
+				090C5BD7155D8004006CCC65 /* XTAudioUnit.m in Sources */,
+				090C5BD8155D8004006CCC65 /* XTOutputAudioUnit.m in Sources */,
+				090C5BD9155D800F006CCC65 /* XTSystemAudio.m in Sources */,
+				092C116E15AA5CED00A750FC /* XTDSPAutomaticGainControl.m in Sources */,
+				0958F2EF15AE3822004C0BBE /* NNHStatsPopoverViewController.m in Sources */,
+				09C319FC160728A9008909A3 /* XTDSPSimpleHilbertTransform.m in Sources */,
+				09C31A0016072C18008909A3 /* XTDSPTransmitter.m in Sources */,
+				09AF9A6C1687CA0200E1107A /* XTDSPCarrier.m in Sources */,
+				09061A2116C2DDDF004E8758 /* XTDSPRealOscillator.m in Sources */,
+				09061A2416C4868B004E8758 /* XTDSPModulator.m in Sources */,
+				09061A2716C99DCB004E8758 /* XTDSPRealNoiseGenerator.m in Sources */,
+				09FD068A16C9C9B600FB257C /* NNHMicGainPopoverViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		0948DC851515E898006C8F0E /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				0948DC991515E898006C8F0E /* HeterodyneTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		0948DC901515E898006C8F0E /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 0948DC681515E898006C8F0E /* Heterodyne */;
+			targetProxy = 0948DC8F1515E898006C8F0E /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		0948DC761515E898006C8F0E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC771515E898006C8F0E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		0948DC7F1515E898006C8F0E /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC801515E898006C8F0E /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		0948DC941515E898006C8F0E /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				0948DC951515E898006C8F0E /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		0948DC9A1515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = YES;
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALID_ARCHS = armv7;
+				"VALID_ARCHS[sdk=*]" = armv7;
+			};
+			name = Debug;
+		};
+		0948DC9B1515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_OPTIMIZATION_LEVEL = 3;
+				GCC_UNROLL_LOOPS = YES;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_MISSING_PROTOTYPES = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.0;
+				ONLY_ACTIVE_ARCH = NO;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+				VALID_ARCHS = armv7;
+			};
+			name = Release;
+		};
+		0948DC9D1515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "Heterodyne/Heterodyne-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/6ZDSP\"",
+					"\"$(SRCROOT)/Heterodyne\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		0948DC9E1515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				CODE_SIGN_IDENTITY = "iPhone Distribution";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				COPY_PHASE_STRIP = NO;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)\"",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "Heterodyne/Heterodyne-Info.plist";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"\"$(SRCROOT)/6ZDSP\"",
+					"\"$(SRCROOT)/Heterodyne\"",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		0948DCA01515E898006C8F0E /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Heterodyne.app/Heterodyne";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "HeterodyneTests/HeterodyneTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		0948DCA11515E898006C8F0E /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/Heterodyne.app/Heterodyne";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Heterodyne/Heterodyne-Prefix.pch";
+				INFOPLIST_FILE = "HeterodyneTests/HeterodyneTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		0948DC631515E898006C8F0E /* Build configuration list for PBXProject "Heterodyne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DC9A1515E898006C8F0E /* Debug */,
+				0948DC9B1515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0948DC9C1515E898006C8F0E /* Build configuration list for PBXNativeTarget "Heterodyne" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DC9D1515E898006C8F0E /* Debug */,
+				0948DC9E1515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		0948DC9F1515E898006C8F0E /* Build configuration list for PBXNativeTarget "HeterodyneTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				0948DCA01515E898006C8F0E /* Debug */,
+				0948DCA11515E898006C8F0E /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 0948DC601515E898006C8F0E /* Project object */;
+}
