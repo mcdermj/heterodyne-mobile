@@ -26,6 +26,7 @@
 #import "NNHMetisDriver.h"
 #import "XTWorkerThread.h"
 #import "NNHFrequencyPopupViewController.h"
+#import "SWRevealViewController.h"
 
 #import <QuartzCore/CoreAnimation.h>
 #import <Accelerate/Accelerate.h>
@@ -74,6 +75,7 @@ inline static int toPow(float elements) {
 @synthesize waterfall;
 @synthesize panadapter;
 @synthesize currentPopover;
+@synthesize revealButton;
 
 - (void)didReceiveMemoryWarning
 {
@@ -153,6 +155,11 @@ inline static int toPow(float elements) {
     delegate.sdr.tapSize = waterfall.textureWidth;
     
     panVelocity = 0;
+    
+    [self.revealButton setTarget:self.revealViewController];
+    [self.revealButton setAction: @selector(revealToggle:)];
+    
+    [self.view addGestureRecognizer:self.revealViewController.panGestureRecognizer];
     
     NSLog(@"Finished viewDidLoad\n");
 }
@@ -440,8 +447,24 @@ static const float scaling = 0.66;
         
         controller.popover = popoverSegue.popoverController;
         controller.masterViewController = popoverSegue.sourceViewController;
-    } else {
+    }
+    
+    if ( [segue isKindOfClass: [SWRevealViewControllerSegue class]] )
+    {
+        SWRevealViewControllerSegue* rvcs = (SWRevealViewControllerSegue*) segue;
         
+        SWRevealViewController* rvc = self.revealViewController;
+        NSAssert( rvc != nil, @"oops! must have a revealViewController" );
+        
+        NSAssert( [rvc.frontViewController isKindOfClass: [UINavigationController class]], @"oops!  for this segue we want a permanent navigation controller in the front!" );
+        
+        rvcs.performBlock = ^(SWRevealViewControllerSegue* rvc_segue, UIViewController* svc, UIViewController* dvc) {
+            
+            UINavigationController* nc = (UINavigationController*)rvc.frontViewController;
+            [nc setViewControllers: @[ dvc ] animated: YES ];
+            
+            [rvc setFrontViewPosition: FrontViewPositionLeft animated: YES];
+        };
     }
 }
 

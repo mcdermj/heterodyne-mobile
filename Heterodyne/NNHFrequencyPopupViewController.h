@@ -20,6 +20,7 @@
 #import <UIKit/UIKit.h>
 
 @class XTUIKeypadView;
+@class XTUILightedToggleButton;
 
 @interface NNHFrequencyPopupViewController : UIViewController
 
@@ -27,6 +28,7 @@
 @property (nonatomic) UIViewController *masterViewController;
 @property (nonatomic) IBOutlet UIPickerView *picker;
 @property (nonatomic) IBOutlet UISwitch *preampSwitch;
+@property (nonatomic) IBOutlet XTUILightedToggleButton *preampButton;
 @property (nonatomic) IBOutlet XTUIKeypadView *keypad;
 @property (nonatomic) IBOutlet UISlider *filterWidth;
 @property (nonatomic) IBOutlet UILabel *filterLabel;

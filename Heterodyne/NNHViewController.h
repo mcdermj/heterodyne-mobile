@@ -21,11 +21,13 @@
 
 @class XTUIPanadapterView;
 @class XTUIWaterfallView;
+@class SWRevealViewController;
 
 @interface NNHViewController : UIViewController
 
 @property (nonatomic) IBOutlet XTUIPanadapterView *panadapter;
 @property (nonatomic) IBOutlet XTUIWaterfallView *waterfall;
+@property (nonatomic) IBOutlet UIBarButtonItem *revealButton;
 
 -(IBAction)displayFrequencyControl:(id)sender;
 -(IBAction)displayVolumeControl:(id)sender;

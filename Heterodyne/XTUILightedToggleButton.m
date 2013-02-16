@@ -1,7 +1,8 @@
+
 //
-//  NNHAppDelegate.h
+//  XTUILightedToggleButton.m
 //
-//  Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
+// Copyright (c) 2010-2013 - Jeremy C. McDermond (NH6Z)
 
 // This program is free software; you can redistribute it and/or
 // modify it under the terms of the GNU General Public License
@@ -17,18 +18,19 @@
 // along with this program; if not, write to the Free Software
 // Foundation, Inc., 59 Temple Place - Suite 330, Boston, MA  02111-1307, USA.
 
-#import <UIKit/UIKit.h>
+#import "XTUILightedToggleButton.h"
+#import <QuartzCore/QuartzCore.h>
 
-@class XTSoftwareDefinedRadio;
-@class NNHMetisDriver;
-@class SWRevealViewController;
+@implementation XTUILightedToggleButton
 
-@interface NNHAppDelegate : UIResponder <UIApplicationDelegate> 
-
-@property (strong, nonatomic) UIWindow *window;
-@property (strong, nonatomic) XTSoftwareDefinedRadio *sdr;
-@property (strong, nonatomic) NNHMetisDriver *driver;
-
-+(NSString *)getHardwareVersion;
+-(id)initWithCoder:(NSCoder *)aDecoder {
+    self = [super initWithCoder:aDecoder];
+    if(self) {
+        //[self setBackgroundImage:[UIImage imageNamed:@"redLEDOn.png"] forState:UIControlStateSelected];
+        //[self setBackgroundImage:[UIImage imageNamed:@"redLEDOff.png"] forState:UIControlStateNormal];        
+    }
+    
+    return self;
+}
 
 @end

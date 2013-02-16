@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="2">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="2.0" toolsVersion="3084" systemVersion="12C60" targetRuntime="iOS.CocoaTouch.iPad" propertyAccessControl="none" initialViewController="O66-PJ-XDQ">
     <dependencies>
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="2083"/>
     </dependencies>
@@ -32,6 +32,7 @@
                                             <action selector="displayFrequencyControl:" destination="2" id="oLJ-KX-wGK"/>
                                         </connections>
                                     </barButtonItem>
+                                    <barButtonItem title="Reveal" id="g7N-db-qAv"/>
                                     <barButtonItem style="plain" systemItem="flexibleSpace" id="S3p-bG-NgO"/>
                                     <barButtonItem title="TX" id="8dg-Ou-kn2">
                                         <connections>
@@ -61,6 +62,7 @@
                     </view>
                     <connections>
                         <outlet property="panadapter" destination="82b-YQ-pit" id="3ha-v2-dRz"/>
+                        <outlet property="revealButton" destination="g7N-db-qAv" id="23r-jJ-MzY"/>
                         <outlet property="waterfall" destination="0jQ-oG-X0U" id="pMi-np-VJZ"/>
                         <segue destination="ddl-Es-RBR" kind="popover" identifier="frequencyPopup" popoverAnchorBarButtonItem="mU7-4K-O37" id="kxb-XT-2ja">
                             <popoverArrowDirection key="popoverArrowDirection" up="YES" down="YES" left="YES" right="YES"/>
@@ -78,7 +80,25 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="3" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-524" y="-24"/>
+            <point key="canvasLocation" x="-705" y="-67"/>
+        </scene>
+        <!--Reveal View Controller-->
+        <scene sceneID="0gh-jF-Dwx">
+            <objects>
+                <viewController id="O66-PJ-XDQ" customClass="SWRevealViewController" sceneMemberID="viewController">
+                    <userDefinedRuntimeAttributes>
+                        <userDefinedRuntimeAttribute type="number" keyPath="rearViewRevealWidth">
+                            <integer key="value" value="250"/>
+                        </userDefinedRuntimeAttribute>
+                    </userDefinedRuntimeAttributes>
+                    <connections>
+                        <segue destination="2" kind="custom" identifier="sw_front" customClass="SWRevealViewControllerSegue" id="axh-YX-BHa"/>
+                        <segue destination="ddl-Es-RBR" kind="custom" identifier="sw_rear" customClass="SWRevealViewControllerSegue" id="PGP-pC-Ptg"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eon-Zj-XpV" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-716" y="796"/>
         </scene>
         <!--Volume Popover View Controller-->
         <scene sceneID="NMh-OD-wYv">
@@ -294,11 +314,11 @@
             <objects>
                 <viewController id="ddl-Es-RBR" customClass="NNHFrequencyPopupViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="Q6Y-WT-0E4">
-                        <rect key="frame" x="0.0" y="20" width="374" height="370"/>
+                        <rect key="frame" x="0.0" y="20" width="1024" height="748"/>
                         <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <view contentMode="scaleToFill" id="gwp-T6-cMh">
-                                <rect key="frame" x="0.0" y="0.0" width="250" height="244"/>
+                                <rect key="frame" x="0.0" y="27" width="250" height="244"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <subviews>
                                     <view contentMode="scaleToFill" id="BUH-CY-qjo" customClass="XTUIKeypadView">
@@ -323,48 +343,54 @@
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
                             </view>
                             <pickerView contentMode="scaleToFill" id="IDk-It-P3F">
-                                <rect key="frame" x="251" y="28" width="123" height="216"/>
+                                <rect key="frame" x="6" y="392" width="250" height="216"/>
                                 <autoresizingMask key="autoresizingMask" widthSizable="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <outlet property="dataSource" destination="ddl-Es-RBR" id="tlx-x9-B4I"/>
                                     <outlet property="delegate" destination="ddl-Es-RBR" id="C8S-33-2mz"/>
                                 </connections>
                             </pickerView>
-                            <switch opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" on="YES" id="TnG-5X-7BO">
-                                <rect key="frame" x="267" y="266" width="79" height="27"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <connections>
-                                    <action selector="preampChanged:" destination="ddl-Es-RBR" eventType="valueChanged" id="2TZ-d9-h7L"/>
-                                </connections>
-                            </switch>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Preamp" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="XnV-is-4LJ">
-                                <rect key="frame" x="20" y="266" width="60" height="21"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
-                                <nil key="highlightedColor"/>
-                            </label>
-                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2700" minValue="10" maxValue="6000" id="2Cp-Mf-q8E">
-                                <rect key="frame" x="113" y="301" width="230" height="23"/>
+                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2700" minValue="10" maxValue="6000" id="2Cp-Mf-q8E" customClass="ACVRange">
+                                <rect key="frame" x="61" y="363" width="118" height="23"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <connections>
                                     <action selector="filterWidthChanged:" destination="ddl-Es-RBR" eventType="valueChanged" id="2Bq-iF-d1C"/>
                                 </connections>
                             </slider>
-                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Filter Width" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="rF2-o0-8XZ">
-                                <rect key="frame" x="20" y="301" width="87" height="21"/>
+                            <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="Filter" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" minimumFontSize="10" id="rF2-o0-8XZ">
+                                <rect key="frame" x="0.0" y="279" width="250" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
                             <label opaque="NO" clipsSubviews="YES" userInteractionEnabled="NO" contentMode="left" text="1000Hz" textAlignment="center" lineBreakMode="clip" baselineAdjustment="alignBaselines" minimumFontSize="10" id="cQR-M6-47L">
-                                <rect key="frame" x="167" y="329" width="122" height="21"/>
+                                <rect key="frame" x="103" y="651" width="122" height="21"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="calibratedRGB"/>
                                 <nil key="highlightedColor"/>
                             </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="6j7-aR-VgN" customClass="XTUILightedToggleButton">
+                                <rect key="frame" x="0.0" y="0.0" width="50" height="25"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="15"/>
+                                <state key="normal" title="PRE">
+                                    <color key="titleColor" red="0.19607843459999999" green="0.30980393290000002" blue="0.52156865600000002" alpha="1" colorSpace="calibratedRGB"/>
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <state key="highlighted">
+                                    <color key="titleColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
+                                <connections>
+                                    <action selector="preampButtonPushed:" destination="ddl-Es-RBR" eventType="touchUpInside" id="HHb-jX-5hH"/>
+                                </connections>
+                            </button>
+                            <view contentMode="scaleToFill" id="v9T-JQ-gPz" customClass="ACVRangeSelector">
+                                <rect key="frame" x="0.0" y="301" width="250" height="22"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
+                            </view>
                         </subviews>
                         <color key="backgroundColor" white="0.0" alpha="1" colorSpace="calibratedWhite"/>
                         <simulatedOrientationMetrics key="simulatedOrientationMetrics" orientation="landscapeRight"/>
@@ -374,12 +400,12 @@
                         <outlet property="filterWidth" destination="2Cp-Mf-q8E" id="zJW-Ht-a7M"/>
                         <outlet property="keypad" destination="BUH-CY-qjo" id="ivx-hn-bcB"/>
                         <outlet property="picker" destination="IDk-It-P3F" id="gd3-OQ-TO2"/>
-                        <outlet property="preampSwitch" destination="TnG-5X-7BO" id="Yko-xW-o4v"/>
+                        <outlet property="preampButton" destination="6j7-aR-VgN" id="pvK-R1-Et7"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="lIl-go-Lkz" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="634" y="-12"/>
+            <point key="canvasLocation" x="385" y="-67"/>
         </scene>
         <!--Mic Gain Popover View Controller-->
         <scene sceneID="1Js-1t-PHh">
@@ -415,9 +441,96 @@
         <image name="sinewave.png" width="26" height="26"/>
         <image name="speaker.png" width="26" height="20"/>
     </resources>
+    <classes>
+        <class className="ACVRangeSelector" superclassName="UIControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/ACVRangeSelector.h"/>
+        </class>
+        <class className="NNHFrequencyPopupViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHFrequencyPopupViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="filterWidthChanged:"/>
+                <relationship kind="action" name="frequencyEntered:"/>
+                <relationship kind="action" name="preampButtonPushed:"/>
+                <relationship kind="action" name="preampChanged:"/>
+                <relationship kind="outlet" name="filterLabel" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="filterWidth" candidateClass="UISlider"/>
+                <relationship kind="outlet" name="keypad" candidateClass="XTUIKeypadView"/>
+                <relationship kind="outlet" name="picker" candidateClass="UIPickerView"/>
+                <relationship kind="outlet" name="preampButton" candidateClass="XTUILightedToggleButton"/>
+                <relationship kind="outlet" name="preampSwitch" candidateClass="UISwitch"/>
+            </relationships>
+        </class>
+        <class className="NNHMicGainPopoverViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHMicGainPopoverViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="sliderValueChanged:"/>
+                <relationship kind="outlet" name="volumeSlider" candidateClass="UISlider"/>
+            </relationships>
+        </class>
+        <class className="NNHStatsPopoverViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHStatsPopoverViewController.h"/>
+            <relationships>
+                <relationship kind="outlet" name="bandwidthIn" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="bandwidthOut" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="droppedPacketsIn" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="mercuryVersion" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="metisVersion" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="outOfOrderPacketsIn" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="packetsIn" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="packetsOut" candidateClass="UILabel"/>
+                <relationship kind="outlet" name="penelopeVersion" candidateClass="UILabel"/>
+            </relationships>
+        </class>
+        <class className="NNHViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="displayFrequencyControl:"/>
+                <relationship kind="action" name="displayMicGainControl:"/>
+                <relationship kind="action" name="displayModeControl:"/>
+                <relationship kind="action" name="displayStatsControl:"/>
+                <relationship kind="action" name="displayVolumeControl:"/>
+                <relationship kind="action" name="togglePtt:"/>
+                <relationship kind="outlet" name="panadapter" candidateClass="XTUIPanadapterView"/>
+                <relationship kind="outlet" name="revealButton" candidateClass="UIBarButtonItem"/>
+                <relationship kind="outlet" name="waterfall" candidateClass="XTUIWaterfallView"/>
+            </relationships>
+        </class>
+        <class className="NNHVolumePopoverViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/NNHVolumePopoverViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="sliderValueChanged:"/>
+                <relationship kind="outlet" name="volumeSlider" candidateClass="UISlider"/>
+            </relationships>
+        </class>
+        <class className="SWRevealViewController" superclassName="UIViewController">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/SWRevealViewController.h"/>
+            <relationships>
+                <relationship kind="action" name="revealToggle:"/>
+                <relationship kind="action" name="rightRevealToggle:"/>
+            </relationships>
+        </class>
+        <class className="XTUIKeypadButton" superclassName="UIButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIKeypadButton.h"/>
+        </class>
+        <class className="XTUIKeypadView" superclassName="UIControl">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIKeypadView.h"/>
+        </class>
+        <class className="XTUILightedToggleButton" superclassName="XTUIKeypadButton">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUILightedToggleButton.h"/>
+        </class>
+        <class className="XTUIPanadapterView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIPanadapterView.h"/>
+        </class>
+        <class className="XTUIWaterfallView" superclassName="UIView">
+            <source key="sourceIdentifier" type="project" relativePath="./Classes/XTUIWaterfallView.h"/>
+        </class>
+    </classes>
     <simulatedMetricsContainer key="defaultSimulatedMetrics">
         <simulatedStatusBarMetrics key="statusBar" statusBarStyle="blackTranslucent"/>
         <simulatedOrientationMetrics key="orientation" orientation="landscapeRight"/>
         <simulatedScreenMetrics key="destination"/>
     </simulatedMetricsContainer>
+    <inferredMetricsTieBreakers>
+        <segue reference="PGP-pC-Ptg"/>
+    </inferredMetricsTieBreakers>
 </document>

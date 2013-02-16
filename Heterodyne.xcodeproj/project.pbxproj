@@ -86,6 +86,10 @@
 		09FD068A16C9C9B600FB257C /* NNHMicGainPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */; };
 		09FD068D16C9D99400FB257C /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068C16C9D99400FB257C /* libTestFlight.a */; };
 		09FD069016C9DCA200FB257C /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068F16C9DCA200FB257C /* Crashlytics.framework */; };
+		09FD069416CEEE9E00FB257C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD069316CEEE9E00FB257C /* SWRevealViewController.m */; };
+		09FD069716CF0F0600FB257C /* XTUILightedToggleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD069616CF0F0600FB257C /* XTUILightedToggleButton.m */; };
+		09FD06AA16CF3AAD00FB257C /* ACVRangeSelector.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD06A816CF3AAD00FB257C /* ACVRangeSelector.m */; };
+		09FD06AC16CF3AB900FB257C /* ACVRangeSelector.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 09FD06AB16CF3AB900FB257C /* ACVRangeSelector.bundle */; };
 		09FF7A731585610800868760 /* Settings.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 09FF7A721585610800868760 /* Settings.bundle */; };
 /* End PBXBuildFile section */
 
@@ -226,6 +230,13 @@
 		09FD068B16C9D99400FB257C /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		09FD068C16C9D99400FB257C /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		09FD068F16C9DCA200FB257C /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
+		09FD069216CEEE9E00FB257C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
+		09FD069316CEEE9E00FB257C /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
+		09FD069516CF0F0600FB257C /* XTUILightedToggleButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUILightedToggleButton.h; sourceTree = "<group>"; };
+		09FD069616CF0F0600FB257C /* XTUILightedToggleButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUILightedToggleButton.m; sourceTree = "<group>"; };
+		09FD06A716CF3AAD00FB257C /* ACVRangeSelector.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ACVRangeSelector.h; sourceTree = "<group>"; };
+		09FD06A816CF3AAD00FB257C /* ACVRangeSelector.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ACVRangeSelector.m; sourceTree = "<group>"; };
+		09FD06AB16CF3AB900FB257C /* ACVRangeSelector.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ACVRangeSelector.bundle; sourceTree = "<group>"; };
 		09FF7A721585610800868760 /* Settings.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = Settings.bundle; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -267,6 +278,10 @@
 		090A74B41537E5AD007249C2 /* UI Components */ = {
 			isa = PBXGroup;
 			children = (
+				09FD06A516CF3AAD00FB257C /* ACVRangeSelector */,
+				09FD069116CEEE9D00FB257C /* SWRevealViewController */,
+				09FD069516CF0F0600FB257C /* XTUILightedToggleButton.h */,
+				09FD069616CF0F0600FB257C /* XTUILightedToggleButton.m */,
 				090A74B11537E0B7007249C2 /* XTUIKeypadButton.h */,
 				090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */,
 				090A74B51537E793007249C2 /* XTUIKeypadView.h */,
@@ -400,6 +415,7 @@
 				0948DC791515E898006C8F0E /* main.m */,
 				0948DC7B1515E898006C8F0E /* Heterodyne-Prefix.pch */,
 				090C5BE61561A033006CCC65 /* Defaults.plist */,
+				09FD06AB16CF3AB900FB257C /* ACVRangeSelector.bundle */,
 				09FF7A721585610800868760 /* Settings.bundle */,
 			);
 			name = "Supporting Files";
@@ -476,6 +492,24 @@
 			);
 			name = 6ZDSP;
 			path = ../6ZDSP;
+			sourceTree = "<group>";
+		};
+		09FD069116CEEE9D00FB257C /* SWRevealViewController */ = {
+			isa = PBXGroup;
+			children = (
+				09FD069216CEEE9E00FB257C /* SWRevealViewController.h */,
+				09FD069316CEEE9E00FB257C /* SWRevealViewController.m */,
+			);
+			path = SWRevealViewController;
+			sourceTree = "<group>";
+		};
+		09FD06A516CF3AAD00FB257C /* ACVRangeSelector */ = {
+			isa = PBXGroup;
+			children = (
+				09FD06A716CF3AAD00FB257C /* ACVRangeSelector.h */,
+				09FD06A816CF3AAD00FB257C /* ACVRangeSelector.m */,
+			);
+			path = ACVRangeSelector;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -570,6 +604,7 @@
 				096470F2168BCDC400D086DC /* redLEDOff.png in Resources */,
 				096470F3168BCDC400D086DC /* redLEDOn@2x.png in Resources */,
 				096470F4168BCDC400D086DC /* redLEDOn.png in Resources */,
+				09FD06AC16CF3AB900FB257C /* ACVRangeSelector.bundle in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -671,6 +706,9 @@
 				09061A2416C4868B004E8758 /* XTDSPModulator.m in Sources */,
 				09061A2716C99DCB004E8758 /* XTDSPRealNoiseGenerator.m in Sources */,
 				09FD068A16C9C9B600FB257C /* NNHMicGainPopoverViewController.m in Sources */,
+				09FD069416CEEE9E00FB257C /* SWRevealViewController.m in Sources */,
+				09FD069716CF0F0600FB257C /* XTUILightedToggleButton.m in Sources */,
+				09FD06AA16CF3AAD00FB257C /* ACVRangeSelector.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

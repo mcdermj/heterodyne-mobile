@@ -19,12 +19,16 @@
 
 #import "NNHFrequencyPopupViewController.h"
 
+#import <QuartzCore/QuartzCore.h>
+
 #import "XTUIKeypadView.h"
 #import "NNHAppDelegate.h"
 #import "NNHMetisDriver.h"
 #import "XTSoftwareDefinedRadio.h"
 #import "XTDSPReceiver.h"
 #import "XTDSPTransmitter.h"
+#import "XTUIKeypadButton.h"
+#import "XTUILightedToggleButton.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
@@ -42,6 +46,7 @@
 @synthesize keypad;
 @synthesize filterWidth;
 @synthesize filterLabel;
+@synthesize preampButton;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -64,6 +69,11 @@
     //  Set initial values of UI
     [picker selectRow:[[mainReceiver modes] indexOfObject:[mainReceiver mode]] inComponent:0 animated:NO];
     preampSwitch.on = driver.preamp;
+    preampButton.selected = driver.preamp;
+    if(driver.preamp == YES)
+        [self.preampButton setBackgroundColor:[UIColor redColor]];
+    else
+        [self.preampButton setBackgroundColor:[UIColor blackColor]];
     
     keypad.frequency = [driver getFrequency:0];
     
@@ -119,6 +129,14 @@
     mainReceiver.filterWidth = filterWidth.value;
 
     [self updateFilter];
+}
+
+-(IBAction)preampButtonPushed:(id)sender {
+    driver.preamp = !driver.preamp;
+    if(driver.preamp == YES) 
+        [self.preampButton setBackgroundColor:[UIColor redColor]];
+    else
+        [self.preampButton setBackgroundColor:[UIColor blackColor]];
 }
 
 #pragma mark - Picker handling
