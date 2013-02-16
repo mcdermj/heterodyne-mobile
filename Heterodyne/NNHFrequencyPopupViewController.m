@@ -42,7 +42,6 @@
 @synthesize popover = _popover;
 @synthesize masterViewController = _masterViewController;
 @synthesize picker;
-@synthesize preampSwitch;
 @synthesize keypad;
 @synthesize filterWidth;
 @synthesize filterLabel;
@@ -68,7 +67,6 @@
 
     //  Set initial values of UI
     [picker selectRow:[[mainReceiver modes] indexOfObject:[mainReceiver mode]] inComponent:0 animated:NO];
-    preampSwitch.on = driver.preamp;
     preampButton.selected = driver.preamp;
     if(driver.preamp == YES)
         [self.preampButton setBackgroundColor:[UIColor redColor]];
@@ -117,12 +115,7 @@
 #pragma mark - Interface actions
 -(IBAction)frequencyEntered:(id)sender {    
     NSLog(@"Frequency entered: %f\n", keypad.frequency);
-    NSLog(@"My master view controller is %@", [self.presentedViewController class]);
     [driver setFrequency:(int)keypad.frequency forReceiver:0];
-}
-
--(IBAction)preampChanged:(id)sender {    
-    [driver setPreamp:preampSwitch.on];
 }
 
 -(IBAction)filterWidthChanged:(id)sender {
