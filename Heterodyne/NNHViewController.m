@@ -149,8 +149,15 @@ inline static int toPow(float elements) {
     UIPinchGestureRecognizer *waterfallPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleWaterfallPinchGesture:)];
     [self.waterfall addGestureRecognizer:waterfallPinchGesture];
     
-    //UILongPressGestureRecognizer *pandadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    //[self.panadapter addGestureRecognizer:pandadapterLongPressGesture];
+    UILongPressGestureRecognizer *panadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    panadapterLongPressGesture.minimumPressDuration = 0.25;
+    panadapterLongPressGesture.delegate = self;
+    UILongPressGestureRecognizer *waterfallLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    waterfallLongPressGesture.minimumPressDuration = 0.25;
+    waterfallLongPressGesture.delegate = self;
+    
+    [self.panadapter addGestureRecognizer:panadapterLongPressGesture];
+    [self.waterfall addGestureRecognizer:waterfallLongPressGesture];
     
     delegate.sdr.tapSize = waterfall.textureWidth;
     
@@ -361,7 +368,27 @@ static const float scaling = 0.66;
 }
 
 -(void)handleLongPressGesture:(UILongPressGestureRecognizer *) recognizer {
-    NSLog(@"Long press on the panadapter\n");
+    if(recognizer.state == UIGestureRecognizerStateBegan) {
+        NSLog("Beginning long press gesture");
+        delegate.sdr.Ptt = YES;
+    }
+    
+    if(recognizer.state == UIGestureRecognizerStateEnded) {
+        NSLog("Long press ended");
+        delegate.sdr.Ptt = NO;
+    }
+}
+
+#pragma mark - UIGestureRecognizer delegates
+
+-(BOOL)gestureRecognizer:(UIGestureRecognizer *)recognizer shouldReceiveTouch:(UITouch *)touch {
+    CGPoint location = [touch locationInView:nil];
+    
+    //  XXX This is a right handed gesture here
+    if(location.y > touch.window.frame.size.height - 150)
+        return YES;
+    
+    return NO;
 }
 
 #pragma mark - Button handling

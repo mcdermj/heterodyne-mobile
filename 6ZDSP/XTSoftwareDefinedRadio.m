@@ -220,4 +220,16 @@
     [pttCondition unlock];
 }
 
+-(void)setPtt:(BOOL)newPtt {
+    [pttCondition lock];
+    Ptt = newPtt;
+    resetTransmitter = YES;
+    [pttCondition signal];
+    [pttCondition unlock];
+}
+
+-(BOOL)Ptt {
+    return Ptt;
+}
+
 @end
