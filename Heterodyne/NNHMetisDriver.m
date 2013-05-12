@@ -592,12 +592,10 @@
 		[self fillHeader:packet.packets[0].header];
 		[self fillHeader:packet.packets[1].header];
 				
-		bytesWritten = sendto(metisSocket, 
+		bytesWritten = send(metisSocket, 
 							  &packet, 
 							  sizeof(MetisPacket), 
-							  0, 
-							  (struct sockaddr *) &metisAddressStruct, 
-							  sizeof(metisAddressStruct));
+							  0);
 		
 		if(bytesWritten == -1) {
 			NSLog(@" Network Write Failed: %s\n", strerror(errno));
@@ -700,13 +698,11 @@
 	startPacket.opcode = 0x04;
 	startPacket.startStop = 0x01;
 	memset(&(startPacket.padding), 0, sizeof(startPacket.padding));
-	
-	bytesWritten = sendto(metisSocket,
-						  &startPacket,
-						  sizeof(startPacket),
-						  0,
-						  (struct sockaddr *) &metisAddressStruct,
-						  sizeof(metisAddressStruct));
+	   
+    bytesWritten = send(metisSocket,
+     &startPacket,
+     sizeof(startPacket),
+     0);
     
     if(bytesWritten == -1) {
 		NSLog(@"Network write failed: %s\n", strerror(errno));
@@ -722,6 +718,11 @@
 }
 
 -(void)discoveryComplete {
+    
+    int result = connect(metisSocket, (struct sockaddr *) &metisAddressStruct, sizeof(metisAddressStruct));
+    if(result != 0) {
+        NSLog(@"Couldn't exec connect call: %s\n", strerror(errno));
+    }
     
     if([self sendStartPacket] == NO) 
         return;
@@ -818,12 +819,10 @@
 	stopPacket.startStop = 0x00;
 	memset(&(stopPacket.padding), 0, sizeof(stopPacket.padding));
 	
-	bytesWritten = sendto(metisSocket,
+	bytesWritten = send(metisSocket,
 						  &stopPacket,
 						  sizeof(stopPacket),
-						  0,
-						  (struct sockaddr *) &metisAddressStruct,
-						  sizeof(metisAddressStruct));
+						  0);
 	
 	if(bytesWritten == -1) {
 		NSLog(@"Network write failed: %s\n", strerror(errno));
@@ -1046,12 +1045,10 @@
                     }
                 }
                        
-            bytesWritten = sendto(metisSocket, 
+            bytesWritten = send(metisSocket, 
                                   packet, 
                                   sizeof(MetisPacket), 
-                                  0, 
-                                  (struct sockaddr *) &metisAddressStruct, 
-                                  sizeof(metisAddressStruct));
+                                  0);
             
             if(bytesWritten == -1) {
                 NSLog(@"Network Write Failed: %s\n", strerror(errno));
