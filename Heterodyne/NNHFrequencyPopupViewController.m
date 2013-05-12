@@ -29,6 +29,7 @@
 #import "XTDSPTransmitter.h"
 #import "XTUIKeypadButton.h"
 #import "XTUILightedToggleButton.h"
+#import "XTUILightedButtonArray.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
@@ -46,6 +47,7 @@
 @synthesize filterWidth;
 @synthesize filterLabel;
 @synthesize preampButton;
+@synthesize modeSelector;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -66,8 +68,9 @@
     mainReceiver = [[[delegate sdr] receivers] objectAtIndex:0];
 
     //  Set initial values of UI
-    [picker selectRow:[[mainReceiver modes] indexOfObject:[mainReceiver mode]] inComponent:0 animated:NO];
+    modeSelector.selected = [mainReceiver mode];
     preampButton.selected = driver.preamp;
+    
     if(driver.preamp == YES)
         [self.preampButton setBackgroundColor:[UIColor redColor]];
     else
@@ -132,24 +135,23 @@
         [self.preampButton setBackgroundColor:[UIColor blackColor]];
 }
 
-#pragma mark - Picker handling
--(NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
-    return 1;
 }
 
--(NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
-    return [[mainReceiver modes] count];
 }
 
--(NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
-    return [[mainReceiver modes] objectAtIndex:row];
+#pragma mark - Mode handling
+
+-(NSArray *)contentForButtonArray:(XTUILightedButtonArray *)buttonArray {
+    return [mainReceiver modes];
 }
 
--(void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
-    NSString *mode = [[mainReceiver modes] objectAtIndex:row];
-    mainReceiver.mode = mode;
-    ((NNHAppDelegate *)[[UIApplication sharedApplication] delegate]).sdr.transmitter.mode = mode;
-        
+-(void)buttonPressed:(NSString *)button forArray:(XTUILightedButtonArray *)array {
+    mainReceiver.mode = button;
+    NNHAppDelegate *delegate = ((NNHAppDelegate *)[[UIApplication sharedApplication] delegate]);
+    SWRevealViewController *rvc = (SWRevealViewController *) delegate.window.rootViewController;
+    NNHViewController *mvc = (NNHViewController *) rvc.frontViewController;
+    
+    delegate.sdr.transmitter.mode = button;
     [self updateFilter];
 }
 
