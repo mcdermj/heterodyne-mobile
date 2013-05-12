@@ -150,6 +150,46 @@
         CFRelease(tickMarkLabelLine);
         CFRelease(tickMarkLabel);
     }
+    
+    //  Draw the frequency display.
+    CTFontRef frequencyFont = CTFontCreateWithName(CFSTR("DBLCDTempBlack"), 32.0, NULL);
+    
+    CFDictionarySetValue(textAttributes, kCTFontAttributeName, frequencyFont);
+    if(delegate.sdr.Ptt == YES)
+        CFDictionarySetValue(textAttributes, kCTForegroundColorAttributeName, [[UIColor redColor] CGColor]);
+    else
+        CFDictionarySetValue(textAttributes, kCTForegroundColorAttributeName, [[UIColor greenColor] CGColor]);
+    
+    int MHz = (int) ([driver getFrequency:0] / 1000000.0f);
+    int kHz = (int) (([driver getFrequency:0] - ((float) MHz * 1000000.0f)) / 1000.0f);
+    int Hz = (int) ([driver getFrequency:0] - ((float) MHz * 1000000.0f) - ((float) kHz * 1000.0f));
+
+    NSAttributedString *frequencyString = [[NSAttributedString alloc] initWithString:[NSString stringWithFormat:@"%02d.%03d.%03d", MHz, kHz, Hz]
+                                                                          attributes: (__bridge NSDictionary *)(textAttributes)];
+    
+    NSAttributedString *measuringString = [[NSAttributedString alloc] initWithString:@"00.000.000"
+                                                                          attributes:(__bridge NSDictionary *) (textAttributes)];
+    CTLineRef measuringLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef) measuringString);
+    CTLineRef frequencyLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef)(frequencyString));
+    double width = CTLineGetTypographicBounds(measuringLine, NULL, NULL, NULL);
+    CGContextSetTextPosition(ctx, CGRectGetWidth(self.bounds) - width - 10, CGRectGetHeight(self.bounds) - 75);
+    CTLineDraw(frequencyLine, ctx);
+    
+    CFRelease(measuringLine);
+    CFRelease(frequencyFont);
+    CFRelease(frequencyLine);
+    
+    CTFontRef modeFont = CTFontCreateWithName(CFSTR("Helvetica-Bold"), 12.0, NULL);
+    CFDictionarySetValue(textAttributes, kCTFontAttributeName, modeFont);
+    NSAttributedString *modeString = [[NSAttributedString alloc] initWithString:((XTDSPReceiver *) delegate.sdr.receivers[0]).mode
+                                                                     attributes:(__bridge NSDictionary *) textAttributes];
+    CTLineRef modeLine = CTLineCreateWithAttributedString((__bridge CFAttributedStringRef) modeString);
+    float height = CTFontGetAscent(modeFont) + CTFontGetDescent(modeFont); //+ CTFontGetXHeight(modeFont);
+    CGContextSetTextPosition(ctx, CGRectGetWidth(self.bounds) - width - 10, CGRectGetHeight(self.bounds) - 75 - height);
+    CTLineDraw(modeLine, ctx);
+    
+    CFRelease(modeFont);
+    CFRelease(modeLine);
    
     CGContextSetShouldAntialias(ctx, false);
     CGContextAddPath(ctx, tickMarks);

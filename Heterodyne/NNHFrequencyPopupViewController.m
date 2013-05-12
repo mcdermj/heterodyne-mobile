@@ -179,6 +179,8 @@
     NNHViewController *mvc = (NNHViewController *) rvc.frontViewController;
     
     delegate.sdr.transmitter.mode = button;
+    [mvc.panadapter setNeedsDisplay];
+    
     [self updateFilter];
 }
 
