@@ -22,6 +22,7 @@
 #import "NNHMetisDriver.h"
 #import "XTDSPReceiver.h"
 #import "NNHViewController.h"
+#import "TestFlight.h"
 
 #import <Crashlytics/Crashlytics.h>
 #import <AVFoundation/AVFoundation.h>
@@ -56,7 +57,7 @@
     discoveryWindow = nil;
     
     [TestFlight setDeviceIdentifier:[[UIDevice currentDevice] uniqueIdentifier]];
-    [TestFlight takeOff:@"1e048c6ad62b04bb4e756edd399064ef_NzkzMTcyMDEyLTA0LTA5IDIyOjEwOjQ0LjM4MTE4OA"];
+    [TestFlight takeOff:@"240d7b94-a7d4-461c-9961-2d9a0592ab7f"];
         
     NSLog(@"Device is: %@\n", [[UIDevice currentDevice] model]);
     
