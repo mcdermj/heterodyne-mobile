@@ -22,6 +22,7 @@
 #import "NNHMetisDriver.h"
 #import "XTDSPReceiver.h"
 #import "NNHViewController.h"
+#import "SWRevealViewController.h"
 #import "TestFlight.h"
 
 #import <Crashlytics/Crashlytics.h>
@@ -118,7 +119,7 @@
     [[NSUserDefaults standardUserDefaults] setFloat:mainReceiver.lowCut forKey:@"lowCut"];
     [[NSUserDefaults standardUserDefaults] setObject:mainReceiver.mode forKey:@"mode"];
     
-    NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
+    NNHViewController *rootController = (NNHViewController *) ((SWRevealViewController *) self.window.rootViewController).frontViewController;
     [rootController pauseDisplayLink];
     
     [self.driver stop];
@@ -144,7 +145,7 @@
     mainReceiver.lowCut = [[NSUserDefaults standardUserDefaults] floatForKey:@"LowCut"];
     mainReceiver.mode = [[NSUserDefaults standardUserDefaults] stringForKey:@"mode"];
     
-    NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
+    NNHViewController *rootController = (NNHViewController *) ((SWRevealViewController *) self.window.rootViewController).frontViewController;
     [rootController resumeDisplayLink];
     
     [[AVAudioSession sharedInstance] setActive:YES error:nil];
@@ -162,8 +163,6 @@
     
     discoveryWindow = [[UIAlertView alloc] initWithTitle:@"Peforming Discovery" message:@"Heterodyne is attempting to discover openHPSDR hardware on the network.\nPlease Wait." delegate:nil cancelButtonTitle:nil otherButtonTitles:nil, nil];
     [discoveryWindow show];
-    
-    NNHViewController *rootController = (NNHViewController *) self.window.rootViewController;
     
     refreshTimer = [NSTimer scheduledTimerWithTimeInterval:10.0 target:self selector:@selector(updateStats) userInfo:nil repeats:YES];
 

@@ -21,7 +21,6 @@
 
 @class XTSoftwareDefinedRadio;
 @class NNHMetisDriver;
-@class SWRevealViewController;
 
 @interface NNHAppDelegate : UIResponder <UIApplicationDelegate> 
 
