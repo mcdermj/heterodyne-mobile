@@ -30,6 +30,7 @@
 #import "XTUIKeypadButton.h"
 #import "XTUILightedToggleButton.h"
 #import "XTUILightedButtonArray.h"
+#import "ACVRangeSelector.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
@@ -82,26 +83,30 @@
 }
 
 -(void)updateFilter {
-    if([mainReceiver.mode isEqualToString:@"USB"] || [mainReceiver.mode isEqualToString:@"LSB"]) {
-        filterWidth.maximumValue = 3000.0f;
-        filterWidth.minimumValue = 100.0f;
-    } else if([mainReceiver.mode isEqualToString:@"AM"] || [mainReceiver.mode isEqualToString:@"SAM"]) {
+    if([mainReceiver.mode isEqualToString:@"USB"]) {
+        filterWidth.maximumValue = 5000.0f;
+        filterWidth.minimumValue = -500.0f;
+        mainReceiver.highCut = 2500.0f;
+        mainReceiver.lowCut = -300.0f;
+    } else if([mainReceiver.mode isEqualToString:@"LSB"]) {
+        filterWidth.maximumValue = 500.0f;
+        filterWidth.minimumValue = -5000.0f;
+        mainReceiver.highCut = 300.0f;
+        mainReceiver.lowCut = -2500.0f;
+     } else if([mainReceiver.mode isEqualToString:@"AM"] || [mainReceiver.mode isEqualToString:@"SAM"]) {
         filterWidth.maximumValue = 20000.0f;
-        filterWidth.minimumValue = 1000.0f;
+        filterWidth.minimumValue = -20000.0f;
+         mainReceiver.highCut = 5000.0f;
+         mainReceiver.lowCut = -5000.0f;
     } else {
         filterWidth.maximumValue = 1000.0f;
         filterWidth.minimumValue = 10.0f;
     }
+        
+    filterWidth.leftValue = mainReceiver.lowCut;
+    filterWidth.rightValue = mainReceiver.highCut;
     
-    if(mainReceiver.filterWidth > filterWidth.maximumValue)
-        mainReceiver.filterWidth = filterWidth.maximumValue;
-    
-    if(mainReceiver.filterWidth < filterWidth.minimumValue)
-        mainReceiver.filterWidth = filterWidth.minimumValue;
-    
-    [filterWidth setValue:mainReceiver.filterWidth animated:YES];
-    
-    filterLabel.text = [NSString stringWithFormat:@"%d Hz", (int) filterWidth.value];
+    filterLabel.text = [NSString stringWithFormat:@"%d Hz", (int) (filterWidth.rightValue - filterWidth.leftValue)];
 }
 
 - (void)viewDidUnload
@@ -122,9 +127,11 @@
 }
 
 -(IBAction)filterWidthChanged:(id)sender {
-    mainReceiver.filterWidth = filterWidth.value;
-
-    [self updateFilter];
+    ACVRangeSelector *slider = (ACVRangeSelector *) sender;
+    mainReceiver.highCut = slider.rightValue;
+    mainReceiver.lowCut = slider.leftValue;
+    
+    filterLabel.text = [NSString stringWithFormat:@"%d Hz", (int) (filterWidth.rightValue - filterWidth.leftValue)];
 }
 
 -(IBAction)preampButtonPushed:(id)sender {

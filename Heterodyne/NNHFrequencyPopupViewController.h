@@ -22,6 +22,7 @@
 @class XTUIKeypadView;
 @class XTUILightedToggleButton;
 @class XTUILightedButtonArray;
+@class ACVRangeSelector;
 
 @interface NNHFrequencyPopupViewController : UIViewController
 
@@ -30,7 +31,7 @@
 @property (nonatomic) IBOutlet UIPickerView *picker;
 @property (nonatomic) IBOutlet XTUILightedToggleButton *preampButton;
 @property (nonatomic) IBOutlet XTUIKeypadView *keypad;
-@property (nonatomic) IBOutlet UISlider *filterWidth;
+@property (nonatomic) IBOutlet ACVRangeSelector *filterWidth;
 @property (nonatomic) IBOutlet UILabel *filterLabel;
 @property (nonatomic) IBOutlet XTUILightedButtonArray *modeSelector;
 
