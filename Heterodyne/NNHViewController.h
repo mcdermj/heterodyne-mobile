@@ -23,7 +23,7 @@
 @class XTUIWaterfallView;
 @class SWRevealViewController;
 
-@interface NNHViewController : UIViewController
+@interface NNHViewController : UIViewController <UIGestureRecognizerDelegate>
 
 @property (nonatomic) IBOutlet XTUIPanadapterView *panadapter;
 @property (nonatomic) IBOutlet XTUIWaterfallView *waterfall;

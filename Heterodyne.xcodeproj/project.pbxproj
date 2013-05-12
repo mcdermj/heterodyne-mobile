@@ -31,6 +31,7 @@
 		090C5BF91561BFCC006CCC65 /* Delete@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BF81561BFCC006CCC65 /* Delete@2x.png */; };
 		090C5BFB1561C00E006CCC65 /* Delete.png in Resources */ = {isa = PBXBuildFile; fileRef = 090C5BFA1561C00E006CCC65 /* Delete.png */; };
 		090C5C011561C1D5006CCC65 /* libz.dylib in Frameworks */ = {isa = PBXBuildFile; fileRef = 090C5C001561C1D5006CCC65 /* libz.dylib */; };
+		09289304173F5CAB001C936E /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09289302173F5CAB001C936E /* libTestFlight.a */; };
 		092C116E15AA5CED00A750FC /* XTDSPAutomaticGainControl.m in Sources */ = {isa = PBXBuildFile; fileRef = 092C116D15AA5CED00A750FC /* XTDSPAutomaticGainControl.m */; };
 		0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6D1515E898006C8F0E /* UIKit.framework */; };
 		0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 0948DC6F1515E898006C8F0E /* Foundation.framework */; };
@@ -75,6 +76,7 @@
 		096470F2168BCDC400D086DC /* redLEDOff.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470EE168BCDC400D086DC /* redLEDOff.png */; };
 		096470F3168BCDC400D086DC /* redLEDOn@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470EF168BCDC400D086DC /* redLEDOn@2x.png */; };
 		096470F4168BCDC400D086DC /* redLEDOn.png in Resources */ = {isa = PBXBuildFile; fileRef = 096470F0168BCDC400D086DC /* redLEDOn.png */; };
+		09993FF816EDF80D00165D26 /* XTUILightedButtonArray.m in Sources */ = {isa = PBXBuildFile; fileRef = 09993FF716EDF80D00165D26 /* XTUILightedButtonArray.m */; };
 		09AF9A6C1687CA0200E1107A /* XTDSPCarrier.m in Sources */ = {isa = PBXBuildFile; fileRef = 09AF9A6B1687CA0200E1107A /* XTDSPCarrier.m */; };
 		09C319FC160728A9008909A3 /* XTDSPSimpleHilbertTransform.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C319FB160728A9008909A3 /* XTDSPSimpleHilbertTransform.m */; };
 		09C31A0016072C18008909A3 /* XTDSPTransmitter.m in Sources */ = {isa = PBXBuildFile; fileRef = 09C319FF16072C18008909A3 /* XTDSPTransmitter.m */; };
@@ -84,7 +86,6 @@
 		09FA732C151EAA7E004BF6CD /* CoreFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA732B151EAA7E004BF6CD /* CoreFoundation.framework */; };
 		09FA732E151EAAAB004BF6CD /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FA732D151EAAAB004BF6CD /* CoreText.framework */; };
 		09FD068A16C9C9B600FB257C /* NNHMicGainPopoverViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */; };
-		09FD068D16C9D99400FB257C /* libTestFlight.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068C16C9D99400FB257C /* libTestFlight.a */; };
 		09FD069016C9DCA200FB257C /* Crashlytics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 09FD068F16C9DCA200FB257C /* Crashlytics.framework */; };
 		09FD069416CEEE9E00FB257C /* SWRevealViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD069316CEEE9E00FB257C /* SWRevealViewController.m */; };
 		09FD069716CF0F0600FB257C /* XTUILightedToggleButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 09FD069616CF0F0600FB257C /* XTUILightedToggleButton.m */; };
@@ -138,6 +139,8 @@
 		090C5BF81561BFCC006CCC65 /* Delete@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Delete@2x.png"; sourceTree = "<group>"; };
 		090C5BFA1561C00E006CCC65 /* Delete.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Delete.png; sourceTree = "<group>"; };
 		090C5C001561C1D5006CCC65 /* libz.dylib */ = {isa = PBXFileReference; lastKnownFileType = "compiled.mach-o.dylib"; name = libz.dylib; path = usr/lib/libz.dylib; sourceTree = SDKROOT; };
+		09289302173F5CAB001C936E /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
+		09289303173F5CAB001C936E /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
 		092C116C15AA5CED00A750FC /* XTDSPAutomaticGainControl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPAutomaticGainControl.h; sourceTree = "<group>"; };
 		092C116D15AA5CED00A750FC /* XTDSPAutomaticGainControl.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPAutomaticGainControl.m; sourceTree = "<group>"; };
 		0948DC691515E898006C8F0E /* Heterodyne.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Heterodyne.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -213,6 +216,8 @@
 		096470EE168BCDC400D086DC /* redLEDOff.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redLEDOff.png; sourceTree = "<group>"; };
 		096470EF168BCDC400D086DC /* redLEDOn@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "redLEDOn@2x.png"; sourceTree = "<group>"; };
 		096470F0168BCDC400D086DC /* redLEDOn.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = redLEDOn.png; sourceTree = "<group>"; };
+		09993FF616EDF80D00165D26 /* XTUILightedButtonArray.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTUILightedButtonArray.h; sourceTree = "<group>"; };
+		09993FF716EDF80D00165D26 /* XTUILightedButtonArray.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTUILightedButtonArray.m; sourceTree = "<group>"; };
 		09AF9A6A1687CA0100E1107A /* XTDSPCarrier.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPCarrier.h; sourceTree = "<group>"; };
 		09AF9A6B1687CA0200E1107A /* XTDSPCarrier.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = XTDSPCarrier.m; sourceTree = "<group>"; };
 		09C319FA160728A9008909A3 /* XTDSPSimpleHilbertTransform.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = XTDSPSimpleHilbertTransform.h; sourceTree = "<group>"; };
@@ -227,8 +232,6 @@
 		09FA732D151EAAAB004BF6CD /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		09FD068816C9C9B500FB257C /* NNHMicGainPopoverViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NNHMicGainPopoverViewController.h; sourceTree = "<group>"; };
 		09FD068916C9C9B600FB257C /* NNHMicGainPopoverViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NNHMicGainPopoverViewController.m; sourceTree = "<group>"; };
-		09FD068B16C9D99400FB257C /* TestFlight.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TestFlight.h; sourceTree = "<group>"; };
-		09FD068C16C9D99400FB257C /* libTestFlight.a */ = {isa = PBXFileReference; lastKnownFileType = archive.ar; path = libTestFlight.a; sourceTree = "<group>"; };
 		09FD068F16C9DCA200FB257C /* Crashlytics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = Crashlytics.framework; sourceTree = "<group>"; };
 		09FD069216CEEE9E00FB257C /* SWRevealViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SWRevealViewController.h; sourceTree = "<group>"; };
 		09FD069316CEEE9E00FB257C /* SWRevealViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SWRevealViewController.m; sourceTree = "<group>"; };
@@ -257,8 +260,8 @@
 				0948DC6E1515E898006C8F0E /* UIKit.framework in Frameworks */,
 				0948DC701515E898006C8F0E /* Foundation.framework in Frameworks */,
 				0948DC721515E898006C8F0E /* CoreGraphics.framework in Frameworks */,
-				09FD068D16C9D99400FB257C /* libTestFlight.a in Frameworks */,
 				09FD069016C9DCA200FB257C /* Crashlytics.framework in Frameworks */,
+				09289304173F5CAB001C936E /* libTestFlight.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -286,6 +289,8 @@
 				090A74B21537E0B7007249C2 /* XTUIKeypadButton.m */,
 				090A74B51537E793007249C2 /* XTUIKeypadView.h */,
 				090A74B61537E793007249C2 /* XTUIKeypadView.m */,
+				09993FF616EDF80D00165D26 /* XTUILightedButtonArray.h */,
+				09993FF716EDF80D00165D26 /* XTUILightedButtonArray.m */,
 			);
 			name = "UI Components";
 			sourceTree = "<group>";
@@ -293,8 +298,8 @@
 		090C5BFF1561C19B006CCC65 /* TestFlight */ = {
 			isa = PBXGroup;
 			children = (
-				09FD068B16C9D99400FB257C /* TestFlight.h */,
-				09FD068C16C9D99400FB257C /* libTestFlight.a */,
+				09289302173F5CAB001C936E /* libTestFlight.a */,
+				09289303173F5CAB001C936E /* TestFlight.h */,
 			);
 			name = TestFlight;
 			sourceTree = "<group>";
@@ -709,6 +714,7 @@
 				09FD069416CEEE9E00FB257C /* SWRevealViewController.m in Sources */,
 				09FD069716CF0F0600FB257C /* XTUILightedToggleButton.m in Sources */,
 				09FD06AA16CF3AAD00FB257C /* ACVRangeSelector.m in Sources */,
+				09993FF816EDF80D00165D26 /* XTUILightedButtonArray.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -856,8 +862,8 @@
 		0948DC9E1515E898006C8F0E /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
+				CODE_SIGN_IDENTITY = "iPhone Developer: Jeremy McDermond (3R68W65G4N)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer: Jeremy McDermond (3R68W65G4N)";
 				COPY_PHASE_STRIP = NO;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -872,8 +878,8 @@
 					"\"$(SRCROOT)/Heterodyne\"",
 				);
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				PROVISIONING_PROFILE = "";
-				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "";
+				PROVISIONING_PROFILE = "1111254A-C8F4-4A8B-BB57-A403383FB32D";
+				"PROVISIONING_PROFILE[sdk=iphoneos*]" = "1111254A-C8F4-4A8B-BB57-A403383FB32D";
 				WRAPPER_EXTENSION = app;
 			};
 			name = Release;

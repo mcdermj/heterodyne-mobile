@@ -664,6 +664,19 @@ static NSString * const SWSegueRightIdentifier = @"sw_right";
     return ( gestureRecognizer == _panGestureRecognizer && _animationQueue.count == 0) ;
 }
 
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch {
+    if([touch locationInView:nil].y < 50 && self.frontViewPosition == FrontViewPositionLeft) {
+        return YES;
+    }
+    
+    if(self.frontViewPosition == FrontViewPositionRight && CGRectContainsPoint(_frontViewController.view.bounds, [touch locationInView:_frontViewController.view])) {
+        NSLog(@"Open, should be within view");
+        return YES;
+    }
+    
+    return NO;
+}
+
 
 #pragma mark - Gesture Based Reveal
 

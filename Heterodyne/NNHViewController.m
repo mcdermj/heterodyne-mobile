@@ -124,40 +124,27 @@ inline static int toPow(float elements) {
     
     fftSetup = vDSP_create_fftsetup(toPow(waterfall.textureWidth), kFFTRadix2);
     vDSP_fft_zip(fftSetup, &kernel, 1, toPow(waterfall.textureWidth), kFFTDirection_Forward);      
-    
+     
     UIPanGestureRecognizer *panGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
     panGesture.maximumNumberOfTouches = NSUIntegerMax;
     panGesture.minimumNumberOfTouches = 1;
-    [self.panadapter addGestureRecognizer:panGesture];
-    
-    UIPanGestureRecognizer *waterfallPanGesture = [[UIPanGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanGesture:)];
-    panGesture.maximumNumberOfTouches = NSUIntegerMax;
-    panGesture.minimumNumberOfTouches = 1;
-    [self.waterfall addGestureRecognizer:waterfallPanGesture];
+    [self.view addGestureRecognizer:panGesture];
     
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
     tapGesture.numberOfTapsRequired = 2;
-    [self.panadapter addGestureRecognizer:tapGesture];
-    
-    UITapGestureRecognizer *waterfallTapGesture = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTapGesture:)];
-    waterfallTapGesture.numberOfTapsRequired = 2;
-    [self.waterfall addGestureRecognizer:waterfallTapGesture];
-    
+    [self.view addGestureRecognizer:tapGesture];
+        
     UIPinchGestureRecognizer *panadapterPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handlePanPinchGesture:)];
     [self.panadapter addGestureRecognizer:panadapterPinchGesture];
     
     UIPinchGestureRecognizer *waterfallPinchGesture = [[UIPinchGestureRecognizer alloc] initWithTarget:self action:@selector(handleWaterfallPinchGesture:)];
     [self.waterfall addGestureRecognizer:waterfallPinchGesture];
     
-    UILongPressGestureRecognizer *panadapterLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    panadapterLongPressGesture.minimumPressDuration = 0.25;
-    panadapterLongPressGesture.delegate = self;
-    UILongPressGestureRecognizer *waterfallLongPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
-    waterfallLongPressGesture.minimumPressDuration = 0.25;
-    waterfallLongPressGesture.delegate = self;
+    UILongPressGestureRecognizer *longPressGesture = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(handleLongPressGesture:)];
+    longPressGesture.minimumPressDuration = 0.25;
+    longPressGesture.delegate = self;
     
-    [self.panadapter addGestureRecognizer:panadapterLongPressGesture];
-    [self.waterfall addGestureRecognizer:waterfallLongPressGesture];
+    [self.view addGestureRecognizer:longPressGesture];
     
     delegate.sdr.tapSize = waterfall.textureWidth;
     
@@ -284,23 +271,24 @@ static const float scaling = 0.66;
 -(void)handlePanGesture:(UIPanGestureRecognizer *)recognizer {
     CGPoint translation = [recognizer translationInView:recognizer.view.superview];
     
-    // Figure out whether the touch was primarily in the horizontal or vertical direction
-    if(recognizer.state == UIGestureRecognizerStateBegan) {
+    if(recognizer.state == UIGestureRecognizerStateBegan) {        
+        // Figure out whether the touch was primarily in the horizontal or vertical direction
         if(abs(translation.x) >= abs(translation.y))
             horizontalScrolling = YES;
          else 
             horizontalScrolling = NO;
     }
     
-    if(horizontalScrolling == YES) 
+    if(horizontalScrolling == YES) {
         [self handleHorizontalScroll:recognizer];
-    else 
+    } else {
         [self handleVerticalScroll:recognizer];
+    }
     
     [recognizer setTranslation:CGPointMake(0, 0) inView:recognizer.view.superview];
 }
 
--(void)handleHorizontalScroll:(UIPanGestureRecognizer *)recognizer {
+-(void)handleHorizontalScroll:(UIPanGestureRecognizer *)recognizer {    
     CGPoint translation = [recognizer translationInView:recognizer.view.superview];
     float hzPerUnit = [delegate.driver sampleRate] / CGRectGetWidth(recognizer.view.bounds);
     CGPoint velocity = [recognizer velocityInView:self.panadapter];
@@ -326,9 +314,11 @@ static const float scaling = 0.66;
 }
 
 -(void)handleVerticalScroll:(UIPanGestureRecognizer *)recognizer {
-    CGPoint translation = [recognizer translationInView:recognizer.view.superview];
+    CGPoint translation = [recognizer translationInView:self.panadapter];
+    CGPoint location = [recognizer locationInView:self.panadapter];
 
-    if(recognizer.view == self.panadapter) {
+    //  Only do vertical scrolling if the touch is in the panadapter
+    if(CGRectContainsPoint(self.panadapter.bounds, location)) {
         float dbPerUnit = self.panadapter.dynamicRange / CGRectGetHeight(self.panadapter.bounds);
         self.panadapter.referenceLevel += translation.y * dbPerUnit;
     }
@@ -369,14 +359,14 @@ static const float scaling = 0.66;
 
 -(void)handleLongPressGesture:(UILongPressGestureRecognizer *) recognizer {
     if(recognizer.state == UIGestureRecognizerStateBegan) {
-        NSLog("Beginning long press gesture");
         delegate.sdr.Ptt = YES;
     }
     
     if(recognizer.state == UIGestureRecognizerStateEnded) {
-        NSLog("Long press ended");
         delegate.sdr.Ptt = NO;
     }
+    
+    [panadapter setNeedsDisplay];
 }
 
 #pragma mark - UIGestureRecognizer delegates
@@ -384,9 +374,20 @@ static const float scaling = 0.66;
 -(BOOL)gestureRecognizer:(UIGestureRecognizer *)recognizer shouldReceiveTouch:(UITouch *)touch {
     CGPoint location = [touch locationInView:nil];
     
-    //  XXX This is a right handed gesture here
-    if(location.y > touch.window.frame.size.height - 150)
-        return YES;
+    if([recognizer isKindOfClass:[UILongPressGestureRecognizer class]]) {
+        //  XXX This is a right handed gesture here
+        if(location.y > touch.window.frame.size.height - 150)
+            return YES;
+        
+        return NO;
+    }
+    
+    if([recognizer isKindOfClass:[UIPanGestureRecognizer class]]) {
+        if(location.y < 50)
+            return YES;
+        
+        return NO;
+    }
     
     return NO;
 }
