@@ -31,10 +31,14 @@
 #import "XTUILightedToggleButton.h"
 #import "XTUILightedButtonArray.h"
 #import "ACVRangeSelector.h"
+#import "SWRevealViewController.h"
+#import "NNHViewController.h"
+#import "XTUIPanadapterView.h"
 
 @interface NNHFrequencyPopupViewController () {
     NNHMetisDriver *driver;
     XTDSPReceiver *mainReceiver;
+    XTDSPTransmitter *transmitter;
 }
 
 @end
@@ -49,6 +53,8 @@
 @synthesize filterLabel;
 @synthesize preampButton;
 @synthesize modeSelector;
+@synthesize volumeSlider;
+@synthesize micGainSlider;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -59,14 +65,16 @@
     return self;
 }
 
-- (void)viewDidLoad
-{
-    [super viewDidLoad];
-	// Do any additional setup after loading the view.
-    
+-(void)awakeFromNib {
     NNHAppDelegate *delegate = (NNHAppDelegate *) [[UIApplication sharedApplication] delegate];
     driver = [delegate  driver];
     mainReceiver = [[[delegate sdr] receivers] objectAtIndex:0];
+    transmitter = [[delegate sdr] transmitter];
+}
+
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
 
     //  Set initial values of UI
     modeSelector.selected = [mainReceiver mode];
@@ -78,8 +86,12 @@
         [self.preampButton setBackgroundColor:[UIColor blackColor]];
     
     keypad.frequency = [driver getFrequency:0];
+    volumeSlider.value = mainReceiver.gain;
+    micGainSlider.value = transmitter.gain;
     
     [self updateFilter];
+    
+    
 }
 
 -(void)updateFilter {
@@ -142,8 +154,16 @@
         [self.preampButton setBackgroundColor:[UIColor blackColor]];
 }
 
+-(IBAction)micGainSliderChanged:(id)sender {
+    UISlider *slider = (UISlider *) sender;
+    
+    transmitter.gain = slider.value;
 }
 
+-(IBAction)volumeSliderChanged:(id)sender {
+    UISlider *slider = (UISlider *) sender;
+    
+    mainReceiver.gain = slider.value;
 }
 
 #pragma mark - Mode handling

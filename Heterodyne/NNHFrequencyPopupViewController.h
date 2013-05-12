@@ -34,8 +34,12 @@
 @property (nonatomic) IBOutlet ACVRangeSelector *filterWidth;
 @property (nonatomic) IBOutlet UILabel *filterLabel;
 @property (nonatomic) IBOutlet XTUILightedButtonArray *modeSelector;
+@property (nonatomic) IBOutlet UISlider *volumeSlider;
+@property (nonatomic) IBOutlet UISlider *micGainSlider;
 
 -(IBAction)frequencyEntered:(id)sender;
 -(IBAction)filterWidthChanged:(id)sender;
+-(IBAction)micGainSliderChanged:(id)sender;
+-(IBAction)volumeSliderChanged:(id)sender;
 
 @end
